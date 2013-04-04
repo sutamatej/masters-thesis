@@ -8,7 +8,7 @@
 * what are the bases for this thesis? (e.g. canal, publication, paper, etc.)
 * what is the structure of the thesis? (chapters description)
 
-## Abstract interpretation & string string abstract domains
+## Abstract interpretation & string abstract domains
 
 * (depending on the length of this part it can be split into two chapters)
 * what is static analysis? what is it used for?
