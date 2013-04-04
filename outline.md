@@ -3,10 +3,10 @@
 ## Introduction
 
 * 1 page max
-* what field is this thesis for?
-* what problem does this work solve?
-* what will be the benefit of this work?
+* what field is this thesis for? what problem does this work solve?
+* what will be the benefit of this work? (usefulness of the output)
 * what are the bases for this thesis (e.g. canal, publication, paper, etc.)
+* what is the structure of the thesis (chapters description)
 
 ## Abstract interpretation & string string abstract domains
    
@@ -41,7 +41,7 @@
     * how is it different from other domains?
     * what operations are supported by this domain?
 
-* merge join pictures
+* merge join
 
 ## Implementation description
 
@@ -63,3 +63,6 @@
 
 * instructions to compiling & running (modified) canal
 * prepare simple .c programs to show examples of running
+
+## Literature
+
