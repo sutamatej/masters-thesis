@@ -2,14 +2,15 @@
 
 ## Introduction
 
-* 1 page max
+* scope: maximum 1 page
 * what field is this thesis for? what problem does this work solve?
 * what will be the benefit of this work? (usefulness of the output)
-* what are the bases for this thesis (e.g. canal, publication, paper, etc.)
-* what is the structure of the thesis (chapters description)
+* what are the bases for this thesis? (e.g. canal, publication, paper, etc.)
+* what is the structure of the thesis? (chapters description)
 
 ## Abstract interpretation & string string abstract domains
-   
+
+* (depending on the length of this part it can be split into two chapters)
 * what is static analysis? what is it used for?
 * what are other ways of evaluating the SW quality?
 * what is abstract interpretation?
@@ -23,7 +24,7 @@
 ## Solution design
 
 * what was created, invented, studied, found out, calculated, designed,
-  simplified, inferred, enhanced, tried, etc?
+  simplified, inferred, enhanced, etc?
 * what domains have been invented for string analysis?
 *   Prefix string domain
     
@@ -33,7 +34,7 @@
 
 *   Suffix string domain
 
-    * similar to Prefix string domain
+    * similar to Prefix string domain ...
 
 *   String trie domain
 
@@ -52,6 +53,7 @@
 
 ## Conclusion
 
+* scope: 1 - 2 pages
 * have we fulfilled the goals we set out in the beginning/assignment?
 * what are the results?
 * what is the benefit of this work?
