@@ -1,3 +1,5 @@
+# String abstract domains
+
 ## Introduction
 
 * 1 page max
@@ -12,14 +14,33 @@
 * what are other ways of evaluating the SW quality?
 * what is abstract interpretation?
 * what is a domain and a value? relationship between abstract and concrete value
+* what is usage of lattices in AI? what is abstract operation?
+* what is string analysis used for?
+* how is analysis of strings related to analysis of arrays?
+* how is AI used for string analysis?
+* what is difficult about string analysis?
     
 ## Solution design
 
 * what was created, invented, studied, found out, calculated, designed,
-* simplified, inferred, enhanced, tried, etc?
-* Prefix string domain
-* Suffix string domain
-* String trie domain
+  simplified, inferred, enhanced, tried, etc?
+* what domains have been invented for string analysis?
+*   Prefix string domain
+    
+    * why this domain? (simplicity, file system prefixes)
+    * how does this domain work on lattice?
+    * what operations are supported by this domain?
+
+*   Suffix string domain
+
+    * similar to Prefix string domain
+
+*   String trie domain
+
+    * what is string trie (prefix tree)?
+    * how is it different from other domains?
+    * what operations are supported by this domain?
+
 * merge join pictures
 
 ## Implementation description
@@ -38,7 +59,7 @@
 * what experiments have been executed?
 * ideas for future work?
 
-### Appendix
+## Appendix
 
 * instructions to compiling & running (modified) canal
 * prepare simple .c programs to show examples of running
