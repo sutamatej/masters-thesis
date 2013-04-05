@@ -26,17 +26,17 @@
 * what was created, invented, studied, found out, calculated, designed,
   simplified, inferred, enhanced, etc?
 * what domains have been invented for string analysis?
-*   Prefix string domain
+* Prefix string domain
     
     * why this domain? (simplicity, file system prefixes)
     * how does this domain work on lattice?
     * what operations are supported by this domain?
 
-*   Suffix string domain
+* Suffix string domain
 
     * similar to Prefix string domain ...
 
-*   String trie domain
+* String trie domain
 
     * what is string trie (prefix tree)?
     * how is it different from other domains?
@@ -54,7 +54,7 @@
 ## Conclusion
 
 * scope: 1 - 2 pages
-* have we fulfilled the goals we set out in the beginning/assignment?
+* have the goals been fulfilled as per assignment?
 * what are the results?
 * what is the benefit of this work?
 * what has been studied? created? invented? programmed?
