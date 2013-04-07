@@ -3,6 +3,7 @@
 ## Introduction
 
 * scope: maximum 1 page
+* what is the motivation for the thesis? why is it important?
 * what field is this thesis for? what problem does this work solve?
 * what will be the benefit of this work? (usefulness of the output)
 * what are the bases for this thesis? (e.g. canal, publication, paper, etc.)
