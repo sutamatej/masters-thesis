@@ -27,7 +27,7 @@
 \ExecuteOptions{12pt,oneside,final}
 \ProcessOptions
 
-\RequirePackage{palatino}
+%\RequirePackage{palatino}
 
 \def\Scrreprtcls{scrreprt}
 \def\Rapport1cls{rapport1}
