@@ -123,7 +123,7 @@
 \def\Langcs{cs}
 \def\Langsk{sk}
 \def\Langen{en}
-\def\@thesislang{cs}
+\def\@thesislang{en}
 
 % definition of commands that will be used to typeset title page
 % can be redefined in the source document
