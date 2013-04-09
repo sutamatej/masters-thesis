@@ -3,7 +3,7 @@
 %% {draft, final}
 %% {oneside, twoside}
 %% {onecolumn, twocolumn}
-\documentclass[11pt,final,oneside]{fithesis2}
+\documentclass[12pt,final,oneside]{fithesis2}
 
 %% Basic packages
 \usepackage[english]{babel}
@@ -92,17 +92,24 @@ GitHub, Thesis, Key, Words, Specific, ...
 %% chapters, sections, subsections, etc.
 \chapter{Introduction}
 
-The increasing complexity of software inevitably increases number of bugs
-found in it. A bug-free software is a myth but there are many ways to prevent
-this from happening? One of them is abstract interpretation.
+As computers get more powerful and complex so does the software. However,
+the increasing complexity of software leads to increased number of errors
+found in it. There are many techniques that try to prevent software bugs,
+e.g.~unit testing, formal verification, model checking, etc. 
+Moreover, there are many aspects of the program one can focus on which are beyond the scope of this text.
 
-This thesis describes how abstract interpretation works
+This thesis describes how abstract interpretation works and how string abstract
+domains are related to it. The goal of the thesis is to design and implement
+several abstract domains for strings and integrate them into \texttt{canal}
+abstract interpreter. It is based on various texts: Cousot~\cite{CousotCousot77-1} ...
 
 Chapter~\ref{chap:preliminaries} presents preliminaries required to understand
 the abstract interpretation. In chapter~\ref{chap:design} several string
 abstract domains are designed. The implementation of designed domains is
 described in great detail in chapter~\ref{chap:implementation}. Finally,
 thesis findings are summarized in chapter~\ref{chap:conclusion}.
+Appendix~\ref{chap:instructions} contains instructions for compiling
+and running \texttt{canal} abstract interpreter.
 
 
 \chapter{Abstract interpretation and string abstract domains}
@@ -127,12 +134,26 @@ thesis findings are summarized in chapter~\ref{chap:conclusion}.
 %\listoffigures
 %\listoftables
 
-%% Bibliography from references.bib
-%\bibliographystyle{plain}
-%\bibliography{references}
+%% Bibliography
+\begin{thebibliography}{99}
+
+\bibitem{CousotCousot77-1}
+P{.} Cousot and R{.}Cousot.
+\newblock Abstract interpretation: a unified lattice model for static
+  analysis of programs by construction or approximation of fixpoints.
+\newblock In \emph{Conference Record of the Fourth Annual ACM
+  SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+  pages 238--252, Los Angeles, California, 1977. ACM Press, New York,
+  NY, USA.
+
+\end{thebibliography}
+
 
 %% Additional materials
 \appendix
+
+\chapter{Instructions for running \texttt{canal}}
+\label{chap:instructions}
 
 %% End of the whole document
 \end{document}
