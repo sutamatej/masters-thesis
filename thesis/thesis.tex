@@ -39,6 +39,9 @@
 %\usepackage[xindy]{glossaries}
 %\makeglossary
 
+\usepackage{xcolor}
+\newcommand\todo[1]{\textcolor{red}{#1}}
+
 %% Use STAR and CIRCLE signs for nested
 %% itemized lists
 %\renewcommand{\labelitemii}{$\star$}
@@ -97,19 +100,19 @@ the increasing complexity of software leads to increased number of errors
 found in it. There are many techniques that try to prevent software bugs,
 e.g.~testing, formal verification, etc. Abstract interpretation is the approach
 that is the subject of this thesis. 
-Moreover, there are many aspects of the program one can focus on. One of them
-is how program works with strings. A string is very flexible data structure
-that allows programmer to represent practically anything. Most of the programs
-written today deal with strings somehow. They may be used for program
+One can focus on many aspect of a program to analyze. One of them
+is how program manipulates strings. A string is very flexible data structure
+that allows programmer to represent practically anything. In fact, most of the
+programs written today deal with strings somehow. They may be used for program
 input/output or to generate whole other programs (SQL). Thus, it's important
-to know how program treats strings.
+to know how program treats strings. \todo{this needs some work}
 
 This thesis describes how abstract interpretation works and how string abstract
-domains are related to it. It is based on texts from Cousot~\cite{CousotCousot77-1}
-The goal of the thesis is to design and implement several abstract domains for
-strings and integrate them into \texttt{canal} abstract interpreter, which is
-a tool designed to analyze behavior of application programs written in
-\texttt{C}.
+domains are related to it. \todo{better wording} It is based on work of
+Cousot~\cite{CousotCousot77-1}. The goal of the thesis is to design and
+implement several abstract domains for strings and integrate them into
+\texttt{canal} abstract interpreter, which is a tool designed to analyze
+behavior of application programs written in \texttt{C}. \todo{too many thesis references?}
 
 The thesis has the following outline: chapter~\ref{chap:preliminaries} presents
 preliminaries required to understand the abstract interpretation. In
