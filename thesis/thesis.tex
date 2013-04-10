@@ -95,21 +95,29 @@ GitHub, Thesis, Key, Words, Specific, ...
 As computers get more powerful and complex so does the software. However,
 the increasing complexity of software leads to increased number of errors
 found in it. There are many techniques that try to prevent software bugs,
-e.g.~unit testing, formal verification, model checking, etc. 
-Moreover, there are many aspects of the program one can focus on which are beyond the scope of this text.
+e.g.~testing, formal verification, etc. Abstract interpretation is the approach
+that is the subject of this thesis. 
+Moreover, there are many aspects of the program one can focus on. One of them
+is how program works with strings. A string is very flexible data structure
+that allows programmer to represent practically anything. Most of the programs
+written today deal with strings somehow. They may be used for program
+input/output or to generate whole other programs (SQL). Thus, it's important
+to know how program treats strings.
 
 This thesis describes how abstract interpretation works and how string abstract
-domains are related to it. The goal of the thesis is to design and implement
-several abstract domains for strings and integrate them into \texttt{canal}
-abstract interpreter. It is based on various texts: Cousot~\cite{CousotCousot77-1} ...
+domains are related to it. It is based on texts from Cousot~\cite{CousotCousot77-1}
+The goal of the thesis is to design and implement several abstract domains for
+strings and integrate them into \texttt{canal} abstract interpreter, which is
+a tool designed to analyze behavior of application programs written in
+\texttt{C}.
 
-Chapter~\ref{chap:preliminaries} presents preliminaries required to understand
-the abstract interpretation. In chapter~\ref{chap:design} several string
-abstract domains are designed. The implementation of designed domains is
-described in great detail in chapter~\ref{chap:implementation}. Finally,
-thesis findings are summarized in chapter~\ref{chap:conclusion}.
-Appendix~\ref{chap:instructions} contains instructions for compiling
-and running \texttt{canal} abstract interpreter.
+The thesis has the following outline: chapter~\ref{chap:preliminaries} presents
+preliminaries required to understand the abstract interpretation. In
+chapter~\ref{chap:design} several string abstract domains are designed.
+The implementation of designed domains is described in great detail in
+chapter~\ref{chap:implementation}. Finally, thesis findings are summarized in
+chapter~\ref{chap:conclusion}. Appendix~\ref{chap:instructions} contains
+instructions for compiling and running the \texttt{canal} abstract interpreter.
 
 
 \chapter{Abstract interpretation and string abstract domains}
