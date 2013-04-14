@@ -42,6 +42,8 @@
 \usepackage{xcolor}
 \newcommand\todo[1]{\textcolor{red}{#1}}
 
+\newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
+
 %% Use STAR and CIRCLE signs for nested
 %% itemized lists
 %\renewcommand{\labelitemii}{$\star$}
@@ -63,6 +65,8 @@
 %% Front page with a logo and basic thesis information
 \FrontMatter
 \ThesisTitlePage
+
+\emptypage
 
 %% Thesis declaration (required)
 \begin{ThesisDeclaration}
@@ -98,33 +102,50 @@ GitHub, Thesis, Key, Words, Specific, ...
 As computers get more powerful and complex so does the software. However,
 the increasing complexity of software leads to increased number of errors
 found in it. There are many techniques that try to prevent software bugs,
-e.g.~testing, formal verification, etc. Abstract interpretation is the approach
-that is the subject of this thesis. 
+e.g.~testing, formal verification, etc. Abstract interpretation is the
+approach that is the subject of this thesis. 
 One can focus on many aspect of a program to analyze. One of them
-is how program manipulates strings. A string is very flexible data structure
-that allows programmer to represent practically anything. In fact, most of the
-programs written today deal with strings somehow. They may be used for program
-input/output or to generate whole other programs (SQL). Thus, it's important
-to know how program treats strings. \todo{this needs some work}
+is how program manipulates strings. A string is very flexible data
+structure that allows programmer to represent practically anything.
+In fact, most of the programs written today deal with strings somehow.
+They may be used for program input/output or to generate whole other
+programs (SQL). Thus, it's important to know how programs treat strings.
+\todo{this needs some work}
 
-This thesis describes how abstract interpretation works and how string abstract
-domains are related to it. It is based on papers published by
-Cousot~\cite{CousotCousot77-1} and other authors. The goal of the thesis is to design,
-implement and integrate several abstract domains for strings into
-\texttt{canal} abstract interpreter. \texttt{canal} is a tool designed to analyze
-behavior of application programs written in \texttt{C}.
+This thesis describes string abstract domains in context of abstract
+interpretation framework. It is based on papers published
+by Cousot~\cite{CousotCousot77-1} and other authors. The goal of the thesis
+is to design, implement and integrate several abstract domains for strings
+into \texttt{canal} abstract interpreter. \texttt{canal} is a tool designed
+to analyze behavior of application programs written in \texttt{C}.
 
-The text has the following outline: chapter~\ref{chap:preliminaries} presents
-preliminaries required to understand the abstract interpretation. In
-chapter~\ref{chap:design} several string abstract domains are designed.
+The text has the following outline: chapter~\ref{chap:preliminaries}
+presents preliminaries required to understand the abstract interpretation.
+In chapter~\ref{chap:design} several string abstract domains are designed.
 The implementation of designed domains is described in great detail in
-chapter~\ref{chap:implementation}. Finally, thesis findings are summarized in
-chapter~\ref{chap:conclusion}. Appendix~\ref{chap:instructions} contains
-instructions for compiling and running the \texttt{canal} abstract interpreter.
+chapter~\ref{chap:implementation}. Finally, thesis findings are summarized
+in chapter~\ref{chap:conclusion}. Appendix~\ref{chap:instructions} contains
+instructions for compiling and running the \texttt{canal} abstract
+interpreter.
 
 
 \chapter{Abstract interpretation and string abstract domains}
 \label{chap:preliminaries}
+
+intro
+
+static analysis - term, purpose
+
+For instance, a \texttt{C} compiler has to perform some form of static
+analysis to emit warnings or errors.
+
+halting problem
+
+types of static analysis, formal, etc
+
+other ways of evaluating SW quality
+
+abstract interpretation
 
 
 \chapter{Solution design}
@@ -156,6 +177,13 @@ P{.} Cousot and R{.}Cousot.
   SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
   pages 238--252, Los Angeles, California, 1977. ACM Press, New York,
   NY, USA.
+
+\bibitem{Cousot00-1}
+P{.} Cousot.
+\newblock Abstract interpretation based formal methods and future
+  challenges.
+\newblock In \emph{Informatics - 10 Years Back, 10 Years Ahead},
+  volume 2000 of LNCS, pages 138--156. Springer, 2000.
 
 \end{thebibliography}
 

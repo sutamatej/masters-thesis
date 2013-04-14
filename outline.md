@@ -6,7 +6,8 @@
 * what is the motivation for the thesis? why is it important?
 * what field is this thesis for? what problem does this work solve?
 * what will be the benefit of this work? (usefulness of the output)
-* what are the bases for this thesis? (e.g. canal, publication, paper, etc.)
+* what are the bases for this thesis? (e.g. canal, publication, paper,
+  etc.)
 * what is the structure of the thesis? (chapters description)
 
 ## Abstract interpretation & string abstract domains
@@ -15,7 +16,8 @@
 * what is static analysis? what is it used for?
 * what are other ways of evaluating the SW quality?
 * what is abstract interpretation?
-* what is a domain and a value? relationship between abstract and concrete value
+* what is a domain and a value? relationship between abstract and concrete
+  value
 * what is usage of lattices in AI? what is abstract operation?
 * what is string analysis used for?
 * how is analysis of strings related to analysis of arrays?
