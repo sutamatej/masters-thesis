@@ -76,7 +76,7 @@
 
 %% Thanks (optional)
 \begin{ThesisThanks}
-My thanks go to ... 
+My thanks go to ...
 \end{ThesisThanks}
 
 %% Abstract (required)
@@ -95,22 +95,23 @@ GitHub, Thesis, Key, Words, Specific, ...
 %% TOC (required)
 \tableofcontents
 
-%% Thesis text structured using
-%% chapters, sections, subsections, etc.
+
 \chapter{Introduction}
 
-As computers get more powerful and complex so does the software. However,
-the increasing complexity of software leads to increased number of errors
-found in it. There are many techniques that try to prevent software bugs,
+Computers have followed Moore's~law~\cite{Moore65-1} for more than
+four decades now and are likely to continue for a few more years.
+Hardware gets more powerful and complex and software follows the same
+pattern. \todo{the cost of complexity - more bugs, SW reliability}
+
+There are many techniques that try to prevent software bugs,
 e.g.~testing, formal verification, etc. Abstract interpretation is the
-approach that is the subject of this thesis. 
+approach that is the subject of this thesis.
 One can focus on many aspect of a program to analyze. One of them
 is how program manipulates strings. A string is very flexible data
 structure that allows programmer to represent practically anything.
 In fact, most of the programs written today deal with strings somehow.
 They may be used for program input/output or to generate whole other
 programs (SQL). Thus, it's important to know how programs treat strings.
-\todo{this needs some work}
 
 This thesis describes string abstract domains in context of abstract
 interpretation framework. It is based on papers published
@@ -129,10 +130,12 @@ instructions for compiling and running the \texttt{canal} abstract
 interpreter.
 
 
-\chapter{Abstract interpretation and string abstract domains}
+\chapter{Static analysis and abstract interpretation}
 \label{chap:preliminaries}
 
 intro
+
+\section{Static analysis and software quality}
 
 static analysis - term definition, purpose, example
 
@@ -141,6 +144,8 @@ halting problem - definition, example, relation to static analysis
 types of static analysis, formal, etc, short description of every type
 
 other ways of evaluating SW quality
+
+\section{Abstract interpretation}
 
 abstract interpretation - term definition, purpose, example
 
@@ -181,6 +186,11 @@ P{.} Cousot.
   challenges.
 \newblock In \emph{Informatics - 10 Years Back, 10 Years Ahead},
   volume 2000 of LNCS, pages 138--156. Springer, 2000.
+
+\bibitem{Moore65-1}
+G{.} E{.} Moore.
+\newblock Cramming more components onto integrated circuits.
+\newblock In \emph{Electronics}, volume 38, number 8. 1965.
 
 \end{thebibliography}
 

@@ -23,14 +23,14 @@
 * how is analysis of strings related to analysis of arrays?
 * how is AI used for string analysis?
 * what is difficult about string analysis?
-    
+
 ## Solution design
 
 * what was created, invented, studied, found out, calculated, designed,
   simplified, inferred, enhanced, etc?
 * what domains have been invented for string analysis?
 * Prefix string domain
-    
+
     * why this domain? (simplicity, file system prefixes)
     * how does this domain work on lattice?
     * what operations are supported by this domain?
