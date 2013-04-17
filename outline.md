@@ -27,6 +27,7 @@
 
 ## Solution design
 
+* scope: cca 10 pages
 * what was created, invented, studied, found out, calculated, designed,
   simplified, inferred, enhanced, etc?
 * problems with strings and their analysis?
@@ -51,8 +52,10 @@
 
 ## Implementation description
 
+* scope: cca 10 pages
 * I have implemented, programmed, ran, experimented, used, etc.
 * clang, llvm, c, c++, strcat, substr, set
+* what are the reasons for using particular technology/technique/...?
 * unit tests
 * tostring trie implementation
 
