@@ -12,6 +12,7 @@
 
 ## Abstract interpretation & string abstract domains
 
+* scope: cca 20 pages
 * (depending on the length of this part it can be split into two chapters)
 * what is static analysis? what is it used for?
 * what are other ways of evaluating the SW quality?

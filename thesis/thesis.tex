@@ -99,19 +99,18 @@ GitHub, Thesis, Key, Words, Specific, ...
 \chapter{Introduction}
 
 Computers have followed Moore's~law~\cite{Moore65-1} for more than
-four decades now and are likely to continue for a few more years.
-Hardware gets more powerful and complex and software follows the same
-pattern. \todo{the cost of complexity - more bugs, SW reliability}
+four decades now. Hardware gets more powerful and complex. Consequently,
+this results in software being more complex too. It has to be designed
+with maintainability and reliability in mind. Therefore several software
+verification methods have been created. Abstract interpretation is the
+approach one of them.
 
-There are many techniques that try to prevent software bugs,
-e.g.~testing, formal verification, etc. Abstract interpretation is the
-approach that is the subject of this thesis.
-One can focus on many aspect of a program to analyze. One of them
+There are many aspects of a computer program that may be analyzed by
+abstract interpretation. The focus of this thesis is
 is how program manipulates strings. A string is very flexible data
 structure that allows programmer to represent practically anything.
-In fact, most of the programs written today deal with strings somehow.
-They may be used for program input/output or to generate whole other
-programs (SQL). Thus, it's important to know how programs treat strings.
+In fact, most of the programs written today have to deal with strings
+in some form. Thus, it's important to know how programs treat strings.
 
 This thesis describes string abstract domains in context of abstract
 interpretation framework. It is based on papers published
