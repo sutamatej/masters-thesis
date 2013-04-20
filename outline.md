@@ -14,9 +14,12 @@
 
 * scope: cca 20 pages
 * (depending on the length of this part it can be split into two chapters)
-* what is static analysis? what is it used for?
-* what are other ways of evaluating the SW quality?
-* what is abstract interpretation?
+* static analysis - term definition, purpose, example
+* halting problem - definition, example, relation to static analysis
+* types of static analysis, formal, etc, description of every type, example
+* other ways of evaluating SW quality, compare with dynamic analysis
+  and testing
+* what is abstract interpretation? definition, purpose, example
 * what is a domain and a value? relationship between abstract and concrete
   value
 * what is usage of lattices in AI? what is abstract operation?
