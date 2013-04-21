@@ -23,6 +23,17 @@
 %\usepackage[small,bf]{caption}
 \usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}
 %\usepackage[all]{hypcap}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstset{
+    basicstyle=\small\ttfamily,
+    captionpos=b,
+}
+
+\newcommand\todo[1]{\textcolor{red}{#1}}
+
+\newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
 
 %% Fix long URLs in DVIs
 %\usepackage{ifpdf}
@@ -38,11 +49,6 @@
 
 %\usepackage[xindy]{glossaries}
 %\makeglossary
-
-\usepackage{xcolor}
-\newcommand\todo[1]{\textcolor{red}{#1}}
-
-\newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
 
 %% Use STAR and CIRCLE signs for nested
 %% itemized lists
@@ -154,8 +160,21 @@ Most of the languages do not have a support for runtime error detection.
 It is programmers responsibility to ensure these errors do not occur
 and deal with them once they do. The errors do not include simple type
 checking or syntax errors although even these could be considered a part
-of static analysis. They are already checked by compiler. Thus, only
+of static analysis. They are already checked by compiler. Hence, only
 errors which lead to unexpected or undefined behavior are checked.
+Consider the code in listing~\ref{lst:outofbounds}:
+
+\begin{lstlisting}[
+    language=C,
+    caption={Out of bounds array access},
+    label=lst:outofbounds
+]
+
+    int array[3] = { 1, 2, 3 };
+    int value = array[3];
+
+\end{lstlisting}
+
 A typical example of detected errors are accessing items of an array out
 of bounds, division by zero or software metrics. Depending on the
 sophistication of implementation the static analysis can be used for
