@@ -137,7 +137,8 @@ software engineers. Not every project needs to have as high quality as
 safety critical systems but to a certain degree quality matters
 everywhere. It is crucial for software maintainaility which becomes
 especially difficult when size of a codebase and number of developers
-increases.
+increases. A static analysis is one of the means to achieve quality
+despite these factors.
 
 
 \section{Static analysis}
@@ -145,21 +146,28 @@ increases.
 Static code analysis is a well known term in software industry but there
 is no proper definition given anywhere. P.~Emanuelsson and U.~Nilsson
 \cite{EmanuelssonNilsson08-1} refer to it as the analysis of a computer
-program without actually executing it.
+program without actually executing it. This process is fully automatic
+but a programmer needs to interpret the results of analysis and make
+proper adjustments.
 
 Most of the languages do not have a support for runtime error detection.
 It is programmers responsibility to ensure these errors do not occur
 and deal with them once they do. The errors do not include simple type
 checking or syntax errors although even these could be considered a part
-of static analysis. Thus, only errors which lead to early, unexpected or
-undefined behavior are checked. Depending on the sophistication of
-implementation the static analysis can be used for checking advanced
-properties such of program run such as buffer overflows or deadlocks.
-It is primarily used to decrease number of runtime errors, even the ones
-that are normally impossible to check by testing. However, it should not
-replace the testing completely. For example, the static analysis can not
-verify that the program follows the business rules. Therefore these are
-ideally used in combination to ensure high quality and reliability.
+of static analysis. They are already checked by compiler. Thus, only
+errors which lead to unexpected or undefined behavior are checked.
+A typical example of detected errors are accessing items of an array out
+of bounds, division by zero or software metrics. Depending on the
+sophistication of implementation the static analysis can be used for
+checking advanced properties of program run such as buffer overflows
+or deadlocks.
+
+The static analysis is primarily used to decrease number of runtime errors,
+even the ones that are normally impossible to check by testing. However,
+it should not replace the testing completely. For example, the static
+analysis can not verify that the program follows the business
+rules. Therefore these are ideally used in combination to ensure high
+quality and reliability.
 
 
 \section{Abstract interpretation}
