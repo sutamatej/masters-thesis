@@ -7,8 +7,8 @@
 
 %% Basic packages
 \usepackage[english]{babel}
-%\usepackage{cmap}
-%\usepackage[T1]{fontenc}
+\usepackage{cmap}
+\usepackage[T1]{fontenc}
 %\usepackage{lmodern}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -162,7 +162,7 @@ and deal with them once they do. The errors do not include simple type
 checking or syntax errors although even these could be considered a part
 of static analysis. They are already checked by compiler. Hence, only
 errors which lead to unexpected or undefined behavior are checked.
-Consider the code in listing~\ref{lst:outofbounds}:
+Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
 
 \begin{lstlisting}[
     language=C,
@@ -175,8 +175,10 @@ Consider the code in listing~\ref{lst:outofbounds}:
 
 \end{lstlisting}
 
-A typical example of detected errors are accessing items of an array out
-of bounds, division by zero or software metrics. Depending on the
+The example will compile and run, but the number might be different every
+time the program is run since accessing the items out of array bounds is
+undefined behavior in \texttt{C} standard. Other typical examples of errors detected by
+static analsys are division by zero or software metrics. Depending on the
 sophistication of implementation the static analysis can be used for
 checking advanced properties of program run such as buffer overflows
 or deadlocks.
