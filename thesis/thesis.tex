@@ -147,6 +147,20 @@ is no proper definition given anywhere. P.~Emanuelsson and U.~Nilsson
 \cite{EmanuelssonNilsson08-1} refer to it as the analysis of a computer
 program without actually executing it.
 
+Most of the languages do not have a support for runtime error detection.
+It is programmers responsibility to ensure these errors do not occur
+and deal with them once they do. The errors do not include simple type
+checking or syntax errors although even these could be considered a part
+of static analysis. Thus, only errors which lead to early, unexpected or
+undefined behavior are checked. Depending on the sophistication of
+implementation the static analysis can be used for checking advanced
+properties such of program run such as buffer overflows or deadlocks.
+It is primarily used to decrease number of runtime errors, even the ones
+that are normally impossible to check by testing. However, it should not
+replace the testing completely. For example, the static analysis can not
+verify that the program follows the business rules. Therefore these are
+ideally used in combination to ensure high quality and reliability.
+
 
 \section{Abstract interpretation}
 
