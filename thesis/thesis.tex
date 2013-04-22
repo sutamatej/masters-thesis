@@ -177,23 +177,23 @@ Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
 \end{lstlisting}
 
 In the example the \texttt{array} variable contains three integers but
-\texttt{value} variable will contain unexpected value because it is accessing
-the fourth element of the \texttt{array}. Moreover, the listing will compile
-and run, but the number might be different every
+\texttt{value} variable will contain unexpected value because it is
+accessing the fourth element of the \texttt{array}. Moreover, the
+listing will compile and run, but the number might be different every
 time the program is run since accessing the items out of array bounds is
 undefined behavior in \texttt{C} programming language. Other typical
-examples of errors detected by static analysis are division by zero or.
-Depending on the sophistication of implementation the static analysis
-can be used for checking advanced properties of program run such as
-buffer overflows or deadlocks.
+examples of errors detected by static analysis are division by zero or
+infinite loops. Depending on the sophistication of implementation the
+static analysis can be used for checking advanced properties of
+program run such as buffer overflows or deadlocks.
 
 The static analysis is primarily used to decrease the number of runtime
 errors, even the ones that are normally impossible to check by testing.
-However, it should not replace the testing completely. For example, the static
-analysis can not verify that the program performs the correct function or
-that it follows the rules defined by the problem that is being solved by
-the program. Therefore these are ideally used in combination to ensure high
-quality and reliability.
+However, it should not replace the testing completely. For example,
+the static analysis can not verify that the program performs the correct
+function or that it follows the rules defined by the problem that is
+being solved by the program. Therefore these are ideally used in
+combination to ensure high quality and reliability.
 
 
 \section{Abstract interpretation}
