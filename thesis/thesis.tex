@@ -92,7 +92,8 @@ This thesis is about ...
 
 %% Keywords (required)
 \begin{ThesisKeyWords}
-GitHub, Thesis, Key, Words, Specific, ...
+static analysis, abstract interpretation, abstract domain, string,
+prefix, suffix, trie
 \end{ThesisKeyWords}
 
 %% Beginning of the thesis itself
@@ -116,7 +117,7 @@ abstract interpretation. The focus of this thesis is
 is how program manipulates strings. A string is very flexible data
 structure that allows programmer to represent practically anything.
 In fact, most of the programs written today have to deal with strings
-in some form. Thus, it's important to know how programs treat strings.
+in some form. Thus, it is important to know how programs treat strings.
 
 This thesis describes string abstract domains in context of abstract
 interpretation framework. It is based on papers published
@@ -175,19 +176,23 @@ Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
 
 \end{lstlisting}
 
-The example will compile and run, but the number might be different every
+In the example the \texttt{array} variable contains three integers but
+\texttt{value} variable will contain unexpected value because it is accessing
+the fourth element of the \texttt{array}. Moreover, the listing will compile
+and run, but the number might be different every
 time the program is run since accessing the items out of array bounds is
-undefined behavior in \texttt{C} standard. Other typical examples of errors detected by
-static analsys are division by zero or software metrics. Depending on the
-sophistication of implementation the static analysis can be used for
-checking advanced properties of program run such as buffer overflows
-or deadlocks.
+undefined behavior in \texttt{C} programming language. Other typical
+examples of errors detected by static analysis are division by zero or.
+Depending on the sophistication of implementation the static analysis
+can be used for checking advanced properties of program run such as
+buffer overflows or deadlocks.
 
-The static analysis is primarily used to decrease number of runtime errors,
-even the ones that are normally impossible to check by testing. However,
-it should not replace the testing completely. For example, the static
-analysis can not verify that the program follows the business
-rules. Therefore these are ideally used in combination to ensure high
+The static analysis is primarily used to decrease the number of runtime
+errors, even the ones that are normally impossible to check by testing.
+However, it should not replace the testing completely. For example, the static
+analysis can not verify that the program performs the correct function or
+that it follows the rules defined by the problem that is being solved by
+the program. Therefore these are ideally used in combination to ensure high
 quality and reliability.
 
 
