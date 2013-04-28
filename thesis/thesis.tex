@@ -144,16 +144,26 @@ software engineers. Not every project needs to have as high quality as
 safety critical systems but to a certain degree quality matters
 everywhere. It is crucial for software maintainability which becomes
 especially difficult when size of a codebase and number of developers
-increases. A static analysis is one of the means to achieve quality
-despite these factors.
+increases. This chapter describes various techniques employed to
+improve these properties and abstract interpretation in particular.
 
 
-\section{Software quality evalutation techniques}
+\section{Software quality evaluation techniques}
 
-\begin{itemize}
+Traditionally the set of quality control techniques are referred to as
+validation and verification. According to
+Boulanger~\cite{Boulanger12-1} these terms are defined in standard
+ISO 9001:2000 as:
 
-\item Validation
-\item Verification
+\begin{description}
+
+\item[Validation] \hfill \\
+confirmation by tangible proof that the specified requirements have
+been at each stage of the realization process
+
+\item[Verification] \hfill \\
+confirmation by tangible proof that the requirements for a or
+an~anticipated application have been met
 
 \end{itemize}
 
@@ -161,7 +171,7 @@ despite these factors.
 \section{Static analysis}
 
 Static code analysis is a well known term in software industry yet there
-is a lot of confusion surrounding it. P.~Emanuelsson and U.~Nilsson
+is a lot of confusion surrounding it. Emanuelsson and Nilsson
 \cite{EmanuelssonNilsson08-1} refer to it as the analysis of a computer
 program without actually executing it. This process is fully automatic
 but a programmer needs to interpret the results of analysis and make
@@ -257,6 +267,11 @@ P{.} Emanuelsson, U{.} Nilsson.
   version).
 \newblock In \emph{Electronic Notes in Theoretical Computer Science},
   volume 217, pages 5--21.
+
+\bibitem{Boulanger12-1}
+J{.}--L{.} Boulanger
+\newblock Static Analysis of Software: The Abstract Interpretation
+\newblock Wiley. 2012.
 
 \end{thebibliography}
 
