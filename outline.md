@@ -57,6 +57,7 @@
 ## Implementation description
 
 * scope: cca 10 pages
+* description of canal, compare it with other available tools
 * I have implemented, programmed, ran, experimented, used, etc.
 * clang, llvm, c, c++, strcat, substr, set
 * what are the reasons for using particular technology/technique/...?
