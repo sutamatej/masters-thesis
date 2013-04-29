@@ -153,19 +153,29 @@ improve these properties and abstract interpretation in particular.
 Traditionally the set of quality control techniques are referred to as
 validation and verification. According to
 Boulanger~\cite{Boulanger12-1} these terms are defined in standard
-ISO 9001:2000 as:
+ISO 9000:2000 as:
 
 \begin{description}
 
 \item[Validation] \hfill \\
 confirmation by tangible proof that the specified requirements have
-been at each stage of the realization process
+been met at each stage of the realization process
 
 \item[Verification] \hfill \\
-confirmation by tangible proof that the requirements for a or
+confirmation by tangible proof that the requirements for a specific use or
 an~anticipated application have been met
 
 \end{description}
+
+The validation is usually performed either manually or automatically
+by executing a program with intention to assure that the software
+product meets the requirements of a customer. This includes various
+types of tests such as acceptance testing, performance testing,
+penetration testing, etc. 
+
+Note that it is possible for program to pass the verification and
+fail the validation step, hence these approaches should complement
+each other to gain highest possible quality.
 
 
 \section{Static analysis}
