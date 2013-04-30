@@ -171,11 +171,20 @@ The validation is usually performed either manually or automatically
 by executing a program with intention to assure that the software
 product meets the requirements of a customer. This includes various
 types of tests such as acceptance testing, performance testing,
-penetration testing, etc. 
+penetration testing, etc.
+
+The verification may be done either by executing the program or by
+analyzing the source code of the program. Both of them are typically
+performed by a programmer during the development phase. There are many
+disciplines that enforce the verification by program execution, e.g.
+unit testing, integration testing, etc.
 
 Note that it is possible for program to pass the verification and
 fail the validation step, hence these approaches should complement
-each other to gain highest possible quality.
+each other to gain highest possible quality. Moreover there is no precise
+distinction between the two. Test driven development or behavior driven
+development are two examples which perform verification by executing
+unit tests but also validate that requirements have been met.
 
 
 \section{Static analysis}
