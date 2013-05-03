@@ -157,35 +157,42 @@ ISO 9000:2000 as:
 
 \begin{description}
 
-\item[Validation] \hfill \\
+\item[Verification] \hfill \\
 confirmation by tangible proof that the specified requirements have
 been met at each stage of the realization process
 
-\item[Verification] \hfill \\
+\item[Validation] \hfill \\
 confirmation by tangible proof that the requirements for a specific use or
 an anticipated application have been met
 
 \end{description}
 
-The validation is usually performed either manually or automatically
-by executing a program with intention to assure that the software
-product meets the requirements of a customer. This includes various
-types of tests such as acceptance testing, performance testing,
-penetration testing, etc. The testing consists of test cases being
-executed to check various scenarios.
+Applied in software engineering the definitions above summarize the
+processes that ensure and demonstrate that the resulting software product
+achieves the desired quality level.
+
+The validation is usually performed by executing a program with intention
+to assure that the software product meets the requirements of a customer.
+The process can be manual or completely automatic. It includes
+various types of tests such as acceptance testing, performance testing,
+penetration testing, etc. The functional testing consists of test cases
+being executed to check various scenarios and is traditionally performed
+by quality assurence specialist. The output of the validation
+is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
-analyzing the source code of the program. Both of them are typically
+analyzing the source code of the program. These activities are typically
 performed by a programmer during the development phase. There are many
-disciplines that enforce the verification by program execution, e.g.
-unit testing, integration testing, etc.
+disciplines that enforce the verification by program execution --
+unit testing or integration testing among others.
 
 Note that it is possible for program to pass the verification and
 fail the validation step, hence these approaches should complement
-each other to gain highest possible quality. Moreover there is no precise
-distinction between the two. Test driven development or behavior driven
-development are two examples which perform verification by executing
-unit tests and also validate that requirements have been met.
+each other to gain the highest possible quality. Moreover there is no
+precise distinction between the two. Test driven development or behavior
+driven development are two examples of techniques which perform
+verification by executing unit tests and also validate that requirements
+have been met.
 
 
 \section{Static analysis}
@@ -222,10 +229,37 @@ accessing the fourth element of the \texttt{array}. Moreover, the
 listing will compile and run, but the number might be different every
 time the program is run since accessing the items out of array bounds is
 undefined behavior in \texttt{C} programming language. Other typical
-examples of errors detected by static analysis are division by zero or
-infinite loops. Depending on the sophistication of implementation the
-static analysis can be used for checking advanced properties of
-program run such as buffer overflows or deadlocks.
+examples of errors potentially detected by static analysis could be
+division by zero or infinite loops.
+
+The applications of static analysis are quite extensive as it has been
+shown by Emanuelsson and Nilsson \cite{EmanuelssonNilsson08-1}. Besides
+already mentioned examples and out of bounds array acces demonstrated in
+listing \ref{lst:outofbounds} it is possible to check:
+
+\begin{itemize}
+
+\item Initialization of pointers, variables and return values
+
+\item Operations with numerical types that could lead to overflows
+
+\item Pointer arithmetics
+
+\item Function invocation with incorrect argument properties
+
+\item Unreachable or dead code
+
+\item Memory management
+
+\end{itemize}
+
+The list is incomplete since the range of possible errors in \texttt{C} is
+vast. However, it provides a good overview of the defect types that can be
+inspected by static analysis. Depending on the characteristics of an
+implementation language some of the items might be omitted from or added
+to the list such as exception handling or concurrency management.
+
+cons/deficiencies
 
 The static analysis is primarily used to decrease the number of runtime
 errors, even the ones that are normally impossible to check by testing.
@@ -235,8 +269,14 @@ function or that it follows the rules defined by the problem that is
 being solved by the program. Therefore these are ideally used in
 combination to ensure high quality and reliability.
 
+formal methods descriptions & examples
+
+halting problem
 
 \section{Abstract interpretation}
+
+The abstract interpretation falls into the category of software
+verification by static analysis.
 
 
 \chapter{Solution design}
@@ -286,11 +326,11 @@ P{.} Emanuelsson, U{.} Nilsson.
 \newblock A comparative study of industrial static analysis tools (extended
   version).
 \newblock In \emph{Electronic Notes in Theoretical Computer Science},
-  volume 217, pages 5--21.
+  volume 217, pages 5--21. 2008.
 
 \bibitem{Boulanger12-1}
-J{.}--L{.} Boulanger
-\newblock Static Analysis of Software: The Abstract Interpretation
+J{.}--L{.} Boulanger.
+\newblock Static Analysis of Software: The Abstract Interpretation.
 \newblock Wiley. 2012.
 
 \end{thebibliography}
