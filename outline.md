@@ -24,6 +24,7 @@
 * what is a domain and a value? relationship between abstract and concrete
   value
 * what is usage of lattices in AI? what is abstract operation?
+* what is a string? usages, example, definition
 * what is string analysis used for?
 * how is analysis of strings related to analysis of arrays?
 * how is AI used for string analysis?

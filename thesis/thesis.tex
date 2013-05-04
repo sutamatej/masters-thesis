@@ -181,13 +181,13 @@ by quality assurence specialist. The output of the validation
 is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
-analyzing the source code of the program. They are called dynamic and
-static verification respectively. These activities are typically
-performed by a programmer during the development phase. There are many
-disciplines that enforce the verification by program execution --
-unit testing or integration testing among others. On the other hand the
-static verification usually includes source code inspection either
-manually or by a tool.
+analyzing the source code of the program. They are called \textit{dynamic} 
+and \textit{static} verification respectively. These activities are
+typically performed by a programmer during the development phase.
+There are many disciplines that enforce the verification by program
+execution -- unit testing or integration testing among others.
+On the other hand the static verification usually includes source
+code inspection either manually or by a tool.
 
 Note that it is possible for program to pass the verification and
 fail the validation step, hence these approaches should complement
@@ -273,8 +273,9 @@ Such inspection of the code does not come without a cost. The output of
 the static analysis needs to be implemented by a programmer. This creates
 an opportunity for even more bugs. Also, the number of false positive
 warnings may be relatively high which presents an unneccessary noise
-for programmer. Scalability is another issue -- the analysis must conform
-to reasonable time and memory requirements for it to be actually useful.
+for programmer. Scalability of the analysis is another issue -- it must
+conform to reasonable time and memory requirements for it to be actually
+useful.
 
 The static analysis is primarily used to decrease the number of runtime
 errors, even the ones that are normally impossible to check by testing.
@@ -282,7 +283,7 @@ However, it should not replace the testing completely. For example,
 the static analysis can not verify that the program performs the correct
 function or that it follows the rules defined by the problem that is
 being solved by the program. Therefore these are ideally used in
-combination to ensure high quality and reliability.
+combination to ensure high quality and reliability \cite{Ernst03-1}.
 
 formal methods descriptions and examples
 
@@ -355,7 +356,22 @@ P{.} Emanuelsson, U{.} Nilsson.
 \bibitem{Boulanger12-1}
 J{.}--L{.} Boulanger.
 \newblock Static Analysis of Software: The Abstract Interpretation.
-\newblock Wiley. 2012.
+\newblock Wiley, 2012.
+
+\bibitem{Ernst03-1}
+M{.} D{.} Ernst.
+\newblock Static and dynamic analysis: Synergy and duality.
+\newblock In \emph{Workshop on Dynamic Analysis}, pages 24--27. 2003.
+
+\bibitem{Woodcock09-1}
+J{.} Woodcock, P{.} G{.} Larsen, J{.} Bicarregui and J{.} S{.} Fitzgerald.
+\newblock Formal methods: Practise and experience.
+\newblock In \emph{ACM Computing Surveys}. 2009.
+
+\bibitem{Kozen97-1}
+D{.} Kozen.
+\newblock Automata and Computability.
+\newblock Springer, 1997.
 
 \end{thebibliography}
 
