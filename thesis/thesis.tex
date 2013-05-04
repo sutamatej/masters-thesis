@@ -181,10 +181,13 @@ by quality assurence specialist. The output of the validation
 is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
-analyzing the source code of the program. These activities are typically
+analyzing the source code of the program. They are called dynamic and
+static verification respectively. These activities are typically
 performed by a programmer during the development phase. There are many
 disciplines that enforce the verification by program execution --
-unit testing or integration testing among others.
+unit testing or integration testing among others. On the other hand the
+static verification usually includes source code inspection either
+manually or by a tool.
 
 Note that it is possible for program to pass the verification and
 fail the validation step, hence these approaches should complement
@@ -239,27 +242,39 @@ listing \ref{lst:outofbounds} it is possible to check:
 
 \begin{itemize}
 
-\item Initialization of pointers, variables and return values
+\item Initialization of pointers, variables and return values --
+manipulating uninitialized values can produce runtime errors
 
-\item Operations with numerical types that could lead to overflows
+\item Operations with numerical types -- adding two big numbers may lead
+to overflow of the datatype
 
-\item Pointer arithmetics
+\item Pointer arithmetics -- check the incorrect pointer handling which
+can generate segmentation faults or memory corruption
 
-\item Function invocation with incorrect argument properties
+\item Function invocation -- calling a function with incorrect argument
+properties can cause undefined behavior e.g. calling square root
+function with negative number
 
-\item Unreachable or dead code
+\item Unreachable or dead code -- verification of the data flow and
+branching of the code within the program
 
-\item Memory management
+\item Memory management -- check that the memory is properly allocated and
+freed
 
 \end{itemize}
 
 The list is incomplete since the range of possible errors in \texttt{C} is
-vast. However, it provides a good overview of the defect types that can be
+vast. However, it provides an overview of the defect types that can be
 inspected by static analysis. Depending on the characteristics of an
 implementation language some of the items might be omitted from or added
 to the list such as exception handling or concurrency management.
 
-cons/deficiencies
+Such inspection of the code does not come without a cost. The output of
+the static analysis needs to be implemented by a programmer. This creates
+an opportunity for even more bugs. Also, the number of false positive
+warnings may be relatively high which presents an unneccessary noise
+for programmer. Scalability is another issue -- the analysis must conform
+to reasonable time and memory requirements for it to be actually useful.
 
 The static analysis is primarily used to decrease the number of runtime
 errors, even the ones that are normally impossible to check by testing.
@@ -281,6 +296,15 @@ verification by static analysis.
 
 \chapter{Solution design}
 \label{chap:design}
+
+
+\section{Prefix}
+
+
+\section{Suffix}
+
+
+\section{Trie}
 
 
 \chapter{Implementation}
