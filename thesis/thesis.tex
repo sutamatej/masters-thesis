@@ -312,16 +312,18 @@ works as specified.
 
 \end{quote}
 
-If both specification and program specification are formally defined the one
+If both specification and program specification are formally defined one
 would hope it would be possible to automate this verification process by
-appropriately programming a computer. 
+appropriately programming a computer. However, that is not the case.
+It is impossible to determine the correctness of software by computer.
 
 The undecidability of Halting problem implies that some sort of
-approximation or heuristic needs to be done. That means that a trade-off
+approximation or heuristic needs to be done. That means a trade-off
 has to be made. The approximation should be relatively precise and quick
-to compute with reasonable memory footprint.
+to compute with reasonable memory footprint. The level of precision
+is therefore application specific.
 
-Several techniques try to reach this goal. They are all based on
+The main goal is to build tools which can perform static analysis.
 
 \section{Abstract interpretation}
 
