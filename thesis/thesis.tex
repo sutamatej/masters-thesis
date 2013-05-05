@@ -285,9 +285,29 @@ function or that it follows the rules defined by the problem that is
 being solved by the program. Therefore these are ideally used in
 combination to ensure high quality and reliability \cite{Ernst03-1}.
 
-formal methods descriptions and examples
+There is a close relationship between the static analysis and Halting
+problem. This problem was first formulated by Alan Turing in 1936
+\cite{Turing36-1}. Intuitivelly, the problem can be interpreted as:
 
-halting problem
+\begin{quote}
+
+Given a computer program and its input 
+
+\end{quote}
+
+Formally, the Halting problem is defined as \cite{Sipser06-1}:
+
+\begin{displaymath}
+
+A_{TM} = \{ \langle M, w \rangle |
+  M \text{ is a TM and} M \text{ accepts} w \}
+
+\end{displaymath}
+
+The undecidability of Halting problem implies that some sort of
+approximation or heuristic needs to be done. That means that a trade-off
+has to be made. The approximation should be relatively precise and quick
+to compute with reasonable memory footprint.
 
 \section{Abstract interpretation}
 
@@ -367,6 +387,18 @@ M{.} D{.} Ernst.
 J{.} Woodcock, P{.} G{.} Larsen, J{.} Bicarregui and J{.} S{.} Fitzgerald.
 \newblock Formal methods: Practise and experience.
 \newblock In \emph{ACM Computing Surveys}. 2009.
+
+\bibitem{Turing36-1}
+A{.} Turing.
+\newblock On computable numbers, with an application to the
+  Entscheidungsproblem.
+\newblock In \emph{Proceedings of the London Mathematical Society},
+  pages 230--265. 1936.
+
+\bibitem{Sipser06-1}
+M{.} Sipser.
+\newblock Introduction to the Theory of Computation (Second Edition).
+\newblock Thomson Course Technology, 2006.
 
 \bibitem{Kozen97-1}
 D{.} Kozen.
