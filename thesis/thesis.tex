@@ -288,7 +288,22 @@ combination to ensure high quality and reliability \cite{Ernst03-1}.
 
 There is a close relationship between the static analysis and Halting
 problem. This problem was first formulated by Alan Turing in 1936
-\cite{Turing36-1}. Intuitivelly, the problem can be interpreted as:
+\cite{Turing36-1}. Formally, the Halting problem is defined as
+\cite{Sipser06-1}:
+
+\begin{equation*}
+A_{\mathsf{TM}} = \{ \langle M, w \rangle |
+  \: M \text{ is a } \mathsf{TM} \text{ and } M \text{ accepts } w \}
+\end{equation*}
+
+The $A_{\mathsf{TM}}$ can be recognized by universal Turing machine
+$U$, which takes $M$ and a string $w$ as an input and simulates $M$ on input
+$w$ \cite{Kozen97-1}. The machine $U$ halts and accepts if $M$ halts and
+accepts $w$, it halts and rejects if $M$ halts and rejects the $w$ and loops
+if $M$ loops on $w$. This problem has been proved to be undecidable by
+diagonalization technique.
+
+Simplified, the problem can be interpreted as:
 
 \begin{quote}
 
@@ -297,17 +312,16 @@ works as specified.
 
 \end{quote}
 
-Formally, the Halting problem is defined as \cite{Sipser06-1}:
-
-\begin{equation*}
-A_{\mathsf{TM}} = \{ \langle M, w \rangle |
-  \: M \text{ is a } \mathsf{TM} \text{ and } M \text{ accepts } w \}
-\end{equation*}
+If both specification and program specification are formally defined the one
+would hope it would be possible to automate this verification process by
+appropriately programming a computer. 
 
 The undecidability of Halting problem implies that some sort of
 approximation or heuristic needs to be done. That means that a trade-off
 has to be made. The approximation should be relatively precise and quick
 to compute with reasonable memory footprint.
+
+Several techniques try to reach this goal. They are all based on
 
 \section{Abstract interpretation}
 
