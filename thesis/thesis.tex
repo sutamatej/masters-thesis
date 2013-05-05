@@ -23,18 +23,20 @@
 %\usepackage[small,bf]{caption}
 \usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}
 %\usepackage[all]{hypcap}
+
 \usepackage{amsmath}
-\usepackage{xcolor}
 \usepackage{listings}
 
 \lstset{
     basicstyle=\small\ttfamily,
-    captionpos=b,
+    captionpos=b
 }
 
-\newcommand\todo[1]{\textcolor{red}{#1}}
+\usepackage{tikz}
 
 \newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
+
+\setcounter{tocdepth}{3}
 
 %% Fix long URLs in DVIs
 %\usepackage{ifpdf}
@@ -140,12 +142,17 @@ interpreter.
 \chapter{Static analysis and abstract interpretation}
 \label{chap:preliminaries}
 
-Quality is important property of a product that is being created by
-software engineers. Not every project needs to have as high quality as
+The notion of quality is an abstract concept. In software engineering it
+represents a multi-aspect property of a product which includes but is not
+limited to characteristics such asstability, maintainability, realiability,
+efficiency or security. It plays an important role in recognition of
+particular software.
+
+It is certainly true that not every project needs to have as high quality as
 safety critical systems but to a certain degree quality matters
 everywhere. It is crucial for software maintainability which becomes
 especially difficult when size of a codebase and number of developers
-increases. This chapter describes various techniques employed to
+increases. This chapter describes various techniques used to
 improve these properties and abstract interpretation in particular.
 
 
@@ -176,9 +183,11 @@ The validation is usually performed by executing a program with intention
 to assure that the software product meets the requirements of a customer.
 The process can be manual or completely automatic. It includes
 various types of tests such as acceptance testing, performance testing,
-penetration testing, etc. The functional testing consists of test cases
+penetration testing, etc. Functional testing consists of test cases
 being executed to check various scenarios and is traditionally performed
-by quality assurence specialist. The output of the validation
+by quality assurence specialist. Main benefit of testing is that the
+application is run under real confitions and the specialist is able to
+check the presence of yet unidentified errors. The output of the validation
 is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
@@ -186,13 +195,18 @@ analyzing the source code of the program. They are called \textit{dynamic}
 and \textit{static} verification respectively. These activities are
 typically performed by a programmer during the development phase.
 There are many disciplines that enforce the verification by program
-execution -- unit testing or integration testing among others.
-On the other hand the static verification usually includes source
-code inspection either manually or by a tool.
+execution -- unit testing or integration testing among others. These
+disciplines are relatively easy to understand and implement. The main
+disadvantages include testing in isolation. In addition, this type of
+testing can only check for presence of known errors. The static
+verification usually includes source code inspection either manually or
+by a tool. Implementation of such tool usually requires a deep
+theoretical knowledge and programming skills.
 
 Note that it is possible for program to pass the verification and
-fail the validation step, hence these approaches should complement
-each other to gain the highest possible quality. Moreover there is no
+fail the validation step, hence the realationship between the approaches
+should complementary rather then contradictory in order to achieve the
+highest possible quality. Moreover, there is no
 precise distinction between the two. Test driven development or behavior
 driven development are two examples of techniques which perform
 verification by executing unit tests and also validate that requirements
@@ -270,13 +284,13 @@ inspected by static analysis. Depending on the characteristics of an
 implementation language some of the items might be omitted from or added
 to the list such as exception handling or concurrency management.
 
-Such inspection of the code does not come without a cost. The output of
-the static analysis needs to be implemented by a programmer. This creates
-an opportunity for even more bugs. Also, the number of false positive
-warnings may be relatively high which presents an unneccessary noise
-for programmer. Scalability of the analysis is another issue -- it must
-conform to reasonable time and memory requirements for it to be actually
-useful.
+Nonetheless, the inspection of the code does not come without a cost.
+The output of static analysis needs to be evaluated and implemented by a
+programmer. This creates an opportunity for human errors and, consequently,
+more bugs. Also, the number of false positive warnings may be relatively
+high which presents an unneccessary noise for programmer. Scalability
+of the analysis is another issue -- it must conform to reasonable time
+and memory requirements for it to be actually useful.
 
 The static analysis is primarily used to decrease the number of runtime
 errors, even the ones that are normally impossible to check by testing.
@@ -317,13 +331,67 @@ would hope it would be possible to automate this verification process by
 appropriately programming a computer. However, that is not the case.
 It is impossible to determine the correctness of software by computer.
 
-The undecidability of Halting problem implies that some sort of
-approximation or heuristic needs to be done. That means a trade-off
-has to be made. The approximation should be relatively precise and quick
-to compute with reasonable memory footprint. The level of precision
-is therefore application specific.
+Undecidability of Halting problem implies that some sort of approximation
+or heuristic is needed. That means a trade-off has to be made. The
+approximation should be relatively precise and quick to compute with
+reasonable memory footprint. The level of precision depends on particular
+application and is, therefore, application specific.
 
-The main goal is to build tools which can perform static analysis.
+The main goal is to build tools which can perform static analysis. The
+simplest way to achieve it would be to run a utility to search through
+plain text data such as \texttt{grep}. A collection of patterns to search
+for must be specified. This method does not take the semantics of the
+program into account, hence it yields a lot of false positive results.
+
+To include the semantics in the analysis, its scope needs to be increased
+\cite{Chess04-1}. The code can be analyzed on a function level by
+\textit{local analysis}. \textit{Module-level analysis} is employed on
+compilation unit scope. The analysis of the whole product is responsibility
+of \textit{global analysis} which is also the most computation-expensive
+one.
+
+Other techniques try to gain the most from the methods that are based
+on mathematical approach. They are called \textit{formal} methods. 
+
+\paragraph{Model checking}
+
+TODO: change the example  to $(a \lor b) \land (c \lor d)$
+
+\begin{figure}
+
+\centering
+
+\begin{tikzpicture}[align=center, xscale=2, yscale=2]
+
+\node [circle, draw] (a) at (0, 2) {$a$};
+\node [circle, draw] (b) at (1, 1) {$b$};
+\node [circle, draw] (c) at (-1, 0) {$c$};
+\node [circle, draw] (d) at (0, -1) {$d$};
+\node (false) at (-1, -2) {false};
+\node (true) at (1, -2) {true};
+
+\draw [->] (a) -- (b) node [midway, fill=white] {1};
+\draw [->] (a) -- (c) node [midway, fill=white] {0};
+\draw [->] (b) -- (c) node [midway, fill=white] {0};
+\draw [->] (b) -- (true) node [midway, fill=white] {1};
+\draw [->] (c) -- (false) node [midway, fill=white] {0};
+\draw [->] (c) -- (d) node [midway, fill=white] {1};
+\draw [->] (d) -- (false) node [midway, fill=white] {0};
+\draw [->] (d) -- (true) node [midway, fill=white] {1};
+
+\end{tikzpicture}
+
+\caption{Binary decision diagram for $asdf$}
+\label{fig:bdd}
+
+\end{figure}
+
+\paragraph{Data-flow analysis}
+
+\paragraph{Symbolic execution}
+
+\paragraph{Abstract interpretation}
+
 
 \section{Abstract interpretation}
 
@@ -420,6 +488,12 @@ M{.} Sipser.
 D{.} Kozen.
 \newblock Automata and Computability.
 \newblock Springer, 1997.
+
+\bibitem{Chess04-1}
+B{.} Chess, G{.} McGraw.
+\newblock Static Analysis for Security.
+\newblock In \emph{Security and Privacy, IEEE}, volume 2, number 6,
+  pages 76--79, 2004.
 
 \end{thebibliography}
 
