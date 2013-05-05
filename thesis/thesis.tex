@@ -23,6 +23,7 @@
 %\usepackage[small,bf]{caption}
 \usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}
 %\usepackage[all]{hypcap}
+\usepackage{amsmath}
 \usepackage{xcolor}
 \usepackage{listings}
 
@@ -298,12 +299,10 @@ works as specified.
 
 Formally, the Halting problem is defined as \cite{Sipser06-1}:
 
-\begin{displaymath}
-
-A_{TM} = \{ \langle M, w \rangle |
-  M \text{ is a TM and} M \text{ accepts} w \}
-
-\end{displaymath}
+\begin{equation*}
+A_{\mathsf{TM}} = \{ \langle M, w \rangle |
+  \: M \text{ is a } \mathsf{TM} \text{ and } M \text{ accepts } w \}
+\end{equation*}
 
 The undecidability of Halting problem implies that some sort of
 approximation or heuristic needs to be done. That means that a trade-off
