@@ -307,7 +307,7 @@ problem. This problem was first formulated by Alan Turing in 1936
 
 \begin{equation*}
 A_{\mathsf{TM}} = \{ \langle M, w \rangle |
-  \: M \text{ is a } \mathsf{TM} \text{ and } M \text{ accepts } w \}
+  \: M \text{ is a Turing machine and } M \text{ accepts } w \}
 \end{equation*}
 
 The $A_{\mathsf{TM}}$ can be recognized by universal Turing machine
@@ -355,8 +355,8 @@ on mathematical approach. They are called \textit{formal} methods.
 
 \paragraph{Model checking}
 
-According to E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} the
-model checking is an automated technique for finite-state systems.
+E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} describe the
+model checking as an automated technique for finite-state systems.
 Specifications are expressed in propositional temporal logic and
 the system is modeled as a state-transition graph. Search procedure
 is used to determine if the specifications are satisfied by
@@ -381,8 +381,8 @@ compact and may be handled efficiently.
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
 \node [circle, draw] (a) at (0, 2) {$a$};
-\node [circle, draw] (b) at (1, 1) {$b$};
-\node [circle, draw] (c) at (-1, 0) {$c$};
+\node [circle, draw] (b) at (-1, 1) {$b$};
+\node [circle, draw] (c) at (1, 0) {$c$};
 \node [circle, draw] (d) at (0, -1) {$d$};
 \node (false) at (-1, -2) {false};
 \node (true) at (1, -2) {true};
