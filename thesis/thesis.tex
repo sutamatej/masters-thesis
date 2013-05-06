@@ -345,9 +345,9 @@ program into account, hence it yields a lot of false positive results.
 
 To include the semantics in the analysis, its scope needs to be increased
 \cite{Chess04-1}. The code can be analyzed on a function level by
-\textit{local analysis}. \textit{Module-level analysis} is employed on
+local analysis. Module-level analysis is employed on
 compilation unit scope. The analysis of the whole product is responsibility
-of \textit{global analysis} which is also the most computation-expensive
+of global analysis which is also the most computation-expensive
 one.
 
 Other techniques try to gain the most from the methods that are based
@@ -355,7 +355,24 @@ on mathematical approach. They are called \textit{formal} methods.
 
 \paragraph{Model checking}
 
-TODO: change the example  to $(a \lor b) \land (c \lor d)$
+According to E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} the
+model checking is an automated technique for finite-state systems.
+Specifications are expressed in propositional temporal logic and
+the system is modeled as a state-transition graph. Search procedure
+is used to determine if the specifications are satisfied by
+state transition-graph. The user typically provides high level
+representation of the model and specification to be checked. The
+model checker will either terminate with answer \textit{true}
+indicating that the model satisfies the specification, or give
+a counterexample execution that shows why the formula is not
+satisfied.
+
+The main limitation of this approach is the state explosion.
+The number of possible executions in complex systems is high which
+makes it computationally costly. This problem is partially
+eliminated by usage of binary decision diagrams. An example of
+such diagram can be seen in figure \ref{fig:bdd}. These are more
+compact and may be handled efficiently.
 
 \begin{figure}
 
@@ -370,23 +387,25 @@ TODO: change the example  to $(a \lor b) \land (c \lor d)$
 \node (false) at (-1, -2) {false};
 \node (true) at (1, -2) {true};
 
-\draw [->] (a) -- (b) node [midway, fill=white] {1};
-\draw [->] (a) -- (c) node [midway, fill=white] {0};
-\draw [->] (b) -- (c) node [midway, fill=white] {0};
-\draw [->] (b) -- (true) node [midway, fill=white] {1};
-\draw [->] (c) -- (false) node [midway, fill=white] {0};
-\draw [->] (c) -- (d) node [midway, fill=white] {1};
+\draw [->] (a) -- (b) node [midway, fill=white] {0};
+\draw [->] (a) -- (c) node [midway, fill=white] {1};
+\draw [->] (b) -- (c) node [midway, fill=white] {1};
+\draw [->] (b) -- (false) node [midway, fill=white] {0};
+\draw [->] (c) -- (true) node [midway, fill=white] {1};
+\draw [->] (c) -- (d) node [midway, fill=white] {0};
 \draw [->] (d) -- (false) node [midway, fill=white] {0};
 \draw [->] (d) -- (true) node [midway, fill=white] {1};
 
 \end{tikzpicture}
 
-\caption{Binary decision diagram for $asdf$}
+\caption{Binary decision diagram for $(a \lor b) \land (c \lor d)$}
 \label{fig:bdd}
 
 \end{figure}
 
 \paragraph{Data-flow analysis}
+
+
 
 \paragraph{Symbolic execution}
 
@@ -494,6 +513,11 @@ B{.} Chess, G{.} McGraw.
 \newblock Static Analysis for Security.
 \newblock In \emph{Security and Privacy, IEEE}, volume 2, number 6,
   pages 76--79, 2004.
+
+\bibitem{Clarke99-1}
+E{.} M{.} Clarke, O{.} Grumberg, D{.} A{.} Peled.
+\newblock Model checking.
+\newblock MIT Press, 1999.
 
 \end{thebibliography}
 
