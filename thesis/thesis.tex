@@ -17,7 +17,7 @@
 %% formatting options, etc.
 %\usepackage{color}
 %\usepackage{microtype}
-%\usepackage{url}
+\usepackage{url}
 %\usepackage{cslatexquotes}
 %\usepackage{fancyvrb}
 %\usepackage[small,bf]{caption}
@@ -116,11 +116,11 @@ verification methods have been created. Abstract interpretation is one
 of them.
 
 There are many aspects of a computer program that may be analyzed by
-abstract interpretation. The focus of this thesis is
-is how program manipulates strings. A string is very flexible data
-structure that allows programmer to represent practically anything.
-In fact, most of the programs written today have to deal with strings
-in some form. Thus, it is important to know how programs treat strings.
+abstract interpretation. The focus of this thesis is how program manipulates
+strings. A string is very flexible data structure that allows programmer
+to represent practically anything. In fact, most of the programs written
+today have to deal with strings in some form. Thus, it is important to know
+how programs treat strings.
 
 This thesis describes string abstract domains in context of abstract
 interpretation framework. It is based on papers published
@@ -344,35 +344,32 @@ for must be specified. This method does not take the semantics of the
 program into account, hence it yields a lot of false positive results.
 
 To include the semantics in the analysis, its scope needs to be increased
-\cite{Chess04-1}. The code can be analyzed on a function level by
-local analysis. Module-level analysis is employed on
-compilation unit scope. The analysis of the whole product is responsibility
-of global analysis which is also the most computation-expensive
-one.
+\cite{Chess04-1}. The code can be analyzed on a function level by local
+analysis. Module-level analysis is employed on compilation unit scope.
+The analysis of the whole product is responsibility of global analysis
+which is also the most computation-expensive one.
 
 Other techniques try to gain the most from the methods that are based
 on mathematical approach. They are called \textit{formal} methods. 
 
 \paragraph{Model checking}
 
-E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} describe the
-model checking as an automated technique for finite-state systems.
-Specifications are expressed in propositional temporal logic and
-the system is modeled as a state-transition graph. Search procedure
-is used to determine if the specifications are satisfied by
-state transition-graph. The user typically provides high level
-representation of the model and specification to be checked. The
-model checker will either terminate with answer \textit{true}
+E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} describe the model
+checking as an automated technique for finite-state systems. Specifications
+are expressed in propositional temporal logic and the system is modeled
+as a state-transition graph. Search procedure is used to determine if the
+specifications are satisfied by state transition-graph. The user typically
+provides high level representation of the model and specification to be
+checked. The model checker will either terminate with answer \textit{true}
 indicating that the model satisfies the specification, or give
-a counterexample execution that shows why the formula is not
-satisfied.
+a counterexample execution that shows why the formula is not satisfied.
 
-The main limitation of this approach is the state explosion.
-The number of possible executions in complex systems is high which
-makes it computationally costly. This problem is partially
-eliminated by usage of binary decision diagrams. An example of
-such diagram can be seen in figure \ref{fig:bdd}. These are more
-compact and may be handled efficiently.
+The main limitation of this approach is the state explosion. The number
+of possible executions in complex systems is high which makes it
+computationally costly. This problem is partially eliminated by usage
+of binary decision diagrams. An example of such diagram can be seen in
+figure \ref{fig:bdd}. These are more compact and may be handled
+efficiently.
 
 \begin{figure}
 
@@ -405,7 +402,32 @@ compact and may be handled efficiently.
 
 \paragraph{Data-flow analysis}
 
+The data-flow analysis represents program as a control flow graph where
+nodes are blocks of the program and edges represent the flow of
+control. Block is a succession of program instructions where control
+enters at the beggining of the block, leaves at the end and does not
+branch or halt inside the block. The analysis is executed in two steps:
+first a set desired facts is compiled, then the set is used for the
+analysis itself \cite{Wogerer05-1}. An example of a control flow graph
+with corresponding code can be found in figure \ref{fig:dfg}.
 
+This technique is typically used by compilers to optimize the code. It
+can help with detecting constant propagation, common subexpression
+elimination or redundant operations \cite{Kildall73-1}. However, it is
+not powerful enough to provide detailed information that could be used
+to prevent runtime errors due to ommiting the program sematics by usage
+of blocks.
+
+\begin{figure}
+
+\centering
+
+
+
+\caption{Data flow graph and corresponding code}
+\label{fig:dfg}
+
+\end{figure}
 
 \paragraph{Symbolic execution}
 
@@ -446,6 +468,7 @@ verification by static analysis.
 %\listoftables
 
 %% Bibliography
+\renewcommand{\refname}{\section{Bibliography}}
 \begin{thebibliography}{99}
 
 \bibitem{CousotCousot77-1}
@@ -518,6 +541,18 @@ B{.} Chess, G{.} McGraw.
 E{.} M{.} Clarke, O{.} Grumberg, D{.} A{.} Peled.
 \newblock Model checking.
 \newblock MIT Press, 1999.
+
+\bibitem{Wogerer05-1}
+W{.} W\"{o}gerer.
+\newblock A Survey of Static Program Analysis Techniques.
+\newblock Available at \url{http://www.ics.uci.edu/~lopes/teaching/inf212W12/readings/Woegerer-progr-analysis.pdf}
+  (May 2013).
+
+\bibitem{Kildall73-1}
+G{.} A{.} Kildall.
+\newblock A Unified Approach to Global Program Optimization.
+\newblock In \emph{Proceedings of the 1st annual ACM SIGACT-SIGPLAN
+  symposium on Principles of programming}, pages 194--206, 1973.
 
 \end{thebibliography}
 
