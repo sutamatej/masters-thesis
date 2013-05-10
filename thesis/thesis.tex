@@ -296,7 +296,7 @@ The static analysis is primarily used to decrease the number of runtime
 errors, even the ones that are normally impossible to check by testing.
 However, it should not replace the testing completely. For example,
 the static analysis can not verify that the program performs the correct
-function or that it follows the rules defined by the problem that is
+function or that it follows the rules defined by the problem
 being solved by the program. Therefore these are ideally used in
 combination to ensure high quality and reliability \cite{Ernst03-1}.
 
@@ -489,46 +489,49 @@ pros and cons of AI
 
 Strings of characters are widely employed in software engineering. They
 represent basic building blocks in dynamically typed languages such as
-\texttt{Python}, \texttt{Ruby} or \texttt{Perl}. They are used to express
-values, arguments, commands or even whole pieces of code. Strings are
-frequently used during generating an output such as \texttt{XML}
-file or processing an input in text form. The format of the processed
-string is often verified by another part of the system which takes this
-string as an input, for instance the format of a \texttt{SQL} query is
-verified by SQL server processor which can cause unexpected errors.
-Moreover, a user might supply a malicious input when deliberately trying to
-cause similar effect. Therefore, it is useful to know how string is
-formatted and manipulated during the execution of a program.
+Python, Ruby or Perl. Expression of values, arguments, commands or even
+whole pieces of code are some of their usages. Strings are frequently
+used during generating an output such as XML file or processing an input
+in text form. The format of the processed string is often verified by
+another part of the system which takes this string as an input, for
+instance the format of a SQL query is verified by SQL server processor
+which can cause unexpected errors. Moreover, a user might supply a
+malicious input when deliberately trying to cause similar effect.
+Therefore, it is useful to know how string is formatted and manipulated
+during the execution of a program.
 
-A string over an alphabet is defined as a finite sequence of symbols,
-where an alphabet is a nonempty finite set and members of alphabet are
-symbols. Traditionally, an alphabet is denoted as $\varsum$.
+The following definitions are describe strings and their properties
+formally \cite{Kozen97-1}:
 
-example of an alphabet and a string
+definitions + examples
 
-definition of empty string
+\begin{align*}
+\Sigma &= \{a, b\} \\
+w_1 &= aa \\
+w_2 &= ababa \\
+w_3 &= \varepsilon
+\end{align*}
 
-length of string
-
-prefix
-
-suffix
 
 In \texttt{C} programming language strings are separated from the rest of
-the code by pair of \texttt{"} characters. Internally, they represent a
-chunk of memory structurally similar to array where every member of the
-array has a data type of \texttt{char}. In fact, string is a specific type
+the code by pair of \texttt{"} (double quote) characters. Internally, they represent a
+chunk of memory structurally similar to array. In fact, string is a specific type
 of array. Generally, an array can contain any type of data (TODO
-marginalia) given all the array items have the same one and for string
-the data type happens to be \texttt{char}. The end of the string is
-determined by a special character \texttt{'\0'}.
+marginalia) given all the array items have the same type and for string
+that data type happens to be \texttt{char}. The end of the string is
+determined by a special character \texttt{'\textbackslash0'} called NUL.
+Strings terminated by such character are usually called null-terminated
+strings.
 
 Obviously, strings and arrays are related to each other quite tightly.
-Both of them sets of values sequentially stored in memory. Nonetheless,
-there is a difference in the information value they represent. For example,
-in an array of integers the information value is uniformly distributed --
-every number in the array carries the same weight. On the other hand,
-symbols of string do not carry a lot of information just by themselves.
+Both of them serve as sets of values sequentially stored in memory.
+Nonetheless, there is a difference in the information value they represent.
+For example, in an array of integers the information value is uniformly
+distributed -- every number in the array carries the same weight. On the
+other hand, symbols of string do not carry a lot of information just by
+themselves. Having three characters \texttt{'v'}, \texttt{'a'} and \texttt{'r'}
+separately does not mean a lot, but together they form a \texttt{"var"} string
+which might tell a programmer that variable declaration follows.
 
 
 \section{Prefix abstract domain}
@@ -561,7 +564,7 @@ designed abstract domains.
 %\listoftables
 
 %% Bibliography
-\renewcommand*{\bibname}{\chapter*{Bibliography}\vspace{-1em}}
+\renewcommand*{\bibname}{\chapter{Bibliography}\vspace{-1em}}
 \begin{thebibliography}{99}
 
 \bibitem{CousotCousot77-1}
