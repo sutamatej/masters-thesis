@@ -191,7 +191,7 @@ check the presence of yet unidentified errors. The output of the validation
 is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
-analyzing the source code of the program. They are called \textit{dynamic} 
+analyzing the source code of the program. They are called \textit{dynamic}
 and \textit{static} verification respectively. These activities are
 typically performed by a programmer during the development phase.
 There are many disciplines that enforce the verification by program
@@ -350,7 +350,7 @@ The analysis of the whole product is responsibility of global analysis
 which is also the most computation-expensive one.
 
 Other techniques try to gain the most from the methods that are based
-on mathematical approach. They are called \textit{formal} methods. 
+on mathematical approach. They are called \textit{formal} methods.
 
 \paragraph{Model checking}
 
@@ -431,26 +431,119 @@ of blocks.
 
 \paragraph{Symbolic execution}
 
+The basic idea is to use symbolic variables instead of the real ones.
+For instance, one such usage can be observed in figure \ref{fig:se}.
+Throughout the process of symbolic execution SMT solver checks whether
+a certain formula is satisfied. TODO citation
+
+The main disadvantage of this approach is scalability -- a symbolic
+execution of moderately complex program can lead to large number of paths
+that need to be checked. That being said, the continuous evolution in
+algorithm design and computer performance mitigate this problem.
+
+\begin{figure}
+
+\centering
+
+
+
+\caption{Symbolic execution and corresponding code}
+\label{fig:se}
+
+\end{figure}
+
 \paragraph{Abstract interpretation}
 
+The abstract interpretation is described in detail in section
+\ref{sec:abstractinterpretation}.
 
 \section{Abstract interpretation}
+\label{sec:abstractinterpretation}
 
 The abstract interpretation falls into the category of software
-verification by static analysis.
+verification by static analysis. It was first presented by P. Cousot and
+and R. Cousot in 1977 \cite{CousotCousot77-1}.
 
+definition
+
+intuitive explanation
+
+example
+
+aparatus description
+
+abstract values and abstract domains
+
+abstract operation
+
+join/meet
+
+lattices, ordering
+
+pros and cons of AI
 
 \chapter{Solution design}
 \label{chap:design}
 
+\section{Strings}
 
-\section{Prefix}
+Strings of characters are widely employed in software engineering. They
+represent basic building blocks in dynamically typed languages such as
+\texttt{Python}, \texttt{Ruby} or \texttt{Perl}. They are used to express
+values, arguments, commands or even whole pieces of code. Strings are
+frequently used during generating an output such as \texttt{XML}
+file or processing an input in text form. The format of the processed
+string is often verified by another part of the system which takes this
+string as an input, for instance the format of a \texttt{SQL} query is
+verified by SQL server processor which can cause unexpected errors.
+Moreover, a user might supply a malicious input when deliberately trying to
+cause similar effect. Therefore, it is useful to know how string is
+formatted and manipulated during the execution of a program.
+
+A string over an alphabet is defined as a finite sequence of symbols,
+where an alphabet is a nonempty finite set and members of alphabet are
+symbols. Traditionally, an alphabet is denoted as $\varsum$.
+
+example of an alphabet and a string
+
+definition of empty string
+
+length of string
+
+prefix
+
+suffix
+
+In \texttt{C} programming language strings are separated from the rest of
+the code by pair of \texttt{"} characters. Internally, they represent a
+chunk of memory structurally similar to array where every member of the
+array has a data type of \texttt{char}. In fact, string is a specific type
+of array. Generally, an array can contain any type of data (TODO
+marginalia) given all the array items have the same one and for string
+the data type happens to be \texttt{char}. The end of the string is
+determined by a special character \texttt{'\0'}.
+
+Obviously, strings and arrays are related to each other quite tightly.
+Both of them sets of values sequentially stored in memory. Nonetheless,
+there is a difference in the information value they represent. For example,
+in an array of integers the information value is uniformly distributed --
+every number in the array carries the same weight. On the other hand,
+symbols of string do not carry a lot of information just by themselves.
 
 
-\section{Suffix}
+\section{Prefix abstract domain}
+
+The first of the designed abstract domains is the one that approximates
+a string by its prefix. It is based of works of Giulia Constantini,
+Pietro Ferrara and Agostino Cortesi \cite{Constantini-1}. This domain
+is has simple semantics, thus it provides a good introduction into the
+designed abstract domains.
 
 
-\section{Trie}
+\section{Suffix abstract domain}
+
+
+\section{Trie abstract domain}
 
 
 \chapter{Implementation}
@@ -468,7 +561,7 @@ verification by static analysis.
 %\listoftables
 
 %% Bibliography
-\renewcommand*{\bibname}{\chapter{Bibliography}\vspace{-1em}}
+\renewcommand*{\bibname}{\chapter*{Bibliography}\vspace{-1em}}
 \begin{thebibliography}{99}
 
 \bibitem{CousotCousot77-1}
@@ -553,6 +646,10 @@ G{.} A{.} Kildall.
 \newblock A Unified Approach to Global Program Optimization.
 \newblock In \emph{Proceedings of the 1st annual ACM SIGACT-SIGPLAN
   symposium on Principles of programming}, pages 194--206, 1973.
+
+\bibitem{Constantini-1}
+G{.} Constantini, P{.} Ferrara, A{.} Cortesi.
+\newblock Static analysis of string values.
 
 \end{thebibliography}
 
