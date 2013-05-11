@@ -485,6 +485,9 @@ pros and cons of AI
 \chapter{Solution design}
 \label{chap:design}
 
+In this chapter
+
+
 \section{Strings}
 
 Strings of characters are widely employed in software engineering. They
@@ -503,22 +506,58 @@ during the execution of a program.
 The following definitions are describe strings and their properties
 formally \cite{Kozen97-1}:
 
-definitions + examples
+\begin{itemize}
 
-\begin{align*}
-\Sigma &= \{a, b\} \\
-w_1 &= aa \\
-w_2 &= ababa \\
-w_3 &= \varepsilon
-\end{align*}
+\item An \textit{alphabet} is any finite set. For example an alphabet for
+binary numbers is $\{0, 1\}$. It is typically denoted as $\Sigma$. Elements
+of alphabet are called \textit{symbols} or \textit{letters} and are denoted
+by $a, b, c, \dots$.
 
+\item A \textit{string} over $\Sigma$ is any finite sequence of symbols of
+$\Sigma$. For $\Sigma = \{a, b\}$ an example of string is $aabab$. Strings
+are denoted by $x, y, z, \dots$.
+
+\item The \textit{length} of a string $x$ is the number of symbols in $x$.
+It is denoted as $|x|$. For example, $|aabab| = 5$.
+
+\item \textit{Empty string} is a string with length of 0. It is also called
+\textit{null string} and is denoted by $\varepsilon$. Formally,
+$|\varepsilon| = 0$.
+
+\item \textit{Concatenation} is an operation which takes two strings $x$
+and $y$ and chains them together to form a new string $xy$. It is
+associative operation but it not comutative. Empty string $\varepsilon$ is
+identity for concatenation. The length of resulting string is a sum of
+lengths of concatenated strings.
+
+\[
+(xy)z &= x(yz) \\
+xy &\neq yx \\
+\varepsilon x = x \varepsilon &= x \\
+|xy| = |x| + |y|
+\]
+
+\item A \textit{prefix} of a string $x$ is a string $y$ for which there
+exists a string $z$ such that $x = yz$. The empty string $\varepsilon$ is
+a prefix of every string. String $aaba$ is a prefix of $aababb$. A prefix
+$y$ of $x$ is a \textit{proper} prefix of $x$ when $y \neq \varepsilon$ and
+$y \neq x$.
+
+\item A \textit{suffix} of a string $x$ is a string $z$ for which there
+exists a string $y$ such that $x = yz$. The empty string $\varepsilon$ is
+a suffix of every string. String $babb$ is a suffix of $aababb$. A suffix
+$z$ of $x$ is a \textit{proper} suffix of $x$ when $z \neq \varepsilon$ and
+$z \neq x$.
+
+\end{itemize}
 
 In \texttt{C} programming language strings are separated from the rest of
-the code by pair of \texttt{"} (double quote) characters. Internally, they represent a
-chunk of memory structurally similar to array. In fact, string is a specific type
-of array. Generally, an array can contain any type of data (TODO
-marginalia) given all the array items have the same type and for string
-that data type happens to be \texttt{char}. The end of the string is
+the code by pair of \texttt{"} (double quote) characters. Internally,
+they represent a chunk of memory structurally similar to array. In fact,
+string is a specific type of array. Generally, an array can contain any
+type of data given all the array items have the same type \footnote{In some
+languages members of array do not have to be uniformly typed.} and for
+string that data type happens to be \texttt{char}. The end of the string is
 determined by a special character \texttt{'\textbackslash0'} called NUL.
 Strings terminated by such character are usually called null-terminated
 strings.
@@ -529,9 +568,15 @@ Nonetheless, there is a difference in the information value they represent.
 For example, in an array of integers the information value is uniformly
 distributed -- every number in the array carries the same weight. On the
 other hand, symbols of string do not carry a lot of information just by
-themselves. Having three characters \texttt{'v'}, \texttt{'a'} and \texttt{'r'}
-separately does not mean a lot, but together they form a \texttt{"var"} string
-which might tell a programmer that variable declaration follows.
+themselves. Having three characters \texttt{'v'}, \texttt{'a'} and
+\texttt{'r'} separately does not mean a lot, but together they form
+a \texttt{"var"} string which might tell a programmer that variable
+declaration follows.
+
+The versatility of strings makes it difficult to analyze them in general.
+Intuitively, one can feel there's a difference when trying to analyze
+string containing an XML document and string containing filepath. They
+have different properties.
 
 
 \section{Prefix abstract domain}
