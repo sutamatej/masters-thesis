@@ -25,6 +25,12 @@
 %\usepackage[all]{hypcap}
 
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
 \usepackage{listings}
 
 \lstset{
@@ -422,7 +428,11 @@ of blocks.
 
 \centering
 
+\begin{tikzpicture}[align=center]
 
+
+
+\end{tikzpicture}
 
 \caption{Data flow graph and corresponding code}
 \label{fig:dfg}
@@ -442,20 +452,33 @@ that need to be checked. That being said, the continuous evolution in
 algorithm design and computer performance mitigate this problem.
 
 \begin{figure}
-
-\centering
-
-
-
-\caption{Symbolic execution and corresponding code}
+\begin{minipage}{0.3\textwidth}
+\begin{lstlisting}[numbers=left]
+a = a + b;
+b = a - b;
+a = a - b;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.7\textwidth}
+\begin{tabular}{c|c|c}
+line & $a$                       & $b$ \\
+\hline
+1    & $a + b$                   & $b$ \\
+2    & $a + b$                   & $(a + b) - b$ \\
+3    & $(a + b) - ((a + b) - b)$ & $(a + b) - b$ \\
+\hline
+final values & $b$             & $a$ \\
+\end{tabular}
+\end{minipage}
+\caption{Sample code and corresponding symbolic execution}
 \label{fig:se}
-
 \end{figure}
 
 \paragraph{Abstract interpretation}
 
 The abstract interpretation is described in detail in section
 \ref{sec:abstractinterpretation}.
+
 
 \section{Abstract interpretation}
 \label{sec:abstractinterpretation}
@@ -464,36 +487,166 @@ The abstract interpretation falls into the category of software
 verification by static analysis. It was first presented by P. Cousot and
 and R. Cousot in 1977 \cite{CousotCousot77-1}.
 
-definition
+\begin{definition}
+Abstract interpretation of program consists of using denotations of
+computations in some universe of objects to describe computations in
+another universe of abstract objects, so that the results of abstract
+execution give some informations on the actual computations.
+\end{definition}
 
-intuitive explanation
+The key concept here is abstraction. An \textit{abstraction} is a property
+of an object that is being analyzed. In figure \ref{fig:abstraction}
+there are several abstractions of number 8. This number is positive,
+integer, real and rational number. Every one of these abstractions comes
+at a cost of precision. The greater the abstraction is the greater is the
+loss of precision. Still, an abstraction is often easier to reason about.
 
-example
+Number 8 from this example represents a \textit{concrete} value. It is
+the value that is used during the actual computation.
 
-aparatus description
+\begin{figure}
 
-abstract values and abstract domains
+\centering
 
-abstract operation
+\begin{tikzpicture}[align=center]
 
-join/meet
+\node (real) at (0, 3) {$\mathbb{R}$};
+\node (rational) at (0, 2) {$\mathbb{Q}$};
+\node (natural) at (0, 1) {$\mathbb{N}$};
+\node (eight) at (0, 0) {8};
 
-lattices, ordering
+\draw (real) -- (rational);
+\draw (rational) -- (natural);
+\draw (natural) -- (eight);
+
+\end{tikzpicture}
+
+\caption{Various abstractions of number 8}
+\label{fig:abstraction}
+
+\end{figure}
+
+The shift from concrete value to abstraction is done with
+\textit{abstraction function}. This function maps concrete values to
+abstract properties of interest. It is traditionally denoted as
+$\alpha$. Abstraction function is sound.
+
+Complementary to the abstraction function is \textit{concretization
+function}. It is usually denoted as $\gamma$. It performs a mapping from
+abstract values to concrete values. This function is incomplete.
+
+Naturally, operations on concrete values need to be somehow transformed
+in order to function on abstract values. Such transformed operation is
+called \textit{abstract operation}. 
+
+Lattice
+
+Concrete values are organized in \textit{concrete domain}. Formally,
+the concrete domain is a complete lattice $L$:
+
+\begin{align*}
+L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
+\end{align*}
+
+where $\mathcal{P} (A)$ is power set of $A$. An example of such lattice
+for set $A = \{ 1, 2, 3 \}$ can be found in figure
+\ref{fig:concretedomain}.
+
+\begin{figure}
+
+\centering
+
+\begin{tikzpicture}[align=center, xscale=2, yscale=2]
+
+\node (123) at (0, 3) {$\{ 1, 2, 3 \}$};
+\node (12) at (-1, 2) {$\{ 1, 2 \}$};
+\node (13) at (0, 2) {$\{ 1, 3 \}$};
+\node (23) at (1, 2) {$\{ 2, 3 \}$};
+\node (1) at (-1, 1) {$\{ 1 \}$};
+\node (2) at (0, 1) {$\{ 2 \}$};
+\node (3) at (1, 1) {$\{ 3 \}$};
+\node (empty) at (0, 0) {$\{ \emptyset \}$};
+
+\draw (123) -- (12);
+\draw (123) -- (13);
+\draw (123) -- (23);
+\draw (12) -- (1);
+\draw (12) -- (2);
+\draw (13) -- (1);
+\draw (13) -- (3);
+\draw (23) -- (2);
+\draw (23) -- (3);
+\draw (1) -- (empty);
+\draw (2) -- (empty);
+\draw (3) -- (empty);
+
+\end{tikzpicture}
+
+\caption{Concrete domain for set $\{ 1, 2, 3 \}$}
+\label{fig:concretedomain}
+
+\end{figure}
+
+Abstract properties are encoded in modules with data structures called
+\textit{abstract domain}. This module is a set of all abstract values
+for given abstraction. Formally, abstract domain forms a complete
+lattice $L'$:
+
+\begin{align*}
+L' = \langle \bar{A}, \leq, \bot, \top, \sqcup, \sqcap  \rangle
+\end{align*}
+
+Consider the abstraction of positive and negative numbers on set of real
+numbers $\mathbb{R}$. The abstract domain for this abstraction is displayed
+in figure \ref{fig:abstractdomain}.
+
+\begin{figure}
+
+\centering
+
+\begin{tikzpicture}[align=center]
+
+\node (top) at (0, 3) {$\top$};
+\node (negative) at (-1, 2) {$(-)$};
+\node (positive) at (1, 2) {$(+)$};
+\node (zero) at (0, 1) {$0$};
+\node (bottom) at (0, 0) {$\bot$};
+
+\draw (top) -- (negative);
+\draw (top) -- (positive);
+\draw (negative) -- (zero);
+\draw (positive) -- (zero);
+\draw (zero) -- (bottom);
+
+\end{tikzpicture}
+
+\caption{Abstract domain for positive and negative numbers on $\mathbb{R}$}
+\label{fig:abstractdomain}
+
+\end{figure}
+
+fixpoint?
+
+formal definition of AI
 
 pros and cons of AI
+
 
 \chapter{Solution design}
 \label{chap:design}
 
-In this chapter
+This chapter describes strings and three approaches that have been designed
+to analyze strings within abstract interpretation framework. Strings play
+an important role in day-to-day computer programming. Nowadays, they are
+an essential part of every major programming language.
 
 
 \section{Strings}
 
 Strings of characters are widely employed in software engineering. They
 represent basic building blocks in dynamically typed languages such as
-Python, Ruby or Perl. Expression of values, arguments, commands or even
-whole pieces of code are some of their usages. Strings are frequently
+Python, Ruby or Perl. Their usages include expressions of values,
+arguments, commands or even whole pieces of code. Strings are frequently
 used during generating an output such as XML file or processing an input
 in text form. The format of the processed string is often verified by
 another part of the system which takes this string as an input, for
@@ -530,12 +683,12 @@ associative operation but it not comutative. Empty string $\varepsilon$ is
 identity for concatenation. The length of resulting string is a sum of
 lengths of concatenated strings.
 
-\[
+\begin{align*}
 (xy)z &= x(yz) \\
 xy &\neq yx \\
 \varepsilon x = x \varepsilon &= x \\
-|xy| = |x| + |y|
-\]
+|xy| &= |x| + |y|
+\end{align*}
 
 \item A \textit{prefix} of a string $x$ is a string $y$ for which there
 exists a string $z$ such that $x = yz$. The empty string $\varepsilon$ is
@@ -596,6 +749,18 @@ designed abstract domains.
 
 \chapter{Implementation}
 \label{chap:implementation}
+
+
+\section{\texttt{canal}}
+
+
+\section{String prefix}
+
+
+\section{String suffix}
+
+
+\section{String trie}
 
 
 \chapter{Conclusion}
