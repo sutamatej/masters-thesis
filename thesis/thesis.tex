@@ -356,7 +356,8 @@ The analysis of the whole product is responsibility of global analysis
 which is also the most computation-expensive one.
 
 Other techniques try to gain the most from the methods that are based
-on mathematical approach. They are called \textit{formal} methods.
+on mathematical approach. Collectively, they are called \textit{formal}
+methods.
 
 \paragraph{Model checking}
 
@@ -378,9 +379,7 @@ figure \ref{fig:bdd}. These are more compact and may be handled
 efficiently.
 
 \begin{figure}
-
 \centering
-
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
 \node [circle, draw] (a) at (0, 2) {$a$};
@@ -400,10 +399,8 @@ efficiently.
 \draw [->] (d) -- (true) node [midway, fill=white] {1};
 
 \end{tikzpicture}
-
 \caption{Binary decision diagram for $(a \lor b) \land (c \lor d)$}
 \label{fig:bdd}
-
 \end{figure}
 
 \paragraph{Data-flow analysis}
@@ -425,18 +422,14 @@ to prevent runtime errors due to ommiting the program sematics by usage
 of blocks.
 
 \begin{figure}
-
 \centering
-
 \begin{tikzpicture}[align=center]
 
 
 
 \end{tikzpicture}
-
 \caption{Data flow graph and corresponding code}
 \label{fig:dfg}
-
 \end{figure}
 
 \paragraph{Symbolic execution}
@@ -484,8 +477,8 @@ The abstract interpretation is described in detail in section
 \label{sec:abstractinterpretation}
 
 The abstract interpretation falls into the category of software
-verification by static analysis. It was first presented by P. Cousot and
-and R. Cousot in 1977 \cite{CousotCousot77-1}.
+verification by static analysis. It was first defined by P. Cousot and
+and R. Cousot in 1977 \cite{CousotCousot77-1}:
 
 \begin{definition}
 Abstract interpretation of program consists of using denotations of
@@ -499,7 +492,9 @@ of an object that is being analyzed. In figure \ref{fig:abstraction}
 there are several abstractions of number 8. This number is positive,
 integer, real and rational number. Every one of these abstractions comes
 at a cost of precision. The greater the abstraction is the greater is the
-loss of precision. Still, an abstraction is often easier to reason about.
+loss of precision. Still, an abstraction is often easier to reason about,
+mainly in terms of memory -- rather than keeping an enumeration of all
+possible values of a number, only an abstraction is kept in memory.
 
 Number 8 from this example represents a \textit{concrete} value. It is
 the value that is used during the actual computation.
@@ -529,15 +524,25 @@ the value that is used during the actual computation.
 The shift from concrete value to abstraction is done with
 \textit{abstraction function}. This function maps concrete values to
 abstract properties of interest. It is traditionally denoted as
-$\alpha$. Abstraction function is sound.
+$\alpha$.
+
+definition
+
+example
 
 Complementary to the abstraction function is \textit{concretization
 function}. It is usually denoted as $\gamma$. It performs a mapping from
 abstract values to concrete values. This function is incomplete.
 
+definition
+
+example
+
 Naturally, operations on concrete values need to be somehow transformed
 in order to function on abstract values. Such transformed operation is
-called \textit{abstract operation}. 
+called \textit{abstract operation}.
+
+example
 
 Lattice
 
@@ -553,9 +558,7 @@ for set $A = \{ 1, 2, 3 \}$ can be found in figure
 \ref{fig:concretedomain}.
 
 \begin{figure}
-
 \centering
-
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
 \node (123) at (0, 3) {$\{ 1, 2, 3 \}$};
@@ -581,10 +584,8 @@ for set $A = \{ 1, 2, 3 \}$ can be found in figure
 \draw (3) -- (empty);
 
 \end{tikzpicture}
-
 \caption{Concrete domain for set $\{ 1, 2, 3 \}$}
 \label{fig:concretedomain}
-
 \end{figure}
 
 Abstract properties are encoded in modules with data structures called
@@ -601,9 +602,7 @@ numbers $\mathbb{R}$. The abstract domain for this abstraction is displayed
 in figure \ref{fig:abstractdomain}.
 
 \begin{figure}
-
 \centering
-
 \begin{tikzpicture}[align=center]
 
 \node (top) at (0, 3) {$\top$};
@@ -619,17 +618,17 @@ in figure \ref{fig:abstractdomain}.
 \draw (zero) -- (bottom);
 
 \end{tikzpicture}
-
 \caption{Abstract domain for positive and negative numbers on $\mathbb{R}$}
 \label{fig:abstractdomain}
-
 \end{figure}
 
 fixpoint?
 
 formal definition of AI
 
-pros and cons of AI
+Abstract interpretation promises better scalability when compared to other
+methods such as model checking or symbolic execution. It tries to achieve
+this through appropriate abstraction choice. 
 
 
 \chapter{Solution design}
@@ -750,11 +749,80 @@ designed abstract domains.
 \chapter{Implementation}
 \label{chap:implementation}
 
+Abstract domains designed in chapter \ref{chap:design} are applied in the
+context of \texttt{canal} abstract interpreter. First, the architecture of
+the interpreter is described and then the implementation of individual
+domains is presented.
+
 
 \section{\texttt{canal}}
 
+Following the project README file \cite{Klic12-1}, the \texttt{canal}
+abstract interpreter is a static analysis tool designed to analyze behavior
+of application programs written in C programming language. It focuses
+on scalability for large programs and handling of real-world source code.
+
+It is divided into three parts:
+
+\begin{description}
+
+\item[Abstract domains] \hfill \\
+These modules cover semantic choices, data
+structures, algorithmic aspects and implementation details concerning
+analysis. Canal contains abstract domains for integers, floating point
+numbers, arrays and strings.
+
+\item[Interpreter] \hfill \\
+It iterates through the source code until the analysis
+is finished. It manages the state of program analysis consisting of
+abstract values.
+
+\item[Operations] \hfill \\
+They manage translations of program instructions to
+abstract operations defined as part of abstract domains. Interpreter uses
+operations to update abstract values stored in analysis state.
+
+\end{description}
+
+The tool is utilizes llvm compiler infrastructure. It provides
+a frontend called CLang that contains compilers for C, C++, Objective C and
+Objective C++ capable of emitting LLVM bitcode. The bitcode is a platform
+independent representation of program that is suitable for static analysis.
+There are other static analysis tools that leverage the same idea, namely
+klee.
+
+The whole process of analysis is performed in following steps:
+
+\begin{enumerate}
+
+\item compilation of a program that is being analyzed into the llvm bitcode
+representation
+
+\item loading of compiled program into the interpreter and initialization
+with abstract domains
+
+\item interpretation of loaded program with abstract operations on the
+domains
+
+\end{enumerate}
+
+Abstract interpreter itself is implemented in C++. It can be compiled with
+g++ compiler from the GNU Compiler Collection.
+
+\texttt{canal} comes with command line tool which allows to step through
+the execution of interpretation and inspect variables. In that aspect it
+is similar to \texttt{gdb}, a popular GNU debugger project for various
+languages \footnote{\url{http://www.gnu.org/software/gdb/}}.
+
+The project is relatively young and as of this moment is in its experimental
+stage. That being said, a few programs from GNU core utils project
+\footnote{\url{http://www.gnu.org/software/coreutils/}} have been
+successfully analyzed by interpreter.
+
 
 \section{String prefix}
+
+
 
 
 \section{String suffix}
@@ -863,6 +931,14 @@ G{.} A{.} Kildall.
 \bibitem{Constantini-1}
 G{.} Constantini, P{.} Ferrara, A{.} Cortesi.
 \newblock Static analysis of string values.
+\newblock In \emph{Proceedings of the 13th Internation Conference on Formal
+  Engineering Methods}, 2011.
+
+\bibitem{Klic12-1}
+K{.} Klíč.
+\newblock Canal, abstract intepreter for real-world application programs.
+\newblock Available at \url{https://github.com/karelklic/canal/blob/master/README}
+  (May 2013).
 
 \end{thebibliography}
 
