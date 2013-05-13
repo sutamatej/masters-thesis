@@ -641,6 +641,7 @@ an essential part of every major programming language.
 
 
 \section{Strings}
+\label{sec:strings}
 
 Strings of characters are widely employed in software engineering. They
 represent basic building blocks in dynamically typed languages such as
@@ -730,6 +731,10 @@ Intuitively, one can feel there's a difference when trying to analyze
 string containing an XML document and string containing filepath. They
 have different properties.
 
+The primary goal of domains described in following sections is to
+abstract strings so that they provide a useful information about file
+paths.
+
 
 \section{Prefix abstract domain}
 
@@ -738,6 +743,90 @@ a string by its prefix. It is based of works of Giulia Constantini,
 Pietro Ferrara and Agostino Cortesi \cite{Constantini-1}. This domain
 is has simple semantics, thus it provides a good introduction into the
 designed abstract domains.
+
+The abstraction used in this case is string prefix as defined in section
+\ref{sec:strings}. Common notation for prefix is $abc*$ where $abc$
+represents symbols of prefix and $*$ stands for any string, $\varepsilon$
+included. The asterisk is present in prefix all the time so it can be
+omitted from this notation.
+
+Partial order on this domain is defined as:
+
+\begin{align*}
+\mathsf{S} \leq \mathsf{T} \Leftrightarrow
+  \mathsf{S} = \bot \lor (\forall i \in [0, len(\mathsf{T}) - 1] :
+  len(\mathsf{T}) \leq len(\mathsf{S}) \land \mathsf{T}[i] = \mathsf{S}[i])
+\end{align*}
+
+where $len(\mathsf{T})$ is a function which returns a length of string and
+$\mathsf{S}$ and $\mathsf{T}$ are abstract values representing string
+prefixes.
+
+Intuitively, prefixes are ordered in a lattice by their length. String
+$\mathsf{S}$ is smaller than string $\mathsf{T}$ if $\mathsf{T}$ is a
+prefix of $mathsf{S}$ or $\mathsf{S}$ is the bottom of the domain $\bot$.
+The length of string abstract values decreases as prefixes are closer to
+the top element $\top$. The situation is demonstrated in figure
+\ref{fig:prefixlattice}.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[align=center]
+
+\node (top) at (0, 3) {$\top$};
+\node (s) at (0, 2) {s};
+\node (sa) at (-2, 1) {sa};
+\node (su) at (2, 1) {su};
+\node (sax) at (-3, 0) {sax};
+\node (sap) at (-1, 0) {sap};
+\node (sup) at (1, 0) {sup};
+\node (sud) at (3, 0) {sud};
+\node (bottom) at (0, -1) {$\bot$};
+
+\draw (top) -- (s);
+\draw (s) -- (sa);
+\draw (s) -- (su);
+\draw (sa) -- (sax);
+\draw (sa) -- (sap);
+\draw (su) -- (sup);
+\draw (su) -- (sud);
+\draw (sax) -- (bottom);
+\draw (sap) -- (bottom);
+\draw (sup) -- (bottom);
+\draw (sud) -- (bottom);
+
+\end{tikzpicture}
+\caption{Prefix abstract domain}
+\label{fig:prefixlattice}
+\end{figure}
+
+The least upper bound operator is defined as:
+
+\begin{align*}
+\sqcap (\mathsf{S_1}, \mathsf{S_2}) =
+\begin{cases}
+\mathsf{S} & \text{where } \mathsf{S} = prefix(\mathsf{S_1}, \mathsf{S_2}) \\
+\top       & \text{otherwise}
+\end{cases}
+\end{align*}
+
+where function $prefix(\mathsf{S_1}, \mathsf{S_2})$ returns longest common
+prefix of strings $\mathsf{S_1}$ and $\mathsf{S_2}$.
+
+Simply put, the least upper bound of two strings $\mathsf{S_1}$ and
+$\mathsf{S_2}$ is the longest common prefix of these strings. If there isn't
+one, the upper bound is the top element of the lattice $\top$.
+
+In a similar fashion, the greater lower bound operator is defined by:
+
+\begin{align*}
+\sqcup (\mathsf{S_1}, \mathsf{S_2}) =
+\begin{cases}
+\mathsf{S_1} & \text{if } \mathsf{S_1} \leq \mathsf{S_2} \\
+\mathsf{S_2} & \text{if } \mathsf{S_2} \leq \mathsf{S_1} \\
+\bot         & \text{otherwise}
+\end{cases}
+\end{align*}
 
 
 \section{Suffix abstract domain}
@@ -818,6 +907,39 @@ The project is relatively young and as of this moment is in its experimental
 stage. That being said, a few programs from GNU core utils project
 \footnote{\url{http://www.gnu.org/software/coreutils/}} have been
 successfully analyzed by interpreter.
+
+
+\section{Domain interface in \texttt{canal}}
+
+Since \texttt{canal} abstract interpreter is implemented in C++ it enables
+usage of classes. Every domain in it corresponds to single class and
+operations on the domain are implemented as methods of particular class.
+Most of the operations are domain-specific, but there are a few methods
+that are universally required to be implemented in order for abstract
+values to form a lattice.
+
+Universal methods are enforced by inheriting from \texttt{Domain} class,
+which provides their type definitions. These methods are:
+
+\begin{itemize}
+
+\item join
+
+\item meet
+
+\item equality
+
+\item inclusion
+
+\item set top
+
+\item set bottom
+
+\item is top
+
+\item is bottom
+
+\end{itemize} 
 
 
 \section{String prefix}
