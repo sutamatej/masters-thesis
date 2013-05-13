@@ -91,7 +91,9 @@
 
 %% Thanks (optional)
 \begin{ThesisThanks}
-My thanks go to ...
+My thanks go to my thesis supervisor Karel Klic, my colleagues in his
+study group Jan Dupal and Tomas Brukner and all the people who
+supported me during the writing of this thesis.
 \end{ThesisThanks}
 
 %% Abstract (required)
@@ -378,7 +380,7 @@ of binary decision diagrams. An example of such diagram can be seen in
 figure \ref{fig:bdd}. These are more compact and may be handled
 efficiently.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
@@ -421,7 +423,7 @@ not powerful enough to provide detailed information that could be used
 to prevent runtime errors due to ommiting the program sematics by usage
 of blocks.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[align=center]
 
@@ -444,7 +446,7 @@ execution of moderately complex program can lead to large number of paths
 that need to be checked. That being said, the continuous evolution in
 algorithm design and computer performance mitigate this problem.
 
-\begin{figure}
+\begin{figure}[h]
 \begin{minipage}{0.3\textwidth}
 \begin{lstlisting}[numbers=left]
 a = a + b;
@@ -499,10 +501,8 @@ possible values of a number, only an abstraction is kept in memory.
 Number 8 from this example represents a \textit{concrete} value. It is
 the value that is used during the actual computation.
 
-\begin{figure}
-
+\begin{figure}[h]
 \centering
-
 \begin{tikzpicture}[align=center]
 
 \node (real) at (0, 3) {$\mathbb{R}$};
@@ -515,10 +515,8 @@ the value that is used during the actual computation.
 \draw (natural) -- (eight);
 
 \end{tikzpicture}
-
 \caption{Various abstractions of number 8}
 \label{fig:abstraction}
-
 \end{figure}
 
 The shift from concrete value to abstraction is done with
@@ -557,7 +555,7 @@ where $\mathcal{P} (A)$ is power set of $A$. An example of such lattice
 for set $A = \{ 1, 2, 3 \}$ can be found in figure
 \ref{fig:concretedomain}.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
@@ -568,7 +566,7 @@ for set $A = \{ 1, 2, 3 \}$ can be found in figure
 \node (1) at (-1, 1) {$\{ 1 \}$};
 \node (2) at (0, 1) {$\{ 2 \}$};
 \node (3) at (1, 1) {$\{ 3 \}$};
-\node (empty) at (0, 0) {$\{ \emptyset \}$};
+\node (empty) at (0, 0) {$\emptyset$};
 
 \draw (123) -- (12);
 \draw (123) -- (13);
@@ -601,7 +599,7 @@ Consider the abstraction of positive and negative numbers on set of real
 numbers $\mathbb{R}$. The abstract domain for this abstraction is displayed
 in figure \ref{fig:abstractdomain}.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \begin{tikzpicture}[align=center]
 
@@ -729,11 +727,37 @@ declaration follows.
 The versatility of strings makes it difficult to analyze them in general.
 Intuitively, one can feel there's a difference when trying to analyze
 string containing an XML document and string containing filepath. They
-have different properties.
+have different properties. TODO
+
+
+\section{String abstract domains}
 
 The primary goal of domains described in following sections is to
-abstract strings so that they provide a useful information about file
-paths.
+abstract strings so that they provide useful informations about file
+paths. Normally, in UNIX-like operating systems such as Linux or Mac OS
+the path is represented by a string containing slash \texttt{'/'} characters
+and names of folders or files in between them.
+
+Following the definition of abstract domain from section TODO set, top, bottom
+\ref{sec:abstractinterpretation} these are the operations that
+need to be defined for every suggested domain:
+
+\begin{itemize}
+
+\item order for elements $\leq$
+
+\item least upper bound $\sqcap$
+
+\item greater lower bound $\sqcup$
+
+\end{itemize}
+
+Besides that, the operations specific to particular domain need to be
+defined. In this case these are based on functions available to programmer.
+Obviously, the C standard library provides numerous functions that operate
+on strings.
+
+specific operations -- concatenation, substring, why these two??
 
 
 \section{Prefix abstract domain}
@@ -750,7 +774,7 @@ represents symbols of prefix and $*$ stands for any string, $\varepsilon$
 included. The asterisk is present in prefix all the time so it can be
 omitted from this notation.
 
-Partial order on this domain is defined as:
+Partial ordering on this domain is defined as:
 
 \begin{align*}
 \mathsf{S} \leq \mathsf{T} \Leftrightarrow
@@ -764,7 +788,7 @@ prefixes.
 
 Intuitively, prefixes are ordered in a lattice by their length. String
 $\mathsf{S}$ is smaller than string $\mathsf{T}$ if $\mathsf{T}$ is a
-prefix of $mathsf{S}$ or $\mathsf{S}$ is the bottom of the domain $\bot$.
+prefix of $\mathsf{S}$ or $\mathsf{S}$ is the bottom of the domain $\bot$.
 The length of string abstract values decreases as prefixes are closer to
 the top element $\top$. The situation is demonstrated in figure
 \ref{fig:prefixlattice}.
@@ -800,24 +824,29 @@ the top element $\top$. The situation is demonstrated in figure
 \label{fig:prefixlattice}
 \end{figure}
 
-The least upper bound operator is defined as:
+The least upper bound operator $\sqcap$ is defined as:
 
 \begin{align*}
 \sqcap (\mathsf{S_1}, \mathsf{S_2}) =
 \begin{cases}
-\mathsf{S} & \text{where } \mathsf{S} = prefix(\mathsf{S_1}, \mathsf{S_2}) \\
+\mathsf{S} & \text{where } \mathsf{S}
+  = \textit{prefix}(\mathsf{S_1}, \mathsf{S_2}) \\
 \top       & \text{otherwise}
 \end{cases}
 \end{align*}
 
-where function $prefix(\mathsf{S_1}, \mathsf{S_2})$ returns longest common
-prefix of strings $\mathsf{S_1}$ and $\mathsf{S_2}$.
+where function $\textit{prefix}(\mathsf{S_1}, \mathsf{S_2})$ returns the
+longest common prefix of strings $\mathsf{S_1}$ and $\mathsf{S_2}$. For
+example, $\textit{prefix}(\texttt{"capture"}, \texttt{"caption"})$ returns
+\texttt{"capt"} and for $\textit{prefix}(\texttt{"house"}, \texttt{"car"})$
+returns $\varepsilon$.
 
 Simply put, the least upper bound of two strings $\mathsf{S_1}$ and
-$\mathsf{S_2}$ is the longest common prefix of these strings. If there isn't
-one, the upper bound is the top element of the lattice $\top$.
+$\mathsf{S_2}$ is the longest common prefix of these strings. If there is
+none, the upper bound is the top element of the lattice $\top$.
 
-In a similar fashion, the greater lower bound operator is defined by:
+In a similar fashion, the greater lower bound operator $\sqcup$ is defined
+by:
 
 \begin{align*}
 \sqcup (\mathsf{S_1}, \mathsf{S_2}) =
@@ -826,6 +855,14 @@ In a similar fashion, the greater lower bound operator is defined by:
 \mathsf{S_2} & \text{if } \mathsf{S_2} \leq \mathsf{S_1} \\
 \bot         & \text{otherwise}
 \end{cases}
+\end{align*}
+
+intuitive explanation
+
+The semantics for \textit{concatenation} operation is defined as:
+
+\begin{align*}
+def
 \end{align*}
 
 

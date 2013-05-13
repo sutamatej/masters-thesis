@@ -35,7 +35,6 @@
 * scope: cca 10 pages
 * what was created, invented, studied, found out, calculated, designed,
   simplified, inferred, enhanced, etc?
-* problems with strings and their analysis?
 * what domains have been invented for string analysis?
 * Prefix string domain
 
