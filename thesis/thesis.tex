@@ -152,7 +152,7 @@ interpreter.
 
 The notion of quality is an abstract concept. In software engineering it
 represents a multi-aspect property of a product which includes but is not
-limited to characteristics such asstability, maintainability, realiability,
+limited to characteristics such as stability, maintainability, realiability,
 efficiency or security. It plays an important role in recognition of
 particular software.
 
@@ -626,7 +626,7 @@ formal definition of AI
 
 Abstract interpretation promises better scalability when compared to other
 methods such as model checking or symbolic execution. It tries to achieve
-this through appropriate abstraction choice. 
+this through appropriate abstraction choice.
 
 
 \chapter{Solution design}
@@ -736,7 +736,7 @@ The primary goal of domains described in following sections is to
 abstract strings so that they provide useful informations about file
 paths. Normally, in UNIX-like operating systems such as Linux or Mac OS
 the path is represented by a string containing slash \texttt{'/'} characters
-and names of folders or files in between them. TODO example of filepath
+and names of folders or files in between them.
 
 As per the definition of abstract domain from section
 \ref{sec:abstractinterpretation} the members of lattice need to be
@@ -785,7 +785,7 @@ function $\textit{substr}(1, 4, \texttt{"automatic"})$ which returns
 
 The first of the designed abstract domains is the one that approximates
 a string by its prefix. It is based of works of Giulia Constantini,
-Pietro Ferrara and Agostino Cortesi \cite{Constantini-1}. This domain
+Pietro Ferrara and Agostino Cortesi \cite{Constantini11-1}. This domain
 is has simple semantics, thus it provides a good introduction into the
 designed abstract domains.
 
@@ -798,18 +798,18 @@ omitted from this notation.
 Partial ordering $\leq$ on this domain is defined as:
 
 \begin{align*}
-\mathsf{S} \leq \mathsf{T} \Leftrightarrow
-  \mathsf{S} = \bot \lor (\forall i \in [0, len(\mathsf{T}) - 1] :
-  len(\mathsf{T}) \leq len(\mathsf{S}) \land \mathsf{T}[i] = \mathsf{S}[i])
+x \leq y \Leftrightarrow
+  x = \bot \lor (\forall i \in [0, |y| - 1] :
+  |y| \leq |x| \land y[i] = x[i])
 \end{align*}
 
-where $len(\mathsf{T})$ is a function which returns a length of string and
-$\mathsf{S}$ and $\mathsf{T}$ are abstract values representing string
+where $y$ is a function which returns a length of string and
+$x$ and $y$ are abstract values representing string
 prefixes.
 
-Intuitively, prefixes are ordered in a lattice by their length. String
-$\mathsf{S}$ is smaller than string $\mathsf{T}$ if $\mathsf{T}$ is a
-prefix of $\mathsf{S}$ or $\mathsf{S}$ is the bottom of the domain $\bot$.
+Intuitively, prefixes are ordered in a lattice by their length. Prefix
+$x$ is smaller than string $y$ if $y$ is a
+prefix of $x$ or $x$ is the bottom of the domain $\bot$.
 The length of string abstract values decreases as prefixes are closer to
 the top element $\top$. The situation is demonstrated in figure
 \ref{fig:prefixlattice}.
@@ -898,7 +898,7 @@ The \textit{substr} operations semantics is defined by:
 \begin{cases}
 x[i] \dots x[j - 1]   & \text{if } j \leq |x| \\
 x[i] \dots x[|x| - 1] & \text{if } j > |x| \land i < |x| \\
-\top               & \text{otherwise}
+\top                  & \text{otherwise}
 \end{cases}
 \end{align*}
 
@@ -912,7 +912,105 @@ all other cases.
 
 \section{Suffix abstract domain}
 
+The second domain is complementary to the domain approximating using
+prefixes. It was presented in the same paper \cite{Constantini11-1} as the
+prefix domain. It is relatively simple as well.
 
+Abstract values for this domain are represented by string suffixes.
+The notation chosen for suffixes is $*abc$ where $abc$ are symbols of
+suffix and $*$ any string. The asterisk is left out since it is always
+there.
+
+Partial order $\leq$ for suffixes $x$ and $y$ is:
+
+\begin{align*}
+x \leq y \Leftrightarrow
+  x = \bot \lor (\forall i \in [0, |y| - 1] : |y| \leq |x| \land
+    y[i] = x[i + |x| - |y|])
+\end{align*}
+
+For better illustration, the figure \ref{fig:suffixlattice} shows an
+example of suffix abstract domain with such order.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[align=center]
+
+\node (top) at (0, 3) {$\top$};
+\node (n) at (0, 2) {n};
+\node (on) at (-2, 1) {on};
+\node (un) at (2, 1) {un};
+\node (ion) at (-3, 0) {ion};
+\node (ton) at (-1, 0) {ton};
+\node (sun) at (1, 0) {sun};
+\node (fun) at (3, 0) {fun};
+\node (bottom) at (0, -1) {$\bot$};
+
+\draw (top) -- (n);
+\draw (n) -- (on);
+\draw (n) -- (un);
+\draw (on) -- (ion);
+\draw (on) -- (ton);
+\draw (un) -- (sun);
+\draw (un) -- (fun);
+\draw (ion) -- (bottom);
+\draw (ton) -- (bottom);
+\draw (sun) -- (bottom);
+\draw (fun) -- (bottom);
+
+\end{tikzpicture}
+\caption{Suffix abstract domain}
+\label{fig:suffixlattice}
+\end{figure}
+
+The least upper bound $\sqcap$ is:
+
+\begin{align*}
+\sqcap (x, y) =
+\begin{cases}
+z    & \text{where } z = \textit{suffix}(x,  y) \\
+\top & \text{otherwise}
+\end{cases}
+\end{align*}
+
+where function \textit{suffix} returns the longest common suffix of the
+two strings $x$ and $y$. If these strings have common suffix then the least
+upper bound is their longest common suffix. Otherwise it is the top
+element $\top$.
+
+The greater lower bound is defined as:
+
+\begin{align*}
+\sqcup (x, y) =
+\begin{cases}
+x    & \text{if } x \leq y \\
+y    & \text{if } y \leq x \\
+\bot & \text{otherwise}
+\end{cases}
+\end{align*}
+
+If it is possible to compare the two strings, then it is the smaller of the
+two. It is the bottom element $\bot$ for all other cases.
+
+The \textit{concat} operation for suffix domain is the second of the
+concatenated strings:
+
+\begin{align*}
+\textit{concat}(x, y) = y
+\end{align*}
+
+The \textit{substr} operation is unusually simple:
+
+\begin{align*}
+\textit{substr}(i, j, x) = \top
+\end{align*}
+
+It returns the top element $\top$ for all the possible inputs, because
+it is impossible to tell whether indexes $i$ and $j$ are within the
+boundaries of the suffix.
+
+An example of the domain usage could be filtering files or directories
+based on their extensions.
 
 
 \section{Trie abstract domain}
@@ -957,7 +1055,7 @@ operations to update abstract values stored in analysis state.
 \end{description}
 
 The tool is utilizes llvm compiler infrastructure. It provides
-a frontend called CLang that contains compilers for C, C++, Objective C and
+a frontend called Clang that contains compilers for C, C++, Objective C and
 Objective C++ capable of emitting LLVM bitcode. The bitcode is a platform
 independent representation of program that is suitable for static analysis.
 There are other static analysis tools that leverage the same idea, namely
@@ -1022,7 +1120,7 @@ which provides their type definitions. These methods are:
 
 \item is bottom
 
-\end{itemize} 
+\end{itemize}
 
 
 \section{String prefix}
@@ -1133,7 +1231,7 @@ G{.} A{.} Kildall.
 \newblock In \emph{Proceedings of the 1st annual ACM SIGACT-SIGPLAN
   symposium on Principles of programming}, pages 194--206, 1973.
 
-\bibitem{Constantini-1}
+\bibitem{Constantini11-1}
 G{.} Constantini, P{.} Ferrara, A{.} Cortesi.
 \newblock Static analysis of string values.
 \newblock In \emph{Proceedings of the 13th Internation Conference on Formal
