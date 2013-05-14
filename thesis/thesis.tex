@@ -147,7 +147,7 @@ instructions for compiling and running the \texttt{canal} abstract
 interpreter.
 
 
-\chapter{Static analysis and abstract interpretation}
+\chapter{Static analysis}
 \label{chap:preliminaries}
 
 The notion of quality is an abstract concept. In software engineering it
@@ -357,11 +357,15 @@ analysis. Module-level analysis is employed on compilation unit scope.
 The analysis of the whole product is responsibility of global analysis
 which is also the most expensive computation-wise.
 
-Other techniques try to gain the most from the methods that are based
+
+\section{Static analysis methods}
+
+Some techniques try to gain the most from the methods that are based
 on mathematical approach. Collectively, they are called \textit{formal}
 methods.
 
-\paragraph{Model checking}
+
+\subsection{Model checking}
 
 E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} describe the model
 checking as an automated technique for finite-state systems. Specifications
@@ -405,7 +409,8 @@ efficiently.
 \label{fig:bdd}
 \end{figure}
 
-\paragraph{Data-flow analysis}
+
+\subsection{Data-flow analysis}
 
 The data-flow analysis represents program as a control flow graph where
 nodes are blocks of the program and edges represent the flow of
@@ -434,7 +439,8 @@ of blocks.
 \label{fig:dfg}
 \end{figure}
 
-\paragraph{Symbolic execution}
+
+\subsection{Symbolic execution}
 
 The basic idea is to use symbolic variables instead of the real ones.
 For instance, one such usage can be observed in figure \ref{fig:se}.
@@ -469,10 +475,15 @@ final values & $b$             & $a$ \\
 \label{fig:se}
 \end{figure}
 
-\paragraph{Abstract interpretation}
+\subsection{Abstract interpretation}
 
 The abstract interpretation is described in detail in section
 \ref{sec:abstractinterpretation}.
+
+
+\chapter{Abstract interpretation and strings}
+
+TODO intro
 
 
 \section{Abstract interpretation}
@@ -629,15 +640,6 @@ methods such as model checking or symbolic execution. It tries to achieve
 this through appropriate abstraction choice.
 
 
-\chapter{Solution design}
-\label{chap:design}
-
-This chapter describes strings and three approaches that have been designed
-to analyze strings within abstract interpretation framework. Strings play
-an important role in day-to-day computer programming. Nowadays, they are
-an essential part of every major programming language.
-
-
 \section{Strings}
 \label{sec:strings}
 
@@ -730,6 +732,15 @@ string containing an XML document and string containing filepath. They
 have different properties. TODO explain
 
 
+\chapter{Solution design}
+\label{chap:design}
+
+This chapter describes strings and three approaches that have been designed
+to analyze strings within abstract interpretation framework. Strings play
+an important role in day-to-day computer programming. Nowadays, they are
+an essential part of every major programming language.
+
+
 \section{String abstract domains}
 
 The primary goal of domains described in following sections is to
@@ -803,9 +814,7 @@ x \leq y \Leftrightarrow
   |y| \leq |x| \land y[i] = x[i])
 \end{align*}
 
-where $y$ is a function which returns a length of string and
-$x$ and $y$ are abstract values representing string
-prefixes.
+where $x$ and $y$ are abstract values representing string prefixes.
 
 Intuitively, prefixes are ordered in a lattice by their length. Prefix
 $x$ is smaller than string $y$ if $y$ is a
@@ -848,33 +857,33 @@ the top element $\top$. The situation is demonstrated in figure
 The least upper bound operator $\sqcap$ is defined as:
 
 \begin{align*}
-\sqcap (\mathsf{S_1}, \mathsf{S_2}) =
+\sqcap (x, y) =
 \begin{cases}
-\mathsf{S} & \text{where } \mathsf{S}
-  = \textit{prefix}(\mathsf{S_1}, \mathsf{S_2}) \\
+z & \text{where } z
+  = \textit{prefix}(x, y) \\
 \top       & \text{otherwise}
 \end{cases}
 \end{align*}
 
-where function $\textit{prefix}(\mathsf{S_1}, \mathsf{S_2})$ returns the
-longest common prefix of strings $\mathsf{S_1}$ and $\mathsf{S_2}$. For
+where function $\textit{prefix}(x, y)$ returns the
+longest common prefix of strings $x$ and $y$. For
 example, $\textit{prefix}(\texttt{"capture"}, \texttt{"caption"})$ returns
 \texttt{"capt"} and for $\textit{prefix}(\texttt{"house"}, \texttt{"car"})$
 returns $\varepsilon$.
 
-Simply put, the least upper bound of two strings $\mathsf{S_1}$ and
-$\mathsf{S_2}$ is the longest common prefix of these strings. If there is
+Simply put, the least upper bound of two strings $x$ and $y$
+is the longest common prefix of these strings. If there is
 none, the upper bound is the top element of the lattice $\top$.
 
 In a similar fashion, the greater lower bound operator $\sqcup$ is defined
 by:
 
 \begin{align*}
-\sqcup (\mathsf{S_1}, \mathsf{S_2}) =
+\sqcup (x, y) =
 \begin{cases}
-\mathsf{S_1} & \text{if } \mathsf{S_1} \leq \mathsf{S_2} \\
-\mathsf{S_2} & \text{if } \mathsf{S_2} \leq \mathsf{S_1} \\
-\bot         & \text{otherwise}
+x    & \text{if } x \leq y \\
+y    & \text{if } y \leq x \\
+\bot & \text{otherwise}
 \end{cases}
 \end{align*}
 
