@@ -355,7 +355,7 @@ To include the semantics in the analysis, its scope needs to be increased
 \cite{Chess04-1}. The code can be analyzed on a function level by local
 analysis. Module-level analysis is employed on compilation unit scope.
 The analysis of the whole product is responsibility of global analysis
-which is also the most computation-expensive one.
+which is also the most expensive computation-wise.
 
 Other techniques try to gain the most from the methods that are based
 on mathematical approach. Collectively, they are called \textit{formal}
@@ -725,9 +725,9 @@ a \texttt{"var"} string which might tell a programmer that variable
 declaration follows.
 
 The versatility of strings makes it difficult to analyze them in general.
-Intuitively, one can feel there's a difference when trying to analyze
+Intuitively, one can feel there is a difference when trying to analyze
 string containing an XML document and string containing filepath. They
-have different properties. TODO
+have different properties. TODO explain
 
 
 \section{String abstract domains}
@@ -736,28 +736,49 @@ The primary goal of domains described in following sections is to
 abstract strings so that they provide useful informations about file
 paths. Normally, in UNIX-like operating systems such as Linux or Mac OS
 the path is represented by a string containing slash \texttt{'/'} characters
-and names of folders or files in between them.
+and names of folders or files in between them. TODO example of filepath
 
-Following the definition of abstract domain from section TODO set, top, bottom
-\ref{sec:abstractinterpretation} these are the operations that
-need to be defined for every suggested domain:
+As per the definition of abstract domain from section
+\ref{sec:abstractinterpretation} the members of lattice need to be
+specified for every suggested domain:
 
 \begin{itemize}
 
-\item order for elements $\leq$
+\item set $A$ contains abstract values of particular set (prefixes,
+suffixes, tries)
 
-\item least upper bound $\sqcap$
+\item partial ordering $\leq$ of abstract values in abstract domain
 
-\item greater lower bound $\sqcup$
+\item least upper bound $\sqcap$ for every pair of abstract values
+
+\item greater lower bound $\sqcup$ for every pair of abstract values
+
+\item top element $\top$
+
+\item bottom element $\bot$
 
 \end{itemize}
 
 Besides that, the operations specific to particular domain need to be
 defined. In this case these are based on functions available to programmer.
 Obviously, the C standard library provides numerous functions that operate
-on strings.
+on strings, but for the purposes of this work concatenation and
+substring functions will suffice. (TODO: why?) They are denoted as \textit{concat} and
+\textit{substr} respectively.
 
-specific operations -- concatenation, substring, why these two??
+The \textit{concat} function has two arguments -- strings that need to be
+concatenated. The function follows the semantics of concatenation
+operation described in section \ref{sec:strings} and returns these two
+strings chained together as one. For instance,
+$\textit{concat}(\texttt{"geo"}, \texttt{"logy"})$ yields \texttt{"geology"}.
+
+The \textit{substr} function takes three arguments: a string $x$ and two
+natural numbers $i$ and $j$ assuming $i < j$. The function returns a
+substring of string $x$ from the $i$-th to the $j$-th symbol of the string.
+Note that strings are indexed the same way as arrays -- $x[0]$ is the first
+symbol of $x$, $x[1]$ is the second and so on. As an example consider the
+function $\textit{substr}(1, 4, \texttt{"automatic"})$ which returns
+\texttt{"utom"}.
 
 
 \section{Prefix abstract domain}
@@ -774,7 +795,7 @@ represents symbols of prefix and $*$ stands for any string, $\varepsilon$
 included. The asterisk is present in prefix all the time so it can be
 omitted from this notation.
 
-Partial ordering on this domain is defined as:
+Partial ordering $\leq$ on this domain is defined as:
 
 \begin{align*}
 \mathsf{S} \leq \mathsf{T} \Leftrightarrow
@@ -857,16 +878,41 @@ by:
 \end{cases}
 \end{align*}
 
-intuitive explanation
+The greater lower bound is the smaller of the two elements and if none
+of them is smaller then it is the bottom element $\bot$.
 
-The semantics for \textit{concatenation} operation is defined as:
+The semantics for \textit{concat} operation is defined as:
 
 \begin{align*}
-def
+\textit{concat}(x, y) = x
 \end{align*}
+
+where $x$ and $y$ are string prefixes. The \textit{concat} operation of two
+prefixes returns the first of the concatenated prefixes since it is the longest
+prefix that is surely included in resulting string.
+
+The \textit{substr} operations semantics is defined by:
+
+\begin{align*}
+\textit{substr}(i, j, x) =
+\begin{cases}
+x[i] \dots x[j - 1]   & \text{if } j \leq |x| \\
+x[i] \dots x[|x| - 1] & \text{if } j > |x| \land i < |x| \\
+\top               & \text{otherwise}
+\end{cases}
+\end{align*}
+
+The situation for substring function is not so straightforward.
+The \textit{substr} function returns substring from $i$-th to $j$-th symbol
+when index $j$ is less than the length of $x$, it returns symbols from
+$i$-th index to the end of $x$ if $i$ is less the length of $x$ but $j$
+is greater than the string length and it returns $\top$ top element in
+all other cases.
 
 
 \section{Suffix abstract domain}
+
+
 
 
 \section{Trie abstract domain}
