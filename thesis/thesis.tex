@@ -40,8 +40,7 @@
 }
 
 \usepackage{tikz}
-\tikzstyle{block} = [rectangle, draw,
-    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{block} = [rectangle, draw, text centered, rounded corners]
 
 \newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
 
@@ -448,16 +447,17 @@ return x;
 \end{lstlisting}
 \end{minipage}
 \begin{minipage}{0.7\textwidth}
-\begin{tikzpicture}[align=center]
+\centering
+\begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
-\node[block] (init) at (0, 2) {\texttt{x = 1, i = 0}};
-\node[block] (loop) at (0, 0) {\texttt{x = x * i, i = i + 1}};
-\node[block] (cond) at (0, 1) {\texttt{i < 5}};
-\node[block] (end) at (0, -1) {\texttt{return x}}
+\node[block] (init) at (0, 2) {\texttt{x = 1} \\ \texttt{i = 0}};
+\node[block] (loop) at (0, 1) {\texttt{x = x * i} \\ \texttt{i = i + 1}};
+\node[block] (cond) at (0, 0) {\texttt{i < 5}};
+\node[block] (end) at (0, -1) {\texttt{return x}};
 
 \draw [->] (init) -- (loop);
 \draw [->] (loop) -- (cond);
-\draw [->] (cond) -- (loop) node [midway, fill=white] {yes};
+\draw [->] (cond) -- (-1, 0) -- node [midway, fill=white] {yes} (-1, 1) -- (loop);
 \draw [->] (cond) -- (end) node [midway, fill=white] {no};
 
 \end{tikzpicture}
@@ -590,7 +590,7 @@ real numbers $\mathbb{R}$. A few outputs of abstraction function are in example
 \alpha(\{ -3.4, -1, -17 \}) &= (-) \\
 \alpha(\{ 1, 7.35 \}) &= (+) \\
 \alpha(\{ -5, 2.7 \}) &= (\pm) \\
-\end{align}
+\end{align*}
 \end{example}
 
 Complementary to the abstraction function is \textit{concretization
@@ -636,7 +636,8 @@ sign represents both positive and negative number since it can notbe decided wit
 certainty whether the result is one or the other. Thus, the result is in this case
 imprecise.
 
-\begin{table}
+\begin{table}[h]
+\centering
 \begin{tabular}{c|c|c}
 left  & right & result \\
 \hline
@@ -654,7 +655,8 @@ two abstract values $\otimes$ always returns precise result regardless of whethe
 the values are abstract or concrete. The table \ref{tab:abstractmult} shows all
 possible situations for this operation. Notice the lack of precision loss.
 
-\begin{table}
+\begin{table}[h]
+\centering
 \begin{tabular}{c|c|c}
 left & right & result \\
 \hline
@@ -1213,7 +1215,7 @@ that leverage the LLVM intermediate representation, namely Klee.
     label=lst:llvmir
 ]
 
-    \%Z = add i32 \%X, \%Y
+    %Z = add i32 %X, %Y
 
 \end{lstlisting}
 
