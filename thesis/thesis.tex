@@ -30,6 +30,7 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
 
 \usepackage{listings}
 
@@ -39,6 +40,8 @@
 }
 
 \usepackage{tikz}
+\tikzstyle{block} = [rectangle, draw,
+    text width=5em, text centered, rounded corners, minimum height=4em]
 
 \newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
 
@@ -384,6 +387,10 @@ of binary decision diagrams. An example of such diagram can be seen in
 figure \ref{fig:bdd}. These are more compact and may be handled
 efficiently.
 
+Model checking is used by DIVINE \footnote{http://divine.fi.muni.cz/} model
+checker developed by ParaDiSe Labs of Faculty of Informatics, Masaryk University
+in Brno
+
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
@@ -429,12 +436,32 @@ to prevent runtime errors due to ommiting the program sematics by usage
 of blocks.
 
 \begin{figure}[h]
-\centering
+\begin{minipage}{0.3\textwidth}
+\begin{lstlisting}
+int x = 1;
+int i = 0;
+do {
+    x = x * i;
+    i = i + 1;
+} while (i < 5);
+return x;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.7\textwidth}
 \begin{tikzpicture}[align=center]
 
+\node[block] (init) at (0, 2) {\texttt{x = 1, i = 0}};
+\node[block] (loop) at (0, 0) {\texttt{x = x * i, i = i + 1}};
+\node[block] (cond) at (0, 1) {\texttt{i < 5}};
+\node[block] (end) at (0, -1) {\texttt{return x}}
 
+\draw [->] (init) -- (loop);
+\draw [->] (loop) -- (cond);
+\draw [->] (cond) -- (loop) node [midway, fill=white] {yes};
+\draw [->] (cond) -- (end) node [midway, fill=white] {no};
 
 \end{tikzpicture}
+\end{minipage}
 \caption{Data flow graph and corresponding code}
 \label{fig:dfg}
 \end{figure}
@@ -452,6 +479,9 @@ execution of moderately complex program can lead to large number of paths
 that need to be checked. That being said, the continuous evolution in
 algorithm design and computer performance mitigate this problem.
 
+Symbolic execution is employed by Klee \footnote{http://klee.llvm.org/}
+static analyzer.
+
 \begin{figure}[h]
 \begin{minipage}{0.3\textwidth}
 \begin{lstlisting}[numbers=left]
@@ -467,7 +497,7 @@ line & $a$                       & $b$ \\
 1    & $a + b$                   & $b$ \\
 2    & $a + b$                   & $(a + b) - b$ \\
 3    & $(a + b) - ((a + b) - b)$ & $(a + b) - b$ \\
-\hline
+\hline \hline
 final values & $b$             & $a$ \\
 \end{tabular}
 \end{minipage}
@@ -477,13 +507,19 @@ final values & $b$             & $a$ \\
 
 \subsection{Abstract interpretation}
 
-The abstract interpretation is described in detail in section
-\ref{sec:abstractinterpretation}.
+A program is represented by set of instructions. When the program is
+running, every instruction changes the state of the program. Similarly,
+the execution of every instruction depends on the previous state.
+The abstract interpretation attempts to eliminate the number of possible
+program states by using an abstraction to encapsulte multiple states at once.
+It is described in detail in section \ref{sec:abstractinterpretation}.
 
 
 \chapter{Abstract interpretation and strings}
 
-TODO intro
+TODO more information
+This chapter presents theoretical foundations and term definitions for working with
+abstract interpretation and strings.
 
 
 \section{Abstract interpretation}
@@ -509,9 +545,6 @@ loss of precision. Still, an abstraction is often easier to reason about,
 mainly in terms of memory -- rather than keeping an enumeration of all
 possible values of a number, only an abstraction is kept in memory.
 
-Number 8 from this example represents a \textit{concrete} value. It is
-the value that is used during the actual computation.
-
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[align=center]
@@ -530,33 +563,114 @@ the value that is used during the actual computation.
 \label{fig:abstraction}
 \end{figure}
 
+Number 8 from this example represents a \textit{concrete value}. It is
+the value that is used during the actual computation. On the other hand
+\textit{abstract value} is the approximation of concrete value used for abstract
+interpretation purposes.
+
+Let the set of concrete values $\mathcal{C}$ and set of abstract values $A$, their members
+are identified as $C \in \mathcal{C}$ and $a \in A$.
+
 The shift from concrete value to abstraction is done with
-\textit{abstraction function}. This function maps concrete values to
-abstract properties of interest. It is traditionally denoted as
-$\alpha$.
+\textit{abstraction function}. This function maps a set of concrete values to
+abstract value which has properties of interest. It is traditionally denoted as
+$\alpha$ \cite{CousotCousot76-1}.
 
-definition
+\begin{align*}
+\alpha : \mathcal{C} \to A
+\end{align*}
 
-example
+For instance, let the abstraction be positive or negative numbers on set of
+real numbers $\mathbb{R}$. A few outputs of abstraction function are in example
+\ref{ex:abstractionfunc}.
+
+\begin{example}
+\label{ex:abstractionfunc}
+\begin{align*}
+\alpha(\{ -3.4, -1, -17 \}) &= (-) \\
+\alpha(\{ 1, 7.35 \}) &= (+) \\
+\alpha(\{ -5, 2.7 \}) &= (\pm) \\
+\end{align}
+\end{example}
 
 Complementary to the abstraction function is \textit{concretization
 function}. It is usually denoted as $\gamma$. It performs a mapping from
-abstract values to concrete values. This function is incomplete.
+abstract value to a set of concrete values. Formally \cite{CousotCousot76-1}:
 
-definition
+\begin{align*}
+\gamma : A \to \mathcal{C}
+\end{align*}
 
-example
+Following the previous example, the concretization function for abstraction
+of positive and negative numbers on $\mathbb{R}$ returns results such as displayed
+in example \ref{ex:concretizationfunc}. The function in this example returns all
+the values that fall into the intervals of positive or negative numbers. This property
+is called \textit{over-approximation}.
+
+\begin{example}
+\label{ex:concretizationfunc}
+\begin{align*}
+\gamma((+)) &= (0, \infty \rangle \\
+\gamma((-)) &= \langle -\infty, 0) \\
+\gamma((\pm)) &= \langle -\infty, \infty \rangle \\
+\end{align*}
+\end{example}
+
+Galois connection
 
 Naturally, operations on concrete values need to be somehow transformed
-in order to function on abstract values. Such transformed operation is
-called \textit{abstract operation}.
+in order to function on abstract values. N\"{a}ive approach to this problem
+would be to use the concretization function $\gamma$ to transform abstract values
+to concrete values, perform the actual operation and then turn the concrete values
+back to abstract using abstraction function $\alpha$. Unfortunately, such approach
+is very computation-demanding. Instead, concrete operations should be transformed to their
+"native" counterparts which operate with abstract values directly. An operation that
+has been transformed this way is called \textit{abstract operation}.
 
-example
+Consider the abstraction of positive and negative numbers on set of real numbers
+$\mathbb{R}$. The operation of adding $+$ is straightforward for concrete numbers.
+However, its matching abstract operation $\oplus$ can return interesting results.
+The list of all possible results is in table \ref{tab:abstractplus}. Note that
+$(+) \oplus (-) = (\pm)$, because $2 + (-1) = 1$ and $2 + (-3) = -1$. The $\pm$
+sign represents both positive and negative number since it can notbe decided with
+certainty whether the result is one or the other. Thus, the result is in this case
+imprecise.
+
+\begin{table}
+\begin{tabular}{c|c|c}
+left  & right & result \\
+\hline
+$(+)$ & $(+)$ & $(+)$ \\
+$(+)$ & $(-)$ & $(\pm)$ \\
+$(-)$ & $(+)$ & $(\pm)$ \\
+$(-)$ & $(-)$ & $(-)$ \\
+\end{tabular}
+\caption{Abstract operation $\oplus$ semantics}
+\label{tab:abstractplus}
+\end{table}
+
+That being said, the loss of precision does not occur always. Multiplication of
+two abstract values $\otimes$ always returns precise result regardless of whether
+the values are abstract or concrete. The table \ref{tab:abstractmult} shows all
+possible situations for this operation. Notice the lack of precision loss.
+
+\begin{table}
+\begin{tabular}{c|c|c}
+left & right & result \\
+\hline
+$(+)$ & $(+)$ & $(+)$ \\
+$(+)$ & $(-)$ & $(-)$ \\
+$(-)$ & $(+)$ & $(-)$ \\
+$(-)$ & $(-)$ & $(+)$ \\
+\end{tabular}
+\caption{Abstract operation $\otimes$ semantics}
+\label{tab:abstractmult}
+\end{table}
 
 Lattice
 
 Concrete values are organized in \textit{concrete domain}. Formally,
-the concrete domain is a complete lattice $L$:
+the concrete domain is a complete lattice $L$ \cite{Constantini11-1}:
 
 \begin{align*}
 L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
@@ -600,13 +714,14 @@ for set $A = \{ 1, 2, 3 \}$ can be found in figure
 Abstract properties are encoded in modules with data structures called
 \textit{abstract domain}. This module is a set of all abstract values
 for given abstraction. Formally, abstract domain forms a complete
-lattice $L'$:
+lattice $L'$ \cite{Constantini11-1}:
 
 \begin{align*}
 L' = \langle \bar{A}, \leq, \bot, \top, \sqcup, \sqcap  \rangle
 \end{align*}
 
-Consider the abstraction of positive and negative numbers on set of real
+Intuitively, the abstract domain encapsulates multiple concrete states of
+program execution. Consider the abstraction of positive and negative numbers on set of real
 numbers $\mathbb{R}$. The abstract domain for this abstraction is displayed
 in figure \ref{fig:abstractdomain}.
 
@@ -634,6 +749,10 @@ in figure \ref{fig:abstractdomain}.
 fixpoint?
 
 formal definition of AI
+
+correctness -- soundness, completeness, termination (widening)
+
+conclusion, how it works?
 
 Abstract interpretation promises better scalability when compared to other
 methods such as model checking or symbolic execution. It tries to achieve
@@ -1024,14 +1143,29 @@ based on their extensions.
 
 \section{Trie abstract domain}
 
+Trie abstract domain approximates stirng as \textit{trie} data structure.
+The name "trie" comes from word "retrieval" as in information retrieval. It
+is a tree-like data structure where every node represents a set of all keys
+that begin a certain sequence of symbols -- prefix. Trie is especially useful
+for searching purposes. It provides good tradeoff between the memory
+
+In order to preserve memory space, the trie can be compressed. Nodes
+can contain whole substrings, not just symbols of the string. This optimization
+should reduce the number of trie nodes. As a result of this optimization every
+node that is not leaf has at least two children.
+
+This domain provides better precision than prefix or suffix, but it is more
+resounce-demanding -- both the space it occupies and the time it takes to perform
+operations on it.
+
 
 \chapter{Implementation}
 \label{chap:implementation}
 
 Abstract domains designed in chapter \ref{chap:design} are applied in the
-context of \texttt{canal} abstract interpreter. First, the architecture of
-the interpreter is described and then the implementation of individual
-domains is presented.
+context of \texttt{canal} abstract interpreter. First part describes the architecture of
+the interpreter. The rest of the chapter deals with the implementation of individual
+domainss.
 
 
 \section{\texttt{canal}}
@@ -1063,18 +1197,31 @@ operations to update abstract values stored in analysis state.
 
 \end{description}
 
-The tool is utilizes llvm compiler infrastructure. It provides
+The tool is utilizes LLVM compiler infrastructure. The infrastructure provides
 a frontend called Clang that contains compilers for C, C++, Objective C and
-Objective C++ capable of emitting LLVM bitcode. The bitcode is a platform
-independent representation of program that is suitable for static analysis.
-There are other static analysis tools that leverage the same idea, namely
-klee.
+Objective C++ capable of emitting LLVM intermediate representation. The
+intermediate representation is a platform independent representation of
+program that is suitable for static analysis. The representation is static
+single assignment representation that provides type safety, low-level operations,
+flexibility and the capability to represent "all" high-level languages cleanly
+\cite{llvm13-1}. It is similar to assembly language which is human-readable,
+see an example in listing \ref{lst:llvmir}. There are other static analysis tools
+that leverage the LLVM intermediate representation, namely Klee.
 
-The whole process of analysis is performed in following steps:
+\begin{lstlisting}[
+    caption={LLVM intermediate representation},
+    label=lst:llvmir
+]
+
+    \%Z = add i32 \%X, \%Y
+
+\end{lstlisting}
+
+The whole process of analysis by \texttt{canal} is performed in following steps:
 
 \begin{enumerate}
 
-\item compilation of a program that is being analyzed into the llvm bitcode
+\item compilation of a program that is being analyzed into the LLVM intermediate
 representation
 
 \item loading of compiled program into the interpreter and initialization
@@ -1102,8 +1249,8 @@ successfully analyzed by interpreter.
 \section{Domain interface in \texttt{canal}}
 
 Since \texttt{canal} abstract interpreter is implemented in C++ it enables
-usage of classes. Every domain in it corresponds to single class and
-operations on the domain are implemented as methods of particular class.
+the usage of classes. Every domain in it corresponds to single class and
+operations on the domain are implemented as methods of the particular class.
 Most of the operations are domain-specific, but there are a few methods
 that are universally required to be implemented in order for abstract
 values to form a lattice.
@@ -1117,23 +1264,24 @@ which provides their type definitions. These methods are:
 
 \item meet
 
-\item equality
+\item equality -- this operation verifies that two abstract values are the same
 
-\item inclusion
+\item inclusion --
 
-\item set top
+\item set top -- sets the abstract value to top $\top$
 
-\item set bottom
+\item set bottom -- sets the abstract value to bottom $\bot$
 
-\item is top
+\item is top -- check if the abstract value is top $\top$
 
-\item is bottom
+\item is bottom -- check if the abstract value is bottom $\bot$
 
 \end{itemize}
 
 
 \section{String prefix}
 
+The prefix of a string is internally represented by standard \texttt{string} container.
 
 
 
@@ -1251,6 +1399,16 @@ K{.} Klíč.
 \newblock Canal, abstract intepreter for real-world application programs.
 \newblock Available at \url{https://github.com/karelklic/canal/blob/master/README}
   (May 2013).
+
+\bibitem{CousotCousot76-1}
+P{.} Cousot and R{.} Cousot.
+\newblock Static determination of dynamic properties of programs.
+\newblock In {\em Proceedings of the Second International Symposium on
+  Programming}, pages 106--130. Dunod, Paris, France, 1976.
+
+\bibitem{llvm13-1}
+\newblock LLVM language reference manual
+\newblock Available at \url{http://llvm.org/docs/LangRef.html} (May 2013).
 
 \end{thebibliography}
 
