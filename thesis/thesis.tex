@@ -24,6 +24,8 @@
 \usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}
 %\usepackage[all]{hypcap}
 
+\usepackage{multirow}
+
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -139,7 +141,9 @@ is to design, implement and integrate several abstract domains for strings
 into \texttt{canal} abstract interpreter. \texttt{canal} is a tool designed
 to analyze behavior of application programs written in \texttt{C}.
 
-The text has the following outline: chapter~\ref{chap:preliminaries}
+The text has the following outline: chanpter \ref{chap:staticanalysis} shows
+techniques currently used for improving the quality of software and static
+analysis in particular. Chapter~\ref{chap:preliminaries}
 presents preliminaries required to understand the abstract interpretation.
 In chapter~\ref{chap:design} several string abstract domains are designed.
 The implementation of designed domains is described in great detail in
@@ -150,7 +154,7 @@ interpreter.
 
 
 \chapter{Static analysis}
-\label{chap:preliminaries}
+\label{chap:staticanalysis}
 
 The notion of quality is an abstract concept. In software engineering it
 represents a multi-aspect property of a product which includes but is not
@@ -516,6 +520,7 @@ It is described in detail in section \ref{sec:abstractinterpretation}.
 
 
 \chapter{Abstract interpretation and strings}
+\label{chap:preliminaries}
 
 TODO more information
 This chapter presents theoretical foundations and term definitions for working with
@@ -669,18 +674,63 @@ $(-)$ & $(-)$ & $(+)$ \\
 \label{tab:abstractmult}
 \end{table}
 
-Lattice
+For the purpose of comparing two values some sort of order of elements needs to
+be defined \cite{Burris81-1}:
+
+\begin{definintion}
+A partial order $\leq$ is binary relation defined on set $A$, when for every
+$a, b, c \in A$ following rules hold:
+
+\begin{align*}
+a \leq a \\
+a \leq b \text{ and } b \leq a \text{ implies } a = b \\
+a \leq b \text{ and } b \leq c \text{ implies } a \leq c \\
+\end{align*}
+
+These rules are also known as \textit{reflexivity}, \textit{antisymmetry} and
+\textit{transitivity}.
+
+\end{definintion}
+
+Analyzed values need to be described by a mathematical structure that is compliant with
+requirements posed by abstract interpretation. Ordinarily, a \textit{lattice} is used in this
+context. It is defined as \cite{Burris81-1}:
+
+\begin{definition}
+A lattice is tuple $L = \langle A, \leq \rangle$, where:
+
+\begin{itemize}
+\item $A$ is a set of all elements
+\item $\leq$ is partial order on $A$
+\item for every $a, b \in A$ both \sup \{ a, b \} \in A$ and $\inf \{ a, b \} \in A$ hold
+\end{itemize}
+
+\end{definition}
+
+Frequently, join and meet operations are extracted to emphasize their special position
+within the lattice -- $L = \langle A, \leq, \land, \lor \rangle$
+
+\begin{definition}
+A bounded lattice \cite{Burris81-1} is tuple = $L = \langle A, \leq, \land, \lor, 0, 1 \rangle$, where:
+
+\begin{itemize}
+\item $\langle A, \leq, \land, \lor \rangle$ is a lattice
+\item $x \land 0 \approx 0; x \lor 1 \approx 1$
+\end{itemize}
+
+Element 0 is also sometimes denoted as $\bot$ and is called \textit{bottom}. Element 1 is
+being referred to as \textit{top} and is denoted $\bot$.
+\end{definition}
 
 Concrete values are organized in \textit{concrete domain}. Formally,
-the concrete domain is a complete lattice $L$ \cite{Constantini11-1}:
+the concrete domain is a complete lattice $L$ on set $A$ \cite{Constantini11-1}:
 
 \begin{align*}
 L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
 \end{align*}
 
 where $\mathcal{P} (A)$ is power set of $A$. An example of such lattice
-for set $A = \{ 1, 2, 3 \}$ can be found in figure
-\ref{fig:concretedomain}.
+for set $A = \{ 1, 2, 3 \}$ can be found in figure \ref{fig:concretedomain}.
 
 \begin{figure}[h]
 \centering
@@ -719,7 +769,7 @@ for given abstraction. Formally, abstract domain forms a complete
 lattice $L'$ \cite{Constantini11-1}:
 
 \begin{align*}
-L' = \langle \bar{A}, \leq, \bot, \top, \sqcup, \sqcap  \rangle
+L' = \langle \bar{A}, \sqsubseteq, \bot, \top, \sqcup, \sqcap  \rangle
 \end{align*}
 
 Intuitively, the abstract domain encapsulates multiple concrete states of
@@ -754,11 +804,16 @@ formal definition of AI
 
 correctness -- soundness, completeness, termination (widening)
 
-conclusion, how it works?
+To conclude, the abstract interpretation attempts to achieve fixpoint of abstract
+values by taking advantage of partial ordering of these values. While iterating
+through the program it uses abstract operations on abstract domains to obtain new
+abstract values until the fixpoint is reached. Abstract operations move the abstract
+values "upwards" in their respective domain lattices.
 
 Abstract interpretation promises better scalability when compared to other
 methods such as model checking or symbolic execution. It tries to achieve
-this through appropriate abstraction choice.
+this through appropriate abstraction choice. In fact, the choice of suitable abstraction
+is crucial in this promise.
 
 
 \section{Strings}
@@ -849,8 +904,9 @@ declaration follows.
 
 The versatility of strings makes it difficult to analyze them in general.
 Intuitively, one can feel there is a difference when trying to analyze
-string containing an XML document and string containing filepath. They
-have different properties. TODO explain
+string containing an XML document and string containing SQL query. They
+have different properties of interest and they both need to be formatted
+differently.
 
 
 \chapter{Solution design}
@@ -1411,6 +1467,11 @@ P{.} Cousot and R{.} Cousot.
 \bibitem{llvm13-1}
 \newblock LLVM language reference manual
 \newblock Available at \url{http://llvm.org/docs/LangRef.html} (May 2013).
+
+\bibitem{Burris81-1}
+S{.} Burris, H{.} P{.} Sankappanavar.
+\newblock A course in universal algebra.
+\newblock Springer-Verlag, 1981.
 
 \end{thebibliography}
 
