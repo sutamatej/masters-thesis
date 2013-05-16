@@ -172,6 +172,7 @@ improve these properties and abstract interpretation in particular.
 
 
 \section{Software quality evaluation techniques}
+\label{sec:softwarequality}
 
 Traditionally the set of quality control techniques are referred to as
 validation and verification. According to
@@ -395,7 +396,7 @@ Model checking is used by DIVINE \footnote{\url{http://divine.fi.muni.cz/}}
 model checker developed by ParaDiSe Labs of Faculty of Informatics,
 Masaryk University in Brno.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
@@ -439,7 +440,7 @@ not powerful enough to provide detailed information that could be used
 to prevent runtime errors due to ommiting the program sematics by usage
 of blocks.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{minipage}{0.3\textwidth}
 \begin{lstlisting}
 int x = 1;
@@ -487,7 +488,7 @@ algorithm design and computer performance mitigate this problem.
 Symbolic execution is employed by Klee \footnote{\url{http://klee.llvm.org/}}
 static analyzer.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{minipage}{0.3\textwidth}
 \begin{lstlisting}[numbers=left]
 a = a + b;
@@ -553,7 +554,7 @@ loss of precision. Still, an abstraction is often easier to reason about,
 mainly in terms of memory -- rather than keeping an enumeration of all
 possible values of a number, only an abstraction is kept in memory.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}[align=center]
 
@@ -595,6 +596,13 @@ example \ref{ex:abstractionfunc}.
 \begin{example}
 \label{ex:abstractionfunc}
 \begin{align*}
+\alpha(A) &=
+\begin{cases}
+(0) & \text{if } A = \{ 0 \} \\
+(+) & \text{if } \forall a \in A : a > 0 \\
+(-) & \text{if } \forall a \in A : a < 0 \\
+(\pm) & \text{otherwise}
+\end{cases} \\
 \alpha(\{ -3.4, -1, -17 \}) &= (-) \\
 \alpha(\{ 1, 7.35 \}) &= (+) \\
 \alpha(\{ -5, 2.7 \}) &= (\pm) \\
@@ -619,6 +627,13 @@ or negative numbers. This property is called \textit{over-approximation}.
 \begin{example}
 \label{ex:concretizationfunc}
 \begin{align*}
+\gamma(C) &=
+\begin{cases}
+\{ 0 \} & \text{if } C = 0 \\
+(0, \infty \rangle & \text{if } C = (+) \\
+\langle -\infty, 0) & \text{if } C = (-) \\
+\langle -\infty, \infty \rangle & \text{otherwise}
+\end{cases} \\
 \gamma((+)) &= (0, \infty \rangle \\
 \gamma((-)) &= \langle -\infty, 0) \\
 \gamma((\pm)) &= \langle -\infty, \infty \rangle \\
@@ -645,10 +660,10 @@ positive and negative number since it can not be decided with certainty
 whether the result is one or the other. Thus, the result is in this case
 imprecise.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{c|c|c}
-left  & right & result \\
+\multicolumn{2}{c|}{$\oplus$} & result \\
 \hline
 $(+)$ & $(+)$ & $(+)$ \\
 $(+)$ & $(-)$ & $(\pm)$ \\
@@ -665,10 +680,10 @@ of whether the values are abstract or concrete. The table
 \ref{tab:abstractmult} shows all possible situations for this operation.
 Notice the lack of precision loss.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{c|c|c}
-left & right & result \\
+\multicolumn{2}{c|}{$\otimes$} & result \\
 \hline
 $(+)$ & $(+)$ & $(+)$ \\
 $(+)$ & $(-)$ & $(-)$ \\
@@ -690,13 +705,13 @@ A partial order $\leq$ is binary relation defined on set $A$, when following
 rules hold:
 
 \begin{align}
-\forall a \in A : a \leq a \\
-\forall a, b \in A : a \leq b \land b \leq a \Rightarrow a = b \\
-\forall a, b, c \in A : a \leq b \land b \leq c \Rightarrow a \leq c \\
+\forall a \in A &: a \leq a \label{eq:refl} \\
+\forall a, b \in A &: a \leq b \land b \leq a \Rightarrow a = b \label{eq:antisym} \\
+\forall a, b, c \in A &: a \leq b \land b \leq c \Rightarrow a \leq c \label{eq:trans}
 \end{align}
 
-These rules are also known as \textit{reflexivity} (1),
-\textit{antisymmetry} (2) and \textit{transitivity} (3).
+These rules are also known as \textit{reflexivity} (\ref{eq:refl}),
+\textit{antisymmetry} (\ref{eq:antisym}) and \textit{transitivity} (\ref{eq:trans}).
 
 Partially ordered set is denoted as $\langle A, \leq \rangle$
 \end{definition}
@@ -713,7 +728,7 @@ Let $\langle A, \leq \rangle$ be a partially ordered set.
 \item element $u \in A$ is an \textit{upper bound} of $S \subseteq A$ if
 $\forall s \in S : s \leq u$
 
-\item element $l$ in $A$ is an \textit{lower bound} of $S \subseteq A$ if
+\item element $l \in A$ is a \textit{lower bound} of $S \subseteq A$ if
 $\forall s \in S : l \leq s$
 
 \item element $u \in A$ is a \textit{least upper bound} of $S \subseteq A$
@@ -785,7 +800,7 @@ L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
 where $\mathcal{P} (A)$ is power set of $A$. An example of such lattice
 for set $A = \{ 1, 2, 3 \}$ can be found in figure \ref{fig:concretedomain}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}[align=center, xscale=2, yscale=2]
 
@@ -830,7 +845,7 @@ program execution. Consider the abstraction of positive and negative
 numbers on set of real numbers $\mathbb{R}$. The abstract domain for this
 abstraction is displayed in figure \ref{fig:abstractdomain}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}[align=center]
 
@@ -851,22 +866,38 @@ abstraction is displayed in figure \ref{fig:abstractdomain}.
 \label{fig:abstractdomain}
 \end{figure}
 
-fixpoint?
-
 \begin{definition}
 An abstract interpretation $I$ of program $P$ is a tuple
 \end{definition}
 
-correctness -- soundness, completeness, termination (widening)
+Suppose a function $f: L \to L$ then $l$ is a \textit{fixed point}
+if $f(l) = l$. A fixed point can be achieved by using an iterative process
+such as $f_n(l) = f(f( \dots f(\bot) \dots ))$. Unfortunatelly, this process
+does not neccessarily have to converge to the fixed point or terminate.
+Because of that, an approximation for iteration must be used. Termination
+can be achieved via \textit{widening} operator. As an example, consider a
+computation which has not reached the fixed point after 10 iterations.
+To terminate the process, the value is set to $\top$ hence the fixed point
+is reached -- $f(\top) = \top$. This approach is simple to implement but
+results obtained this way are very imprecise.
 
-To conclude, the abstract interpretation attempts to achieve fixpoint of
+To conclude, the abstract interpretation attempts to achieve fixed point of
 abstract values by taking advantage of partial ordering of these values.
 While iterating through the program it uses abstract operations on abstract
 domains to obtain new abstract values until the fixpoint is reached.
 Abstract operations move the abstract values "upwards" in their respective
 domain lattices.
 
-Abstract interpretation promises better scalability when compared to other
+Abstract interpretation should ideally be sound, complete and should
+terminate \cite{}. As previously shown, termination can be achieved by using
+widening. Soundness of interpretation means that any property proved in
+abstraction is valid in concrete. Completeness means that property in the
+concrete is valid in abstract. In reality, abstracts interpreter are designed
+to be sound and to terminate, but they are incomplete. This is a result
+of the undecidability of Halting problem as described in
+section \ref{sec:softwarequality}. 
+
+This method promises better scalability when compared to other
 methods such as model checking or symbolic execution. It tries to achieve
 this through appropriate abstraction choice. In fact, the choice of suitable
 abstraction is crucial in this promise. Moreover, abstract interpretation
@@ -983,10 +1014,11 @@ The primary goal of domains described in following sections is to
 abstract strings so that they provide useful informations about file
 paths. Normally, in UNIX-like operating systems such as Linux or Mac OS
 the path is represented by a string containing slash \texttt{'/'} characters
-and names of folders or files in between them.
+and names of folders or files in between them. An example of such path could
+be \texttt{"/var/lib/dhcpcd"}.
 
 As per the definition of abstract domain from section
-\ref{sec:abstractinterpretation} the members of lattice need to be
+\ref{sec:abstractinterpretation} the members of complete lattice need to be
 specified for every suggested domain:
 
 \begin{itemize}
@@ -1010,7 +1042,8 @@ Besides that, the operations specific to particular domain need to be
 defined. In this case these are based on functions available to programmer.
 Obviously, the C standard library provides numerous functions that operate
 on strings, but for the purposes of this work concatenation and
-substring functions will suffice. (TODO: why?) They are denoted as \textit{concat} and
+substring functions will suffice. These function have been chosen because
+they modify string. They are denoted as \textit{concat} and
 \textit{substr} respectively.
 
 The \textit{concat} function has two arguments -- strings that need to be
@@ -1059,7 +1092,7 @@ The length of string abstract values decreases as prefixes are closer to
 the top element $\top$. The situation is demonstrated in figure
 \ref{fig:prefixlattice}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}[align=center]
 
@@ -1133,8 +1166,8 @@ The semantics for \textit{concat} operation is defined as:
 \end{align*}
 
 where $x$ and $y$ are string prefixes. The \textit{concat} operation of two
-prefixes returns the first of the concatenated prefixes since it is the longest
-prefix that is surely included in resulting string.
+prefixes returns the first of the concatenated prefixes since it is the
+longest prefix that is surely included in resulting string.
 
 The \textit{substr} operations semantics is defined by:
 
@@ -1272,19 +1305,19 @@ contain whole substrings, not just symbols of the string. This optimization
 should reduce the number of trie nodes. As a result of this optimization
 every node that is not leaf has at least two children. This is the type of
 trie which will be used throughout this thesis. An example of a trie
-representing strings \texttt{""} can be found in figure \ref{fig:trie}.
+representing strings \texttt{"great"}, \texttt{"growth"} and \texttt{"good"}
+can be found in figure \ref{fig:trie}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
-\begin{tikzpicture}
+\begin{tikzpicture}[font=\small]
 
-\node [circle, draw] (g) {\texttt{"g"}}
-  child {node [circle, draw] (r) {\texttt{"r"}}
-    child {node [circle, draw] (eat) {\texttt{"eat"}}}
-    child {node [circle, draw] (owth) {\texttt{"owth"}}}
+\node [circle, draw] (g) {\texttt{g}}
+  child {node [circle, draw] (r) {\texttt{r}}
+    child {node [circle, draw] (eat) {\texttt{eat}}}
+    child {node [circle, draw] (owth) {\texttt{owth}}}
   }
-  child {node [circle, draw] (ood) {\texttt{"ood"}}}
-};
+  child {node [circle, draw] (ood) {\texttt{ood}}};
 
 \path (g) -- (r);
 \path (g) -- (ood);
@@ -1292,7 +1325,8 @@ representing strings \texttt{""} can be found in figure \ref{fig:trie}.
 \path (r) -- (owth);
 
 \end{tikzpicture}
-\caption{Trie representing strings \texttt{"great"}, \texttt{"growth"} and \texttt{"good"}}
+\caption{Trie representing strings \texttt{"great"}, \texttt{"growth"} and
+  \texttt{"good"}}
 \label{fig:trie}
 \end{figure}
 
@@ -1305,9 +1339,9 @@ takes to perform operations on it.
 \label{chap:implementation}
 
 Abstract domains designed in chapter \ref{chap:design} are applied in the
-context of \texttt{canal} abstract interpreter. First part describes the architecture of
-the interpreter. The rest of the chapter deals with the implementation of individual
-domainss.
+context of \texttt{canal} abstract interpreter. First part describes the
+architecture of the interpreter. The rest of the chapter deals with the
+implementation of individual domains.
 
 
 \section{\texttt{canal}}
@@ -1339,16 +1373,17 @@ operations to update abstract values stored in analysis state.
 
 \end{description}
 
-The tool is utilizes LLVM compiler infrastructure. The infrastructure provides
-a frontend called Clang that contains compilers for C, C++, Objective C and
-Objective C++ capable of emitting LLVM intermediate representation. The
-intermediate representation is a platform independent representation of
-program that is suitable for static analysis. The representation is static
-single assignment representation that provides type safety, low-level operations,
-flexibility and the capability to represent "all" high-level languages cleanly
-\cite{llvm13-1}. It is similar to assembly language which is human-readable,
-see an example in listing \ref{lst:llvmir}. There are other static analysis tools
-that leverage the LLVM intermediate representation, namely Klee.
+The tool is utilizes LLVM compiler infrastructure. The infrastructure
+provides a frontend called Clang that contains compilers for C, C++,
+Objective C and Objective C++ capable of emitting LLVM intermediate
+representation. The intermediate representation is a platform independent
+representation of program that is suitable for static analysis.
+The representation is static single assignment representation that provides
+type safety, low-level operations, flexibility and the capability to
+represent "all" high-level languages cleanly \cite{llvm13-1}. It is similar
+to assembly language which is human-readable, see an example in
+listing \ref{lst:llvmir}. There are other static analysis tools that leverage
+the LLVM intermediate representation, namely Klee.
 
 \begin{lstlisting}[
     caption={LLVM intermediate representation},
@@ -1359,12 +1394,13 @@ that leverage the LLVM intermediate representation, namely Klee.
 
 \end{lstlisting}
 
-The whole process of analysis by \texttt{canal} is performed in following steps:
+The whole process of analysis by \texttt{canal} is performed in following
+steps:
 
 \begin{enumerate}
 
-\item compilation of a program that is being analyzed into the LLVM intermediate
-representation
+\item compilation of a program that is being analyzed into the LLVM
+intermediate representation
 
 \item loading of compiled program into the interpreter and initialization
 with abstract domains
@@ -1423,15 +1459,19 @@ which provides their type definitions. These methods are:
 
 \section{String prefix}
 
-The prefix of a string is internally represented by standard \texttt{string} container.
+The prefix of a string is internally represented by standard \texttt{string}
+container.
 
+TODO
 
 
 \section{String suffix}
 
+TODO
 
 \section{String trie}
 
+TODO
 
 \chapter{Conclusion}
 \label{chap:conclusion}
