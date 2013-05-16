@@ -29,6 +29,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{galois}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
@@ -390,9 +391,9 @@ of binary decision diagrams. An example of such diagram can be seen in
 figure \ref{fig:bdd}. These are more compact and may be handled
 efficiently.
 
-Model checking is used by DIVINE \footnote{http://divine.fi.muni.cz/} model
-checker developed by ParaDiSe Labs of Faculty of Informatics, Masaryk University
-in Brno
+Model checking is used by DIVINE \footnote{\url{http://divine.fi.muni.cz/}}
+model checker developed by ParaDiSe Labs of Faculty of Informatics,
+Masaryk University in Brno.
 
 \begin{figure}[h]
 \centering
@@ -483,7 +484,7 @@ execution of moderately complex program can lead to large number of paths
 that need to be checked. That being said, the continuous evolution in
 algorithm design and computer performance mitigate this problem.
 
-Symbolic execution is employed by Klee \footnote{http://klee.llvm.org/}
+Symbolic execution is employed by Klee \footnote{\url{http://klee.llvm.org/}}
 static analyzer.
 
 \begin{figure}[h]
@@ -515,24 +516,26 @@ A program is represented by set of instructions. When the program is
 running, every instruction changes the state of the program. Similarly,
 the execution of every instruction depends on the previous state.
 The abstract interpretation attempts to eliminate the number of possible
-program states by using an abstraction to encapsulte multiple states at once.
-It is described in detail in section \ref{sec:abstractinterpretation}.
+program states by using an abstraction to encapsulte multiple states at
+once. It is described in detail in section \ref{sec:abstractinterpretation}.
 
 
 \chapter{Abstract interpretation and strings}
 \label{chap:preliminaries}
 
-TODO more information
-This chapter presents theoretical foundations and term definitions for working with
-abstract interpretation and strings.
+This chapter is split into two parts:
+first part presents theoretical foundations and basic terms for
+abstract interpretation. Strings and their properties are defined in the
+second part. Both of these parts support the terminology used throughout
+the next chapters.
 
 
 \section{Abstract interpretation}
 \label{sec:abstractinterpretation}
 
 The abstract interpretation falls into the category of software
-verification by static analysis. It was first defined by P. Cousot and
-and R. Cousot in 1977 \cite{CousotCousot77-1}:
+verification methods by static analysis. It was first defined by P. Cousot
+and and R. Cousot in 1977 \cite{CousotCousot77-1}:
 
 \begin{definition}
 Abstract interpretation of program consists of using denotations of
@@ -570,24 +573,24 @@ possible values of a number, only an abstraction is kept in memory.
 
 Number 8 from this example represents a \textit{concrete value}. It is
 the value that is used during the actual computation. On the other hand
-\textit{abstract value} is the approximation of concrete value used for abstract
-interpretation purposes.
+\textit{abstract value} is the approximation of concrete value used for
+abstract interpretation purposes.
 
-Let the set of concrete values $\mathcal{C}$ and set of abstract values $A$, their members
-are identified as $C \in \mathcal{C}$ and $a \in A$.
+Let the set of concrete values $\mathcal{C}$ and set of abstract values $A$,
+their members are identified as $C \in \mathcal{C}$ and $a \in A$.
 
 The shift from concrete value to abstraction is done with
-\textit{abstraction function}. This function maps a set of concrete values to
-abstract value which has properties of interest. It is traditionally denoted as
-$\alpha$ \cite{CousotCousot76-1}.
+\textit{abstraction function}. This function maps a set of concrete values
+to abstract value which has properties of interest. It is traditionally
+denoted as $\alpha$ \cite{CousotCousot76-1}.
 
 \begin{align*}
 \alpha : \mathcal{C} \to A
 \end{align*}
 
 For instance, let the abstraction be positive or negative numbers on set of
-real numbers $\mathbb{R}$. A few outputs of abstraction function are in example
-\ref{ex:abstractionfunc}.
+real numbers $\mathbb{R}$. A few outputs of abstraction function are in
+example \ref{ex:abstractionfunc}.
 
 \begin{example}
 \label{ex:abstractionfunc}
@@ -600,17 +603,18 @@ real numbers $\mathbb{R}$. A few outputs of abstraction function are in example
 
 Complementary to the abstraction function is \textit{concretization
 function}. It is usually denoted as $\gamma$. It performs a mapping from
-abstract value to a set of concrete values. Formally \cite{CousotCousot76-1}:
+abstract value to a set of concrete values. Formally
+\cite{CousotCousot76-1}:
 
 \begin{align*}
 \gamma : A \to \mathcal{C}
 \end{align*}
 
 Following the previous example, the concretization function for abstraction
-of positive and negative numbers on $\mathbb{R}$ returns results such as displayed
-in example \ref{ex:concretizationfunc}. The function in this example returns all
-the values that fall into the intervals of positive or negative numbers. This property
-is called \textit{over-approximation}.
+of positive and negative numbers on $\mathbb{R}$ returns results such as
+displayed in example \ref{ex:concretizationfunc}. The function in this
+example returns all the values that fall into the intervals of positive
+or negative numbers. This property is called \textit{over-approximation}.
 
 \begin{example}
 \label{ex:concretizationfunc}
@@ -621,24 +625,24 @@ is called \textit{over-approximation}.
 \end{align*}
 \end{example}
 
-Galois connection
-
 Naturally, operations on concrete values need to be somehow transformed
 in order to function on abstract values. N\"{a}ive approach to this problem
-would be to use the concretization function $\gamma$ to transform abstract values
-to concrete values, perform the actual operation and then turn the concrete values
-back to abstract using abstraction function $\alpha$. Unfortunately, such approach
-is very computation-demanding. Instead, concrete operations should be transformed to their
-"native" counterparts which operate with abstract values directly. An operation that
-has been transformed this way is called \textit{abstract operation}.
+would be to use the concretization function $\gamma$ to transform abstract
+values to concrete values, perform the actual operation and then turn the
+concrete values back to abstract using abstraction function $\alpha$.
+Unfortunately, such approach is very computation-demanding. Instead,
+concrete operations should be transformed to their "native" counterparts
+which operate with abstract values directly. An operation that has been
+transformed this way is called \textit{abstract operation}.
 
-Consider the abstraction of positive and negative numbers on set of real numbers
-$\mathbb{R}$. The operation of adding $+$ is straightforward for concrete numbers.
-However, its matching abstract operation $\oplus$ can return interesting results.
-The list of all possible results is in table \ref{tab:abstractplus}. Note that
-$(+) \oplus (-) = (\pm)$, because $2 + (-1) = 1$ and $2 + (-3) = -1$. The $\pm$
-sign represents both positive and negative number since it can notbe decided with
-certainty whether the result is one or the other. Thus, the result is in this case
+Consider the abstraction of positive and negative numbers on set of real
+numbers $\mathbb{R}$. The operation of adding $+$ is straightforward for
+concrete numbers. However, its matching abstract operation $\oplus$ can
+return interesting results. The list of all possible results is in
+table \ref{tab:abstractplus}. Note that $(+) \oplus (-) = (\pm)$, because
+$2 + (-1) = 1$ and $2 + (-3) = -1$. The $\pm$ sign represents both
+positive and negative number since it can not be decided with certainty
+whether the result is one or the other. Thus, the result is in this case
 imprecise.
 
 \begin{table}[h]
@@ -655,10 +659,11 @@ $(-)$ & $(-)$ & $(-)$ \\
 \label{tab:abstractplus}
 \end{table}
 
-That being said, the loss of precision does not occur always. Multiplication of
-two abstract values $\otimes$ always returns precise result regardless of whether
-the values are abstract or concrete. The table \ref{tab:abstractmult} shows all
-possible situations for this operation. Notice the lack of precision loss.
+That being said, the loss of precision does not occur always. Multiplication
+of two abstract values $\otimes$ always returns precise result regardless
+of whether the values are abstract or concrete. The table
+\ref{tab:abstractmult} shows all possible situations for this operation.
+Notice the lack of precision loss.
 
 \begin{table}[h]
 \centering
@@ -674,27 +679,66 @@ $(-)$ & $(-)$ & $(+)$ \\
 \label{tab:abstractmult}
 \end{table}
 
-For the purpose of comparing two values some sort of order of elements needs to
-be defined \cite{Burris81-1}:
+The relationship between concretization and abstraction functions is
+described by Galois connection.
+
+For the purpose of comparing two values some sort of element ordering and
+associated terms need to be defined \cite{Burris81-1}:
 
 \begin{definition}
-A partial order $\leq$ is binary relation defined on set $A$, when for every
-$a, b, c \in A$ following rules hold:
+A partial order $\leq$ is binary relation defined on set $A$, when following
+rules hold:
 
-\begin{align*}
-a \leq a \\
-a \leq b \text{ and } b \leq a \text{ implies } a = b \\
-a \leq b \text{ and } b \leq c \text{ implies } a \leq c \\
-\end{align*}
+\begin{align}
+\forall a \in A : a \leq a \\
+\forall a, b \in A : a \leq b \land b \leq a \Rightarrow a = b \\
+\forall a, b, c \in A : a \leq b \land b \leq c \Rightarrow a \leq c \\
+\end{align}
 
-These rules are also known as \textit{reflexivity}, \textit{antisymmetry} and
-\textit{transitivity}.
+These rules are also known as \textit{reflexivity} (1),
+\textit{antisymmetry} (2) and \textit{transitivity} (3).
 
+Partially ordered set is denoted as $\langle A, \leq \rangle$
 \end{definition}
 
-Analyzed values need to be described by a mathematical structure that is compliant with
-requirements posed by abstract interpretation. Ordinarily, a \textit{lattice} is used in this
-context. It is defined as \cite{Burris81-1}:
+\begin{example}
+$\langle \mathbb{N}, \leq \rangle$ is partially ordered set.
+\end{example}
+
+\begin{definition}
+Let $\langle A, \leq \rangle$ be a partially ordered set.
+
+\begin{itemize}
+
+\item element $u \in A$ is an \textit{upper bound} of $S \subseteq A$ if
+$\forall s \in S : s \leq u$
+
+\item element $l$ in $A$ is an \textit{lower bound} of $S \subseteq A$ if
+$\forall s \in S : l \leq s$
+
+\item element $u \in A$ is a \textit{least upper bound} of $S \subseteq A$
+if $\forall u' \in A : (\forall s \in S : s \leq u') \Rightarrow u \leq u'$
+
+\item element $l \in A$ is a \textit{greatest lower bound} of $S \subseteq A$
+if $\forall l' \in A : (\forall s \in S : l' \leq s) \Rightarrow l' \leq l$
+
+\end{itemize}
+
+The least upper bound is often called \textit{supremum} (denoted as $\sup$)
+or \textit{join} (denoted as $\lor$). The greatest lower bound is also
+called \textit{infimum} (denoted as $\inf$) or \textit{meet} (denoted as
+$\land$).
+\end{definition}
+
+\begin{example}
+Let $A = \{ 1, 2, 3 \}$ ordered by operation $\leq$ then
+$\sup A = 3, \inf A = 1$.
+\end{example}
+
+Analyzed values need to be described by a mathematical structure that is
+compliant with requirements posed by abstract interpretation. Ordinarily,
+a \textit{lattice} is used in this context. It is defined as
+\cite{Burris81-1}:
 
 \begin{definition}
 A lattice is tuple $L = \langle A, \leq \rangle$, where:
@@ -702,28 +746,37 @@ A lattice is tuple $L = \langle A, \leq \rangle$, where:
 \begin{itemize}
 \item $A$ is a set of all elements
 \item $\leq$ is partial order on $A$
-\item for every $a, b \in A$ both $\sup \{ a, b \} \in A$ and $\inf \{ a, b \} \in A$ hold
+\item $\forall a, b \in A : \sup \{ a, b \} \in A \land \inf \{ a, b \} \in A$
 \end{itemize}
-
 \end{definition}
 
-Frequently, join and meet operations are extracted to emphasize their special position
-within the lattice -- $L = \langle A, \leq, \land, \lor \rangle$
+Frequently, join and meet operations are extracted to emphasize their
+special position within the lattice --
+$L = \langle A, \leq, \land, \lor \rangle$.
+A lattice is typically displayed as \textit{Hasse diagram}. An example
+of such diagram for $A = \{ 1, 2, 3\}$ ordered by operation set inclusion
+$\subseteq$ is displayed in figure \ref{fig:concretedomain}.
 
 \begin{definition}
-A bounded lattice \cite{Burris81-1} is tuple = $L = \langle A, \leq, \land, \lor, 0, 1 \rangle$, where:
+A complete lattice is tuple $L = \langle A, \leq, \land, \lor, \bot, \top \rangle$
+where $\forall S \subseteq A$ :
 
 \begin{itemize}
-\item $\langle A, \leq, \land, \lor \rangle$ is a lattice
-\item $x \land 0 \approx 0; x \lor 1 \approx 1$
+\item least upper bound $\lor$ of $S$ exists
+\item greatest lower bound $\land$ of $S$ exists
 \end{itemize}
 
-Element 0 is also sometimes denoted as $\bot$ and is called \textit{bottom}. Element 1 is
-being referred to as \textit{top} and is denoted $\bot$.
+Elements $\bot$ and $\top$ denote $\sup$ and $\inf$ of $A$ respectively.
 \end{definition}
 
-Concrete values are organized in \textit{concrete domain}. Formally,
-the concrete domain is a complete lattice $L$ on set $A$ \cite{Constantini11-1}:
+\begin{example}
+Lattice $\langle \mathcal{P}(\mathbb{N}), \subseteq, \cap, \cup, \emptyset, \mathbb{N} \rangle$
+is a complete lattice.
+\end{example}
+
+Concrete values of program interpretation are organized in \textit{concrete
+domain}. Formally, the concrete domain is a complete lattice $L$ on set
+$A$ \cite{Constantini11-1}:
 
 \begin{align*}
 L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
@@ -773,9 +826,9 @@ L' = \langle \bar{A}, \sqsubseteq, \bot, \top, \sqcup, \sqcap  \rangle
 \end{align*}
 
 Intuitively, the abstract domain encapsulates multiple concrete states of
-program execution. Consider the abstraction of positive and negative numbers on set of real
-numbers $\mathbb{R}$. The abstract domain for this abstraction is displayed
-in figure \ref{fig:abstractdomain}.
+program execution. Consider the abstraction of positive and negative
+numbers on set of real numbers $\mathbb{R}$. The abstract domain for this
+abstraction is displayed in figure \ref{fig:abstractdomain}.
 
 \begin{figure}[h]
 \centering
@@ -800,20 +853,26 @@ in figure \ref{fig:abstractdomain}.
 
 fixpoint?
 
-formal definition of AI
+\begin{definition}
+An abstract interpretation $I$ of program $P$ is a tuple
+\end{definition}
 
 correctness -- soundness, completeness, termination (widening)
 
-To conclude, the abstract interpretation attempts to achieve fixpoint of abstract
-values by taking advantage of partial ordering of these values. While iterating
-through the program it uses abstract operations on abstract domains to obtain new
-abstract values until the fixpoint is reached. Abstract operations move the abstract
-values "upwards" in their respective domain lattices.
+To conclude, the abstract interpretation attempts to achieve fixpoint of
+abstract values by taking advantage of partial ordering of these values.
+While iterating through the program it uses abstract operations on abstract
+domains to obtain new abstract values until the fixpoint is reached.
+Abstract operations move the abstract values "upwards" in their respective
+domain lattices.
 
 Abstract interpretation promises better scalability when compared to other
 methods such as model checking or symbolic execution. It tries to achieve
-this through appropriate abstraction choice. In fact, the choice of suitable abstraction
-is crucial in this promise.
+this through appropriate abstraction choice. In fact, the choice of suitable
+abstraction is crucial in this promise. Moreover, abstract interpretation
+provides a theoretical framework that unifies other static analysis
+approaches such as dataflow analysis \cite{CousotCousot77-1} or model
+checking \cite{CousotCousot99-1}.
 
 
 \section{Strings}
@@ -1164,7 +1223,7 @@ two strings $x$ and $y$. If these strings have common suffix then the least
 upper bound is their longest common suffix. Otherwise it is the top
 element $\top$.
 
-The greater lower bound is defined as:
+The greatest lower bound is defined as:
 
 \begin{align*}
 \sqcup (x, y) =
@@ -1205,16 +1264,41 @@ Trie abstract domain approximates stirng as \textit{trie} data structure.
 The name "trie" comes from word "retrieval" as in information retrieval. It
 is a tree-like data structure where every node represents a set of all keys
 that begin a certain sequence of symbols -- prefix. Trie is especially useful
-for searching purposes. It provides good tradeoff between the memory
+for searching purposes because it provides good tradeoff between the memory
+consumption and performance.
 
-In order to preserve memory space, the trie can be compressed. Nodes
-can contain whole substrings, not just symbols of the string. This optimization
-should reduce the number of trie nodes. As a result of this optimization every
-node that is not leaf has at least two children.
+In order to preserve memory space, the trie can be compressed. Nodes can
+contain whole substrings, not just symbols of the string. This optimization
+should reduce the number of trie nodes. As a result of this optimization
+every node that is not leaf has at least two children. This is the type of
+trie which will be used throughout this thesis. An example of a trie
+representing strings \texttt{""} can be found in figure \ref{fig:trie}.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+
+\node [circle, draw] (g) {\texttt{"g"}}
+  child {node [circle, draw] (r) {\texttt{"r"}}
+    child {node [circle, draw] (eat) {\texttt{"eat"}}}
+    child {node [circle, draw] (owth) {\texttt{"owth"}}}
+  }
+  child {node [circle, draw] (ood) {\texttt{"ood"}}}
+};
+
+\path (g) -- (r);
+\path (g) -- (ood);
+\path (r) -- (eat);
+\path (r) -- (owth);
+
+\end{tikzpicture}
+\caption{Trie representing strings \texttt{"great"}, \texttt{"growth"} and \texttt{"good"}}
+\label{fig:trie}
+\end{figure}
 
 This domain provides better precision than prefix or suffix, but it is more
-resounce-demanding -- both the space it occupies and the time it takes to perform
-operations on it.
+resounce-demanding in terms of both the space it occupies and the time it
+takes to perform operations on it.
 
 
 \chapter{Implementation}
@@ -1472,6 +1556,11 @@ P{.} Cousot and R{.} Cousot.
 S{.} Burris, H{.} P{.} Sankappanavar.
 \newblock A course in universal algebra.
 \newblock Springer-Verlag, 1981.
+
+\bibitem{CousotCousot99-1}
+P.~Cousot and R.~Cousot.
+\newblock Refining model checking by abstract interpretation
+\newblock \emph{Automated Software Engineering Journal}, 6(1):69--95, 1999.
 
 \end{thebibliography}
 
