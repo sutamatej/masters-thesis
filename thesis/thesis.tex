@@ -477,8 +477,8 @@ return x;
 
 The basic idea is to use symbolic variables instead of the real ones.
 For instance, one such usage can be observed in figure \ref{fig:se}.
-Throughout the process of symbolic execution SMT solver checks whether
-a certain formula is satisfied. TODO citation
+Throughout the process of symbolic execution Satisfiability Modulo Theories
+(SMT) solver checks whether a certain formula is satisfied \cite{Cadar11-1}.
 
 The main disadvantage of this approach is scalability -- a symbolic
 execution of moderately complex program can lead to large number of paths
@@ -889,13 +889,13 @@ Abstract operations move the abstract values "upwards" in their respective
 domain lattices.
 
 Abstract interpretation should ideally be sound, complete and should
-terminate \cite{}. As previously shown, termination can be achieved by using
-widening. Soundness of interpretation means that any property proved in
-abstraction is valid in concrete. Completeness means that property in the
-concrete is valid in abstract. In reality, abstracts interpreter are designed
-to be sound and to terminate, but they are incomplete. This is a result
-of the undecidability of Halting problem as described in
-section \ref{sec:softwarequality}. 
+terminate \cite{aiaa10}. As previously shown, termination can be achieved by
+using widening. Soundness of interpretation means that any property proved
+in abstraction is valid in concrete. Completeness means that property in
+the concrete is valid in abstract. In reality, abstracts interpreter are
+designed to be sound and to terminate, but they are incomplete. This is
+a result of the undecidability of Halting problem as described in
+section \ref{sec:softwarequality}.
 
 This method promises better scalability when compared to other
 methods such as model checking or symbolic execution. It tries to achieve
@@ -1335,6 +1335,12 @@ resounce-demanding in terms of both the space it occupies and the time it
 takes to perform operations on it.
 
 
+\subsection{Other existing string domains}
+\label{sec:otherstringdomains}
+
+TODO
+
+
 \chapter{Implementation}
 \label{chap:implementation}
 
@@ -1476,6 +1482,58 @@ TODO
 \chapter{Conclusion}
 \label{chap:conclusion}
 
+This thesis has described quality evaluation techniques used in software
+engineering. Software verification by static analysis has been defined.
+Several examples of methods employing static analysis have been given to
+illustrate the application of this technique. Definitions for other methods
+such as software validation or dynamic analysis have been supplied as well.
+Compelling argumets have been given for each of these approaches and their
+limitations have been shown here.
+
+Then, a detailed description of abstract interpretation framework
+along with definitions regarding strings. Descriptions are given on both
+formal and intuitive levels. This part specifies terms and language used
+throughout the design and implementation segments of the work.
+
+The core of the thesis is the design of three abstract domains
+approximating strings. The semantics of all properties and operations
+have been described and demonstrative examples have been shown in both
+graphical and textual form. Domains using string prefix and suffix
+closely follow their description as given by Costantini, Ferrara and
+Cortesi \cite{Constantini11-1}. The domain using tries as a representation
+of string has been created as part of this section.
+
+Three designed string abstract domains have been implemented in cotext of
+the \texttt{canal} abstract interpreter. They have all been covered with
+unit tests for better maintainability and understanding of the code.
+Implementation closely follows the style defined by the project. This
+part of the thesis serves as a technical report regarding implementation
+details and decision that have been made during the course of this work.
+
+The contributions of this thesis are:
+
+\begin{itemize}
+
+\item design of the trie abstract domain
+
+\item implementation of abstract domains approximating strings by its
+prefix, suffix and trie
+
+\end{itemize}
+
+The trie abstract domain has not been used anywhere else other than
+\texttt{canal}. It is the proposition made to improve the precision of the
+other two domains. The implementation of the three designed domains is
+(as of writing this thesis) their first open-source implementation. This
+creates an opportunity for community to get involved and improve both
+design and implementation of this solution.
+
+Future work may include improving the precision of string analysis by
+implementating other string domains. A few examples have been mentioned
+in \ref{sec:otherstringdomains}. Also, new domains for strings can be
+proposed where properties other than filepaths will be considered. However,
+one needs to keep in mind that every abstract domain is a tradeoff between
+implementation difficulty, precision and performance.
 
 %% Lists of tables and figures, glossary, etc.
 %\printindex
@@ -1602,6 +1660,24 @@ P.~Cousot and R.~Cousot.
 \newblock Refining model checking by abstract interpretation
 \newblock \emph{Automated Software Engineering Journal}, 6(1):69--95, 1999.
 
+\bibitem[BCC{\etalchar{+}}10]{aiaa10}
+Julien Bertrane, Patrick Cousot, Radhia Cousot, Laurent~Mauborgne
+  J{\'e}r{\^o}me~Feret, Antoine Min{\'e}, and X.~Rival.
+\newblock Static analysis and verification of aerospace software by abstract
+  interpretation.
+\newblock In {\em AIAA Infotech@Aerospace 2010}, number AIAA-2010-3385, pages
+  1--38. American Institue of Aeronautics and Astronautics, April 2010.
+
+\bibitem{Cadar11-1}
+Cadar, Cristian and Godefroid, Patrice and Khurshid, Sarfraz and
+  P\u{a}s\u{a}reanu, Corina S. and Sen, Koushik and Tillmann, Nikolai and
+  Visser, Willem.
+\newblock Symbolic execution for software testing in practice: preliminary
+  assessment.
+\newblock In \emph{Proceedings of the 33rd International Conference on
+  Software Engineering (ICSE '11)}, pages 1066--1071, 2011. ACM, New York,
+  NY, USA.
+
 \end{thebibliography}
 
 
@@ -1610,6 +1686,14 @@ P.~Cousot and R.~Cousot.
 
 \chapter{Instructions for running \texttt{canal}}
 \label{chap:instructions}
+
+
+
+
+\chapter{List of files}
+
+
+
 
 %% End of the whole document
 \end{document}
