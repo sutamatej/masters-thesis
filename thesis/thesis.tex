@@ -694,8 +694,6 @@ $(-)$ & $(-)$ & $(+)$ \\
 \label{tab:abstractmult}
 \end{table}
 
-The relationship between concretization and abstraction functions is
-described by Galois connection.
 
 For the purpose of comparing two values some sort of element ordering and
 associated terms need to be defined \cite{Burris81-1}:
@@ -866,9 +864,25 @@ abstraction is displayed in figure \ref{fig:abstractdomain}.
 \label{fig:abstractdomain}
 \end{figure}
 
+The relationship between concretization and abstraction is described by
+\textit{Galois connection} \cite{CousotCousot92-4}:
+
 \begin{definition}
-An abstract interpretation $I$ of program $P$ is a tuple
+If $L$ and $L'$ are lattices the $\langle \alpha, \gamma \rangle$ is
+a Galois connection, written $L \galois{\alpha}{\gamma} L'$ if and only if
+$\alpha \in L \to L'$ and $\gamma \in L' \to L$ are functions such that:
+
+\begin{align*}
+\forall x \in L, y' \in L': (\alpha(x) \leq y') \iff (x \leq \gamma(y'))
+\end{align*}
 \end{definition}
+
+\begin{example}
+Consider the set of real numbers $\mathcal{R}$, abstraction function
+$\alpha$ from example \ref{ex:abstractionfunc} and concretization function
+$\gamma$ from example \ref{ex:concretizationfunc}.
+$\langle \alpha, \gamma \rangle$ forms Galois connection.
+\end{example}
 
 Suppose a function $f: L \to L$ then $l$ is a \textit{fixed point}
 if $f(l) = l$. A fixed point can be achieved by using an iterative process
@@ -1677,6 +1691,16 @@ Cadar, Cristian and Godefroid, Patrice and Khurshid, Sarfraz and
 \newblock In \emph{Proceedings of the 33rd International Conference on
   Software Engineering (ICSE '11)}, pages 1066--1071, 2011. ACM, New York,
   NY, USA.
+
+\bibitem{CousotCousot92-4}
+P.~Cousot and R.~Cousot.
+\newblock Comparing the {G}alois Connection and Widening/Narrowing
+  Approaches to Abstract Interpretation, invited paper.
+\newblock In M.~Bruynooghe and M.~Wirsing, editors, \emph{Programming
+  Language Implementation and Logic Programming, Proceedings of the
+  Fourth International Symposium, PLILP'92}, Leuven, Belgium, 13--17
+  August 1992, Lecture Notes in Computer Science 631, pages 269--295.
+  Springer-Verlag, Berlin, Germany, 1992.
 
 \end{thebibliography}
 
