@@ -159,7 +159,7 @@ interpreter.
 
 The notion of quality is an abstract concept. In software engineering it
 represents a multi-aspect property of a product which includes but is not
-limited to characteristics such as stability, maintainability, realiability,
+limited to characteristics such as stability, maintainability, reliability,
 efficiency or security. It plays an important role in recognition of
 particular software.
 
@@ -201,8 +201,8 @@ The process can be manual or completely automatic. It includes
 various types of tests such as acceptance testing, performance testing,
 penetration testing, etc. Functional testing consists of test cases
 being executed to check various scenarios and is traditionally performed
-by quality assurence specialist. Main benefit of testing is that the
-application is run under real confitions and the specialist is able to
+by quality assurance specialist. Main benefit of testing is that the
+application is run under real conditions and the specialist is able to
 check the presence of yet unidentified errors. The output of the validation
 is statement whether the built solution is the right one.
 
@@ -220,7 +220,7 @@ by a tool. Implementation of such tool usually requires a deep
 theoretical knowledge and programming skills.
 
 Note that it is possible for program to pass the verification and
-fail the validation step, hence the realationship between the approaches
+fail the validation step, hence the relationship between the approaches
 should complementary rather then contradictory in order to achieve the
 highest possible quality. Moreover, there is no
 precise distinction between the two. Test driven development or behavior
@@ -268,7 +268,7 @@ division by zero or infinite loops.
 
 The applications of static analysis are quite extensive as it has been
 shown by Emanuelsson and Nilsson \cite{EmanuelssonNilsson08-1}. Besides
-already mentioned examples and out of bounds array acces demonstrated in
+already mentioned examples and out of bounds array access demonstrated in
 listing \ref{lst:outofbounds} it is possible to check:
 
 \begin{itemize}
@@ -304,7 +304,7 @@ Nonetheless, the inspection of the code does not come without a cost.
 The output of static analysis needs to be evaluated and implemented by a
 programmer. This creates an opportunity for human errors and, consequently,
 more bugs. Also, the number of false positive warnings may be relatively
-high which presents an unneccessary noise for programmer. Scalability
+high which presents an unnecessary noise for programmer. Scalability
 of the analysis is another issue -- it must conform to reasonable time
 and memory requirements for it to be actually useful.
 
@@ -427,7 +427,7 @@ Masaryk University in Brno.
 The data-flow analysis represents program as a control flow graph where
 nodes are blocks of the program and edges represent the flow of
 control. Block is a succession of program instructions where control
-enters at the beggining of the block, leaves at the end and does not
+enters at the beginning of the block, leaves at the end and does not
 branch or halt inside the block. The analysis is executed in two steps:
 first a set desired facts is compiled, then the set is used for the
 analysis itself \cite{Wogerer05-1}. An example of a control flow graph
@@ -437,7 +437,7 @@ This technique is typically used by compilers to optimize the code. It
 can help with detecting constant propagation, common subexpression
 elimination or redundant operations \cite{Kildall73-1}. However, it is
 not powerful enough to provide detailed information that could be used
-to prevent runtime errors due to ommiting the program sematics by usage
+to prevent runtime errors due to omitting the program semantics by usage
 of blocks.
 
 \begin{figure}[ht]
@@ -489,14 +489,14 @@ Symbolic execution is employed by Klee \footnote{\url{http://klee.llvm.org/}}
 static analyzer.
 
 \begin{figure}[ht]
-\begin{minipage}{0.3\textwidth}
+\begin{minipage}{0.25\textwidth}
 \begin{lstlisting}[numbers=left]
 a = a + b;
 b = a - b;
 a = a - b;
 \end{lstlisting}
 \end{minipage}
-\begin{minipage}{0.7\textwidth}
+\begin{minipage}{0.75\textwidth}
 \begin{tabular}{c|c|c}
 line & $a$                       & $b$ \\
 \hline
@@ -517,7 +517,7 @@ A program is represented by set of instructions. When the program is
 running, every instruction changes the state of the program. Similarly,
 the execution of every instruction depends on the previous state.
 The abstract interpretation attempts to eliminate the number of possible
-program states by using an abstraction to encapsulte multiple states at
+program states by using an abstraction to encapsulate multiple states at
 once. It is described in detail in section \ref{sec:abstractinterpretation}.
 
 
@@ -646,7 +646,7 @@ would be to use the concretization function $\gamma$ to transform abstract
 values to concrete values, perform the actual operation and then turn the
 concrete values back to abstract using abstraction function $\alpha$.
 Unfortunately, such approach is very computation-demanding. Instead,
-concrete operations should be transformed to their "native" counterparts
+concrete operations should be transformed to their ``native'' counterparts
 which operate with abstract values directly. An operation that has been
 transformed this way is called \textit{abstract operation}.
 
@@ -886,8 +886,8 @@ $\langle \alpha, \gamma \rangle$ forms Galois connection.
 
 Suppose a function $f: L \to L$ then $l$ is a \textit{fixed point}
 if $f(l) = l$. A fixed point can be achieved by using an iterative process
-such as $f_n(l) = f(f( \dots f(\bot) \dots ))$. Unfortunatelly, this process
-does not neccessarily have to converge to the fixed point or terminate.
+such as $f_n(l) = f(f( \dots f(\bot) \dots ))$. Unfortunately, this process
+does not necessarily have to converge to the fixed point or terminate.
 Because of that, an approximation for iteration must be used. Termination
 can be achieved via \textit{widening} operator. As an example, consider a
 computation which has not reached the fixed point after 10 iterations.
@@ -898,8 +898,8 @@ results obtained this way are very imprecise.
 To conclude, the abstract interpretation attempts to achieve fixed point of
 abstract values by taking advantage of partial ordering of these values.
 While iterating through the program it uses abstract operations on abstract
-domains to obtain new abstract values until the fixpoint is reached.
-Abstract operations move the abstract values "upwards" in their respective
+domains to obtain new abstract values until the fixed point is reached.
+Abstract operations move the abstract values ``upwards'' in their respective
 domain lattices.
 
 Abstract interpretation should ideally be sound, complete and should
@@ -916,7 +916,7 @@ methods such as model checking or symbolic execution. It tries to achieve
 this through appropriate abstraction choice. In fact, the choice of suitable
 abstraction is crucial in this promise. Moreover, abstract interpretation
 provides a theoretical framework that unifies other static analysis
-approaches such as dataflow analysis \cite{CousotCousot77-1} or model
+approaches such as data-flow analysis \cite{CousotCousot77-1} or model
 checking \cite{CousotCousot99-1}.
 
 
@@ -959,7 +959,7 @@ $|\varepsilon| = 0$.
 
 \item \textit{Concatenation} is an operation which takes two strings $x$
 and $y$ and chains them together to form a new string $xy$. It is
-associative operation but it not comutative. Empty string $\varepsilon$ is
+associative operation but it not commutative. Empty string $\varepsilon$ is
 identity for concatenation. The length of resulting string is a sum of
 lengths of concatenated strings.
 
@@ -1307,8 +1307,8 @@ based on their extensions.
 
 \section{Trie abstract domain}
 
-Trie abstract domain approximates stirng as \textit{trie} data structure.
-The name "trie" comes from word "retrieval" as in information retrieval. It
+Trie abstract domain approximates string as \textit{trie} data structure.
+The name trie comes from word ``retrieval'' as in information retrieval. It
 is a tree-like data structure where every node represents a set of all keys
 that begin a certain sequence of symbols -- prefix. Trie is especially useful
 for searching purposes because it provides good tradeoff between the memory
@@ -1345,7 +1345,7 @@ can be found in figure \ref{fig:trie}.
 \end{figure}
 
 This domain provides better precision than prefix or suffix, but it is more
-resounce-demanding in terms of both the space it occupies and the time it
+resource-demanding in terms of both the space it occupies and the time it
 takes to perform operations on it.
 
 
@@ -1394,13 +1394,13 @@ operations to update abstract values stored in analysis state.
 \end{description}
 
 The tool is utilizes LLVM compiler infrastructure. The infrastructure
-provides a frontend called Clang that contains compilers for C, C++,
+provides a front-end called Clang that contains compilers for C, C++,
 Objective C and Objective C++ capable of emitting LLVM intermediate
 representation. The intermediate representation is a platform independent
 representation of program that is suitable for static analysis.
 The representation is static single assignment representation that provides
 type safety, low-level operations, flexibility and the capability to
-represent "all" high-level languages cleanly \cite{llvm13-1}. It is similar
+represent ``all'' high-level languages cleanly \cite{llvm13-1}. It is similar
 to assembly language which is human-readable, see an example in
 listing \ref{lst:llvmir}. There are other static analysis tools that leverage
 the LLVM intermediate representation, namely Klee.
@@ -1439,7 +1439,7 @@ is similar to \texttt{gdb}, a popular GNU debugger project for various
 languages \footnote{\url{http://www.gnu.org/software/gdb/}}.
 
 The project is relatively young and as of this moment is in its experimental
-stage. That being said, a few programs from GNU core utils project
+stage. That being said, a few programs from GNU core utilities project
 \footnote{\url{http://www.gnu.org/software/coreutils/}} have been
 successfully analyzed by interpreter.
 
@@ -1501,7 +1501,7 @@ engineering. Software verification by static analysis has been defined.
 Several examples of methods employing static analysis have been given to
 illustrate the application of this technique. Definitions for other methods
 such as software validation or dynamic analysis have been supplied as well.
-Compelling argumets have been given for each of these approaches and their
+Compelling arguments have been given for each of these approaches and their
 limitations have been shown here.
 
 Then, a detailed description of abstract interpretation framework
@@ -1517,7 +1517,7 @@ closely follow their description as given by Costantini, Ferrara and
 Cortesi \cite{Constantini11-1}. The domain using tries as a representation
 of string has been created as part of this section.
 
-Three designed string abstract domains have been implemented in cotext of
+Three designed string abstract domains have been implemented in context of
 the \texttt{canal} abstract interpreter. They have all been covered with
 unit tests for better maintainability and understanding of the code.
 Implementation closely follows the style defined by the project. This
@@ -1543,9 +1543,9 @@ community to get involved and improve both design and implementation of this
 solution.
 
 Future work may include improving the precision of string analysis by
-implementating other string domains. A few examples have been mentioned
+implementing other string domains. A few examples have been mentioned
 in \ref{sec:otherstringdomains}. Also, new domains for strings can be
-proposed where properties other than filepaths will be considered. However,
+proposed where properties other than file paths will be considered. However,
 one needs to keep in mind that every abstract domain is a tradeoff between
 implementation difficulty, precision and performance.
 
