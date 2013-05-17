@@ -24,8 +24,6 @@
 \usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}
 %\usepackage[all]{hypcap}
 
-\usepackage{multirow}
-
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -96,9 +94,11 @@
 
 %% Thanks (optional)
 \begin{ThesisThanks}
-My thanks go to my thesis supervisor Karel Klic, my colleagues in his
-study group Jan Dupal and Tomas Brukner and all the people who
-supported me during the writing of this thesis.
+My thanks go to my thesis supervisor Karel Klíč for his guidance. Secondly,
+I would like to thank my colleagues in his study group, Jan Dupal and
+Tomáš Brukner, for thought-provoking discussions. Last but not least, I want
+to thank my family and friends who supported me during the writing of this
+thesis. I would not have made it without them.
 \end{ThesisThanks}
 
 %% Abstract (required)
@@ -123,7 +123,7 @@ prefix, suffix, trie
 
 Computers have followed Moore's~law~\cite{Moore65-1} for more than
 four decades now. Hardware gets more powerful and complex. Consequently,
-this results in software being more complex too. It has to be designed
+software becomes more complex too. It has to be designed
 with maintainability and reliability in mind. Therefore several software
 verification methods have been created. Abstract interpretation is one
 of them.
@@ -1320,18 +1320,19 @@ should reduce the number of trie nodes. As a result of this optimization
 every node that is not leaf has at least two children. This is the type of
 trie which will be used throughout this thesis. An example of a trie
 representing strings \texttt{"great"}, \texttt{"growth"} and \texttt{"good"}
-can be found in figure \ref{fig:trie}.
+can be found in figure \ref{fig:trie}. Children of each node are
+lexicographically ordered.
 
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[font=\small]
 
 \node [circle, draw] (g) {\texttt{g}}
+  child {node [circle, draw] (ood) {\texttt{ood}}}
   child {node [circle, draw] (r) {\texttt{r}}
     child {node [circle, draw] (eat) {\texttt{eat}}}
     child {node [circle, draw] (owth) {\texttt{owth}}}
-  }
-  child {node [circle, draw] (ood) {\texttt{ood}}};
+  };
 
 \path (g) -- (r);
 \path (g) -- (ood);
@@ -1347,6 +1348,74 @@ can be found in figure \ref{fig:trie}.
 This domain provides better precision than prefix or suffix, but it is more
 resource-demanding in terms of both the space it occupies and the time it
 takes to perform operations on it.
+
+Suppose $\mathcal{x}$ denote a trie. Notation $|\mathcal{x}|$ means a number of
+strings represented by trie and $\mathcal{x}[i]$ is $i$-th string of the trie
+starting from 0. Let $\mathcal{x}$ be the trie from figure \ref{fig:trie}.
+In this case $|\mathcal{x}| = 3$ and $\mathcal{x}[0] = \texttt{"good"},
+\mathcal{x}[1] = \texttt{"great"}, \mathcal{x}[2] = \texttt{"growth"}$.
+Note that the way a string is divided between nodes of the trie does not
+matter. 
+
+The partial ordering for tries $\mathcal{x}$ and $\mathcal{y}$ is defined as:
+
+\begin{align*}
+x \leq y \Leftrightarrow
+  x = \bot \lor (\forall i \in [0, |x| - 1] : x[i] \in y)
+\end{align*}
+
+The trie $\mathcal{x}$ is smaller than trie $\mathcal{y}$ if all strings
+represented by $\mathcal{x}$ are also present in $\mathcal{y}$ or if trie
+$\mathcal{x}$ is the bottom element $\bot$ of lattice. The number of nodes
+increases over the course of interpretation as elements of lattice get
+closer to the top $\top$. An example of a lattice with such order is shown
+in figure \ref{fig:trielattice}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[xscale=2, yscale=2]
+
+\node (top) at (0, 4) {$\top$};
+\node (stopepuper) at (0, 3) {stopepuper};
+\node (stopep) at (-1, 2) {stopep};
+\node (stopuper) at (0, 2) {stopuper};
+\node (stepuper) at (1, 2) {stepuper};
+\node (stop) at (-1, 1) {stop};
+\node (step) at (0, 1) {step};
+\node (super) at (1, 1) {super};
+\node (bottom) at (0, -1) {bottom};
+
+\draw (top) -- (stopepuper);
+\draw (stopepuper) -- (stopep);
+\draw (stopepuper) -- (stopuper);
+\draw (stopepuper) -- (stepuper);
+\draw (stopep) -- (stop);
+\draw (stopep) -- (step);
+\draw (stopuper) -- (stop);
+\draw (stopuper) -- (super);
+\draw (stepuper) -- (super);
+\draw (stepuper) -- (step);
+\draw (stop) -- (bottom);
+\draw (step) -- (bottom);
+\draw (super) -- (bottom);
+  
+\end{tikzpicture}
+\caption{Trie abstract domain}
+\label{fig:trielattice}
+\end{figure}
+
+The least upper bound $\sqcap$ is defined as:
+
+\begin{align*}
+
+\end{align*}
+
+The greatest lower bound $\sqcup$ is defined as:
+
+\begin{align*}
+
+\end{align*}
+
 
 
 \section{Other existing string domains}

@@ -15,7 +15,7 @@
 * scope: cca 20 pages
 * (depending on the length of this part it can be split into two chapters)
 * static analysis - term definition, purpose, example, pros, cons,
-  typical usecases, commercial solutions
+  typical use cases, commercial solutions
 * halting problem - definition, example, relation to static analysis
 * types of static analysis, formal, etc, description of every type, example
 * other ways of evaluating SW quality, compare with dynamic analysis
