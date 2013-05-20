@@ -1024,6 +1024,7 @@ an essential part of every major programming language.
 
 
 \section{String abstract domains}
+\label{sec:stringabstractdomains}
 
 The primary goal of domains described in following sections is to
 abstract strings so that they provide useful informations about file
@@ -1056,24 +1057,15 @@ suffixes, tries)
 Besides that, the operations specific to particular domain need to be
 defined. In this case these are based on functions available to programmer.
 Obviously, the C standard library provides numerous functions that operate
-on strings, but for the purposes of this work concatenation and
-substring functions will suffice. These function have been chosen because
-they modify string. They are denoted as \textit{concat} and
-\textit{substr} respectively.
+on strings, but for the purposes of this work concatenation function will
+suffice. This function have been chosen because it is one of the few that
+modify string. It is denoted as \textit{concat}.
 
 The \textit{concat} function has two arguments -- strings that need to be
 concatenated. The function follows the semantics of concatenation
 operation described in section \ref{sec:strings} and returns these two
 strings chained together as one. For instance,
 $\textit{concat}(\texttt{"geo"}, \texttt{"logy"})$ yields \texttt{"geology"}.
-
-The \textit{substr} function takes three arguments: a string $x$ and two
-natural numbers $i$ and $j$ assuming $i < j$. The function returns a
-substring of string $x$ from the $i$-th to the $j$-th symbol of the string.
-Note that strings are indexed the same way as arrays -- $x[0]$ is the first
-symbol of $x$, $x[1]$ is the second and so on. As an example consider the
-function $\textit{substr}(1, 4, \texttt{"automatic"})$ which returns
-\texttt{"utom"}.
 
 
 \section{Prefix abstract domain}
@@ -1184,24 +1176,6 @@ where $x$ and $y$ are string prefixes. The \textit{concat} operation of two
 prefixes returns the first of the concatenated prefixes since it is the
 longest prefix that is surely included in resulting string.
 
-The \textit{substr} operations semantics is defined by:
-
-\begin{align*}
-\textit{substr}(i, j, x) =
-\begin{cases}
-x[i] \dots x[j - 1]   & \text{if } j \leq |x| \\
-x[i] \dots x[|x| - 1] & \text{if } j > |x| \land i < |x| \\
-\top                  & \text{otherwise}
-\end{cases}
-\end{align*}
-
-The situation for substring function is not so straightforward.
-The \textit{substr} function returns substring from $i$-th to $j$-th symbol
-when index $j$ is less than the length of $x$, it returns symbols from
-$i$-th index to the end of $x$ if $i$ is less the length of $x$ but $j$
-is greater than the string length and it returns $\top$ top element in
-all other cases.
-
 
 \section{Suffix abstract domain}
 
@@ -1292,16 +1266,6 @@ concatenated strings:
 \textit{concat}(x, y) = y
 \end{align*}
 
-The \textit{substr} operation is unusually simple:
-
-\begin{align*}
-\textit{substr}(i, j, x) = \top
-\end{align*}
-
-It returns the top element $\top$ for all the possible inputs, because
-it is impossible to tell whether indexes $i$ and $j$ are within the
-boundaries of the suffix.
-
 An example of the domain usage could be filtering files or directories
 based on their extensions.
 
@@ -1317,8 +1281,7 @@ consumption and performance.
 
 In order to preserve memory space, the trie can be compressed. Nodes can
 contain whole substrings, not just symbols of the string. This optimization
-should reduce the number of trie nodes. As a result of this optimization
-every node that is not leaf has at least two children. This is the type of
+generally reduces the number of trie nodes. This is the type of
 trie which will be used throughout this thesis. An example of a trie
 representing strings \texttt{"great"}, \texttt{"growth"} and \texttt{"good"}
 can be found in figure \ref{fig:trie}. Children of each node are
@@ -1350,24 +1313,24 @@ This domain provides better precision than prefix or suffix, but it is more
 resource-demanding in terms of both the space it occupies and the time it
 takes to perform operations on it.
 
-Suppose $\mathcal{x}$ denote a trie. Notation $|\mathcal{x}|$ means a number of
-strings represented by trie and $\mathcal{x}[i]$ is $i$-th string of the trie
-starting from 0. Let $\mathcal{x}$ be the trie from figure \ref{fig:trie}.
-In this case $|\mathcal{x}| = 3$ and $\mathcal{x}[0] = \texttt{"good"},
-\mathcal{x}[1] = \texttt{"great"}, \mathcal{x}[2] = \texttt{"growth"}$.
+Suppose $\mathsf{x}$ denote a trie. Notation $|\mathsf{x}|$ means a number of
+strings represented by trie and $\mathsf{x}[i]$ is $i$-th string of the trie
+starting from 0. Let $\mathsf{x}$ be the trie from figure \ref{fig:trie}.
+In this case $|\mathsf{x}| = 3$ and $\mathsf{x}[0] = \texttt{"good"},
+\mathsf{x}[1] = \texttt{"great"}, \mathsf{x}[2] = \texttt{"growth"}$.
 Note that the way a string is divided between nodes of the trie does not
 matter. 
 
-The partial ordering for tries $\mathcal{x}$ and $\mathcal{y}$ is defined as:
+The partial ordering for tries $\mathsf{x}$ and $\mathsf{y}$ is defined as:
 
 \begin{align*}
-x \leq y \Leftrightarrow
-  x = \bot \lor (\forall i \in [0, |x| - 1] : x[i] \in y)
+\mathsf{x} \leq \mathsf{y} \Leftrightarrow
+  \mathsf{x} = \bot \lor (\forall i \in [0, |\mathsf{x}| - 1] : \mathsf{x}[i] \in \mathsf{y})
 \end{align*}
 
-The trie $\mathcal{x}$ is smaller than trie $\mathcal{y}$ if all strings
-represented by $\mathcal{x}$ are also present in $\mathcal{y}$ or if trie
-$\mathcal{x}$ is the bottom element $\bot$ of lattice. The number of nodes
+The trie $\mathsf{x}$ is smaller than trie $\mathsf{y}$ if all strings
+represented by $\mathsf{x}$ are also present in $\mathsf{y}$ or if trie
+$\mathsf{x}$ is the bottom element $\bot$ of a lattice. The number of nodes
 increases over the course of interpretation as elements of lattice get
 closer to the top $\top$. An example of a lattice with such order is shown
 in figure \ref{fig:trielattice}.
@@ -1439,15 +1402,32 @@ in figure \ref{fig:trielattice}.
 The least upper bound $\sqcap$ is defined as:
 
 \begin{align*}
-TODO
+\sqcap (\mathsf{x}, \mathsf{y}) =
+\begin{cases}
+\mathsf{z} & \text{where } \mathsf{z} = \mathsf{x} \cap \mathsf{y} \\
+\top       & \text{if } \mathsf{x} = \top \lor \mathsf{y} = \top
+\end{cases}
 \end{align*}
+
+Since tries $\mathsf{x}$ and $\mathsf{y}$ represent sets of strings, the union
+$\cap$ works as expected. The top element $\top$ can be obtained only if one
+of the joined tries already is top.
 
 The greatest lower bound $\sqcup$ is defined as:
 
 \begin{align*}
-TODO
+\sqcup (\mathsf{x}, \mathsf{y}) =
+\begin{cases}
+\mathsf{z} & \text{where } \mathsf{z} = \mathsf{x} \cup \mathsf{y} \\
+\bot       & \text{if } \mathsf{x} \cup \mathsf{y} = \emptyset
+\end{cases}
 \end{align*}
 
+The greatest lower bound of two tries $\mathsf{x}$ and $\mathsf{y}$ is their
+intersection $\cup$. If the intersection returns an empty set $\emptyset$ then
+the greatest lower bound is the bottom element $\bot$.
+
+TODO concat
 
 
 \section{Other existing string domains}
@@ -1559,31 +1539,69 @@ which provides their type definitions. These methods are:
 
 \begin{itemize}
 
-\item join
+\item join -- least upper bound of a domain, it is defined as method
+\texttt{join()}
 
-\item meet
+\item meet -- greatest lower bound of a domain, it is defined as method
+\texttt{meet()}
 
-\item equality -- this operation verifies that two abstract values are the same
+\item equality -- this operation verifies that two abstract values are the same,
+it is defined as operator \texttt{==}
 
-\item inclusion --
+\item inclusion -- this operation enables the ordering of elements in a domain,
+it is defined as operator \texttt{<}
 
-\item set top -- sets the abstract value to top $\top$
+\item set top -- sets the abstract value to top $\top$, defined as method
+\texttt{setTop()}
 
-\item set bottom -- sets the abstract value to bottom $\bot$
+\item set bottom -- sets the abstract value to bottom $\bot$, defined as method
+\texttt{setBottom()}
 
-\item is top -- check if the abstract value is top $\top$
+\item is top -- check if the abstract value is top $\top$, defined as method
+\texttt{isTop()}
 
-\item is bottom -- check if the abstract value is bottom $\bot$
+\item is bottom -- check if the abstract value is bottom $\bot$, defined as
+method \texttt{isBottom()}
 
 \end{itemize}
+
+The string-specific operations are not included in the \texttt{Domain} class.
+Therefore, they need to be defined and implemented per domain individually.
+The \textit{concat} operation from section \ref{sec:stringabstractdomains} is
+implemented by method \texttt{strcat()}.
+
+Every domain is covered with extensive set of unit tests. These tests simplify
+the development of domain modules in isolation. The suite of tests provides
+foundations for refactoring of the code. The automation of tests
+prevents regressions from happening. Finally, these tests should ideally
+contribute to better understanding of the code.
 
 
 \section{String prefix}
 
 The prefix of a string is internally represented by standard \texttt{string}
-container.
+container called \texttt{mPrefix}. The domain itself is composed of this string
+and a boolean called \texttt{mIsBottom}. Combination of these two data members
+gives all possible values of this domain as shown in table
+\ref{tab:stringprefix}.
 
-TODO
+\begin{table}[ht]
+\centering
+\begin{tabular}{r|c|c|c}
+  & \texttt{mPrefix}      & \texttt{mIsBottom} & domain value \\
+\hline
+1 & \texttt{""}           & \texttt{true}      & $\bot$ \\
+2 & \texttt{"somestring"} & \texttt{false}     & a prefix \\
+3 & \texttt{""}           & \texttt{false}     & $\top$
+\end{tabular}
+\caption{String prefix domain value implementation}
+\label{tab:stringprefix}
+\end{table}
+
+Values in line 1 of this table represent the bottom value. These are the values
+that are being set by \texttt{setBottom()} method and are being checked
+by \texttt{isBottom()}. Similarly, the top value described in line 3 is set
+by \texttt{setTop()} and checked by \texttt{isBottom()} method.
 
 
 \section{String suffix}
@@ -1817,7 +1835,24 @@ P.~Cousot and R.~Cousot.
 
 \chapter{List of files}
 
+Designed string abstract domains are implemented in following files:
 
+\begin{description}
+\item[] \texttt{lib/ArrayStringPrefix.h}
+\item[] \texttt{lib/ArrayStringPrefix.cpp}
+\item[] \texttt{lib/ArrayStringSuffix.h}
+\item[] \texttt{lib/ArrayStringSuffix.cpp}
+\item[] \texttt{lib/ArrayStringTrie.h}
+\item[] \texttt{lib/ArrayStringTrie.cpp}
+\end{description}
+
+The unit tests for string abstractions can be found in:
+
+\begin{description}
+\item[] \texttt{tests/ArrayStringPrefixTest.cpp}
+\item[] \texttt{tests/ArrayStringSuffixTest.cpp}
+\item[] \texttt{tests/ArrayStringTrie.cpp}
+\end{description}
 
 
 %% End of the whole document
