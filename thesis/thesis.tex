@@ -135,12 +135,13 @@ to represent practically anything. In fact, most of the programs written
 today have to deal with strings in some form. Thus, it is important to know
 how programs treat strings.
 
-This thesis describes string abstract domains in context of abstract
-interpretation framework. It is based on papers published
-by Cousot~\cite{CousotCousot77-1} and other authors. The goal of the thesis
-is to design, implement and integrate several abstract domains for strings
-into \texttt{canal} abstract interpreter. \texttt{canal} is a tool designed
-to analyze behavior of application programs written in \texttt{C}.
+This thesis describes string abstract domains in the context of abstract
+interpretation which is a framework described by Cousot~\cite{CousotCousot77-1}
+\cite{Cousot00-1} \cite{CousotCousot92-4} \cite{CousotCousot99-1} and other
+authors. The goal of the thesis is to design, implement and integrate several
+abstract domains for strings into \texttt{canal} abstract interpreter.
+\texttt{canal} is a tool designed to analyze behavior of application programs
+written in \texttt{C}.
 
 The text has the following outline: chapter \ref{chap:staticanalysis} shows
 techniques currently used for improving the quality of software and static
@@ -164,9 +165,9 @@ efficiency or security. It plays an important role in recognition of
 particular software.
 
 It is certainly true that not every project needs to have as high quality as
-safety critical systems but to a certain degree quality matters
-everywhere. It is crucial for software maintainability which becomes
-especially difficult when size of a codebase and number of developers
+safety critical systems, but to a certain degree quality matters
+everywhere. It is crucial for software maintainability, which becomes
+difficult when size of a codebase and number of developers
 increases. This chapter describes various techniques used to
 improve these properties and abstract interpretation in particular.
 
@@ -175,9 +176,8 @@ improve these properties and abstract interpretation in particular.
 \label{sec:softwarequality}
 
 Traditionally the set of quality control techniques are referred to as
-validation and verification. According to
-Boulanger~\cite{Boulanger12-1} these terms are defined in standard
-ISO 9000:2000 as:
+validation and verification. These terms are defined in the
+ISO~9000:2000~standard \cite{iso9000-2000} as:
 
 \begin{description}
 
@@ -196,10 +196,10 @@ processes that ensure and demonstrate that the resulting software product
 achieves the desired quality level.
 
 The validation is usually performed by executing a program with intention
-to assure that the software product meets the requirements of a customer.
+to assure that it meets the requirements of a customer.
 The process can be manual or completely automatic. It includes
 various types of tests such as acceptance testing, performance testing,
-penetration testing, etc. Functional testing consists of test cases
+or penetration testing. Functional testing consists of test cases
 being executed to check various scenarios and is traditionally performed
 by quality assurance specialist. Main benefit of testing is that the
 application is run under real conditions and the specialist is able to
@@ -207,9 +207,9 @@ check the presence of yet unidentified errors. The output of the validation
 is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
-analyzing the source code of the program. They are called \textit{dynamic}
-and \textit{static} verification respectively. These activities are
-typically performed by a programmer during the development phase.
+analyzing the source code of the program. These approaches are called
+\textit{dynamic} and \textit{static} verification respectively. The activities
+are typically performed by a programmer during the development phase.
 There are many disciplines that enforce the verification by program
 execution -- unit testing or integration testing among others. These
 disciplines are relatively easy to understand and implement. The main
@@ -238,11 +238,11 @@ program without actually executing it. This process is fully automatic
 but a programmer needs to interpret the results of analysis and make
 proper adjustments to the analyzed code.
 
-Most of the languages do not have a support for runtime error detection.
-It is programmers responsibility to ensure these errors do not occur
-and deal with them once they do. The errors do not include simple type
-checking or syntax errors although even these could be considered a part
-of static analysis. They are already checked by compiler. Hence, only
+Most of the languages do not have a support for runtime error detection at
+the development phase. Programmers are responsible for ensuring that these
+errors do not occur and deal with them once they do. The errors do not include
+simple type checking or syntax errors that are checked by compilers, though
+even these could be captured by static analysis. Hence, only
 errors which lead to unexpected or undefined behavior are checked.
 Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
 
@@ -259,9 +259,9 @@ Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
 
 In the example the \texttt{array} variable contains three integers but
 \texttt{value} variable will contain unexpected value because it is
-accessing the fourth element of the \texttt{array}. Moreover, the
-listing will compile and run, but the number might be different every
-time the program is run since accessing the items out of array bounds is
+accessing the fourth element of the \texttt{array}. Moreover, this code will
+compile and run, but the number might be different every
+time the program is run since accessing the items out of array bounds results in
 undefined behavior in \texttt{C} programming language. Other typical
 examples of errors potentially detected by static analysis could be
 division by zero or infinite loops.
@@ -300,9 +300,9 @@ inspected by static analysis. Depending on the characteristics of an
 implementation language some of the items might be omitted from or added
 to the list such as exception handling or concurrency management.
 
-Nonetheless, the inspection of the code does not come without a cost.
+The inspection of the code does not come without a cost.
 The output of static analysis needs to be evaluated and implemented by a
-programmer. This creates an opportunity for human errors and, consequently,
+programmer. This creates an opportunity for human errors and consequently --
 more bugs. Also, the number of false positive warnings may be relatively
 high which presents an unnecessary noise for programmer. Scalability
 of the analysis is another issue -- it must conform to reasonable time
@@ -333,7 +333,7 @@ accepts $w$, it halts and rejects if $M$ halts and rejects the $w$ and loops
 if $M$ loops on $w$. This problem has been proved to be undecidable by
 diagonalization technique.
 
-Simplified, the problem can be interpreted as:
+The problem can be informally formulated as:
 
 \begin{quote}
 
@@ -351,7 +351,7 @@ Undecidability of Halting problem implies that some sort of approximation
 or heuristic is needed. That means a trade-off has to be made. The
 approximation should be relatively precise and quick to compute with
 reasonable memory footprint. The level of precision depends on particular
-application and is, therefore, application specific.
+application and therefore is application specific.
 
 The main goal is to build tools which can perform static analysis. The
 simplest way to achieve it would be to run a utility to search through
@@ -362,15 +362,15 @@ program into account, hence it yields a lot of false positive results.
 To include the semantics in the analysis, its scope needs to be increased
 \cite{Chess04-1}. The code can be analyzed on a function level by local
 analysis. Module-level analysis is employed on compilation unit scope.
-The analysis of the whole product is responsibility of global analysis
+The analysis of the whole product is the responsibility of a global analysis,
 which is also the most expensive computation-wise.
 
 
 \section{Static analysis methods}
 
-Some techniques try to gain the most from the methods that are based
-on mathematical approach. Collectively, they are called \textit{formal}
-methods.
+Some techniques of static analysis try to gain the most from the methods
+that are based on mathematical approach. Collectively, they are called
+\textit{formal} methods.
 
 
 \subsection{Model checking}
@@ -379,8 +379,8 @@ E. Clarke, O. Grumberg and D. Long \cite{Clarke99-1} describe the model
 checking as an automated technique for finite-state systems. Specifications
 are expressed in propositional temporal logic and the system is modeled
 as a state-transition graph. Search procedure is used to determine if the
-specifications are satisfied by state transition-graph. The user typically
-provides high level representation of the model and specification to be
+specifications are satisfied by the state transition-graph. The user typically
+provides a high level representation of the model and specification to be
 checked. The model checker will either terminate with answer \textit{true}
 indicating that the model satisfies the specification, or give
 a counterexample execution that shows why the formula is not satisfied.
@@ -475,10 +475,11 @@ return x;
 
 \subsection{Symbolic execution}
 
-The basic idea is to use symbolic variables instead of the real ones.
-For instance, one such usage can be observed in figure \ref{fig:se}.
-Throughout the process of symbolic execution Satisfiability Modulo Theories
-(SMT) solver checks whether a certain formula is satisfied \cite{Cadar11-1}.
+The basic idea of symbolic execution is to use symbolic variables instead of
+the real ones. For instance, one such usage can be observed in
+figure \ref{fig:se}. Throughout the process of symbolic execution
+Satisfiability Modulo Theories (SMT) solver checks whether a certain formula
+is satisfied \cite{Cadar11-1}.
 
 The main disadvantage of this approach is scalability -- a symbolic
 execution of moderately complex program can lead to large number of paths
@@ -521,7 +522,7 @@ program states by using an abstraction to encapsulate multiple states at
 once. It is described in detail in section \ref{sec:abstractinterpretation}.
 
 
-\chapter{Abstract interpretation and strings}
+\chapter{Strings in abstract interpretation}
 \label{chap:preliminaries}
 
 This chapter is split into two parts:
@@ -645,12 +646,12 @@ in order to function on abstract values. N\"{a}ive approach to this problem
 would be to use the concretization function $\gamma$ to transform abstract
 values to concrete values, perform the actual operation and then turn the
 concrete values back to abstract using abstraction function $\alpha$.
-Unfortunately, such approach is very computation-demanding. Instead,
+Unfortunately, such an approach is very computation-demanding. Instead,
 concrete operations should be transformed to their ``native'' counterparts
 which operate with abstract values directly. An operation that has been
 transformed this way is called \textit{abstract operation}.
 
-Consider the abstraction of positive and negative numbers on set of real
+Consider the abstraction of positive and negative numbers on the set of real
 numbers $\mathbb{R}$. The operation of adding $+$ is straightforward for
 concrete numbers. However, its matching abstract operation $\oplus$ can
 return interesting results. The list of all possible results is in
@@ -1013,7 +1014,7 @@ have different properties of interest and they both need to be formatted
 differently.
 
 
-\chapter{Solution design}
+\chapter{Design of string abstractions}
 \label{chap:design}
 
 This chapter describes strings and three approaches that have been designed
@@ -1455,7 +1456,7 @@ TODO
 TODO
 
 
-\chapter{Implementation}
+\chapter{Implementation of string abstractions}
 \label{chap:implementation}
 
 Abstract domains designed in chapter \ref{chap:design} are applied in the
@@ -1687,10 +1688,10 @@ P{.} Emanuelsson, U{.} Nilsson.
 \newblock In \emph{Electronic Notes in Theoretical Computer Science},
   volume 217, pages 5--21. 2008.
 
-\bibitem{Boulanger12-1}
-J{.}--L{.} Boulanger.
-\newblock Static Analysis of Software: The Abstract Interpretation.
-\newblock Wiley, 2012.
+\bibitem{iso9000-2000}
+\newblock ISO 9000:2000 standard.
+\newblock Available at \url{https://www.iso.org/obp/ui/#iso:std:iso:9000:ed-3:v1:en}
+  (May 2013).
 
 \bibitem{Ernst03-1}
 M{.} D{.} Ernst.
