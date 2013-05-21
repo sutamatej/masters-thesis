@@ -1174,13 +1174,18 @@ y    & \text{if } y \leq x \\
 The greatest lower bound is the smaller of the two elements and if none
 of them is smaller then it is the bottom element $\bot$.
 
+\begin{definition}
+\label{def:prefixstrcat}
 The semantics for \textit{concat} operation is defined as:
 
 \begin{align*}
 \textit{concat}(x, y) = x
 \end{align*}
 
-where $x$ and $y$ are string prefixes. The \textit{concat} operation of two
+where $x$ and $y$ are string prefixes.
+\end{definition}
+
+The \textit{concat} operation of two
 prefixes returns the first of the concatenated prefixes since it is the
 longest prefix that is surely included in resulting string.
 
@@ -1275,12 +1280,15 @@ y    & \text{if } y \leq x \\
 If it is possible to compare the two strings, then it is the smaller of the
 two. It is the bottom element $\bot$ for all other cases.
 
+\begin{definition}
+\label{def:suffixstrcat}
 The \textit{concat} operation for suffix domain is the second of the
 concatenated strings:
 
 \begin{align*}
 \textit{concat}(x, y) = y
 \end{align*}
+\end{definition}
 
 An example of the domain usage could be filtering files or directories
 based on their extensions.
@@ -1665,7 +1673,7 @@ using the definition \ref{def:prefixstrcat}.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{c|c|c|c}
+\begin{tabular}{c|c|c|c|c|c}
  x & y & \texttt{==} & \texttt{<} & \texttt{join()} & \texttt{meet()} \\
 \hline
 $\top$     & $\top$     & true       & false      & $\top$       & $\top$ \\
@@ -1716,12 +1724,12 @@ Internally, it is implemented as a private function called
 longest common suffix. The \texttt{meet()} method is implemented using the
 definition \ref{def:suffixmeet}.
 
-The \texttt{strcat()} returns top as specified in definition
+The \texttt{strcat()} returns its second argument as specified in definition
 \ref{def:suffixstrcat}.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{c|c|c|c}
+\begin{tabular}{c|c|c|c|c|c}
  x & y & \texttt{==} & \texttt{<} & \texttt{join()} & \texttt{meet()} \\
 \hline
 $\top$     & $\top$     & true       & false      & $\top$       & $\top$ \\
@@ -1800,11 +1808,11 @@ The ordering on this domain takes advantage of operators \texttt{==} and
 \texttt{<}. Two tries are equal only if all of their nodes are exactly same.
 The equality of nodes uses \texttt{==} operator on nodes and does the comparison
 recursively. The implementation of \texttt{<} operator is a bit more
-complicated. Following the definition \ref{def:trieless} the trie $\mathsf{x}$
-is less then trie $\mathsf{y}$ when all the strings represented by $\mathsf{x}$
-are also represented by $\mathsf{y}$. This comparison is achieved by recursively
-storing represented strings of tries into vectors and then performing an
-intersection on the vectors. If the result of intersection is an empty set
+complicated. The trie $\mathsf{x}$ is less then trie $\mathsf{y}$ when all the
+strings represented by $\mathsf{x}$ are also represented by $\mathsf{y}$.
+This comparison is achieved by recursively storing represented strings of
+tries into vectors and then performing an intersection on the vectors.
+If the result of intersection is an empty set
 $\emptyset$ or the number of elements in the result is greater than the number
 of strings represented by $\mathsf{x}$ then the result is false, otherwise
 it is true.
