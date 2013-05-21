@@ -1130,7 +1130,9 @@ the top element $\top$. The situation is demonstrated in figure
 \label{fig:prefixlattice}
 \end{figure}
 
-The least upper bound operator $\sqcap$ is defined as:
+\begin{definition}
+\label{def:prefixjoin}
+The least upper bound operator $\sqcap$ is:
 
 \begin{align*}
 \sqcap (x, y) =
@@ -1141,9 +1143,11 @@ z & \text{where } z
 \end{cases}
 \end{align*}
 
-where function $\textit{prefix}(x, y)$ returns the
-longest common prefix of strings $x$ and $y$. For
-example, $\textit{prefix}(\texttt{"capture"}, \texttt{"caption"})$ returns
+where function $\textit{prefix}(x, y)$ returns the longest common prefix of
+strings $x$ and $y$.
+\end{definition}
+
+For example, $\textit{prefix}(\texttt{"capture"}, \texttt{"caption"})$ returns
 \texttt{"capt"} and for $\textit{prefix}(\texttt{"house"}, \texttt{"car"})$
 returns $\varepsilon$.
 
@@ -1151,8 +1155,9 @@ Simply put, the least upper bound of two strings $x$ and $y$
 is the longest common prefix of these strings. If there is
 none, the upper bound is the top element of the lattice $\top$.
 
-In a similar fashion, the greater lower bound operator $\sqcup$ is defined
-by:
+\begin{definition}
+\label{def:prefixmeet}
+The greater lower bound operator $\sqcup$ is:
 
 \begin{align*}
 \sqcup (x, y) =
@@ -1162,6 +1167,7 @@ y    & \text{if } y \leq x \\
 \bot & \text{otherwise}
 \end{cases}
 \end{align*}
+\end{definition}
 
 The greater lower bound is the smaller of the two elements and if none
 of them is smaller then it is the bottom element $\bot$.
@@ -1576,6 +1582,9 @@ foundations for refactoring of the code. The automation of tests
 prevents regressions from happening. Finally, these tests should ideally
 contribute to better understanding of the code.
 
+The implementation has been checked for memory leaks with \texttt{valgrind}
+\footnote{\url{http://valgrind.org/}} framework.
+
 
 \section{String prefix}
 
@@ -1603,6 +1612,56 @@ that are being set by \texttt{setBottom()} method and are being checked
 by \texttt{isBottom()}. Similarly, the top value described in line 3 is set
 by \texttt{setTop()} and checked by \texttt{isBottom()} method.
 
+The ordering on this domain is implemented as a pair of operators \texttt{<}
+and \texttt{==}. Table \ref{tab:prefixorder} shows all possible cases that
+can occur for these operators.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|c|c|c}
+ x & y & \texttt{<} & \texttt{==} \\
+\hline
+$\top$         & $\top$         & \texttt{false} & $\top$ \\
+$\top$         & \texttt{"str"} & \texttt{false} & \texttt{"str"} \\
+$\top$         & $\bot$         & \texttt{false} & $\bot$ \\
+\texttt{"str"} & $\top$         & \texttt{true}  & \texttt{"str"} \\
+\texttt{"str"} & \texttt{"str"} & \texttt{true} if y is prefix of x &  \\
+\texttt{"str"} & $\bot$         & \texttt{false} & $\bot$ \\
+$\bot$         & $\top$         & \texttt{true}  & $\bot$ \\
+$\bot$         & \texttt{"str"} & \texttt{true}  & $\bot$ \\
+$\bot$         & $\bot$         & \texttt{false} & $\bot$
+\end{tabular}
+\caption{Results of \texttt{<} and \texttt{==} operators}
+\label{tab:prefixorder}
+\end{table}
+
+The return values of \texttt{join()} and \texttt{meet()} methods can be
+observed in table \ref{tab:prefixjoinmeet}. The function $\textit{prefix}(x, y)$
+from definition \ref{def:prefixjoin} is implemented as a private function
+\texttt{commonPrefix()} which takes two strings as arguments and returns their
+longest common prefix.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|c|c|c}
+ x & y & \texttt{join()} & \texttt{meet()} \\
+\hline
+$\top$          & $\top$          & $\top$          & $\top$ \\
+$\top$          & \texttt{"text"} & $\top$          & \texttt{"text"} \\
+$\top$          & $\bot$          & $\top$          & $\bot$ \\
+\texttt{"text"} & $\top$          & $\top$          & \texttt{"text"} \\
+\texttt{"text"} & \texttt{"text"} & see def. \ref{def:prefixjoin} & see def. \ref{def:prefixmeet} \\
+\texttt{"text"} & $\bot$          & \texttt{"text"} & $\bot$ \\
+$\bot$          & $\top$          & $\top$          & $\bot$ \\
+$\bot$          & \texttt{"text"} & \texttt{"text"} & $\bot$ \\
+$\bot$          & $\bot$          & $\bot$          & $\bot$
+\end{tabular}
+\caption{Results of \texttt{join()} and \texttt{meet()} methods}
+\label{tab:prefixjoinmeet}
+\end{table}
+
+The \texttt{strcat()} function returns the first of the concatenated strings.
+
 
 \section{String suffix}
 
@@ -1610,7 +1669,7 @@ TODO
 
 \section{String trie}
 
-TODO
+The 
 
 \chapter{Conclusion}
 \label{chap:conclusion}
