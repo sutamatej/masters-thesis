@@ -141,7 +141,7 @@ interpretation which is a framework described by Cousot~\cite{CousotCousot77-1}
 authors. The goal of the thesis is to design, implement and integrate several
 abstract domains for strings into \texttt{canal} abstract interpreter.
 \texttt{canal} is a tool designed to analyze behavior of application programs
-written in \texttt{C}.
+written in the \texttt{C} programming language.
 
 The text has the following outline: chapter \ref{chap:staticanalysis} shows
 techniques currently used for improving the quality of software and static
@@ -168,26 +168,26 @@ It is certainly true that not every project needs to have as high quality as
 safety critical systems, but to a certain degree quality matters
 everywhere. It is crucial for software maintainability, which becomes
 difficult when size of a codebase and number of developers
-increases. This chapter describes various techniques used to
+increase. This chapter describes various techniques used to
 improve these properties and abstract interpretation in particular.
 
 
 \section{Software quality evaluation techniques}
 \label{sec:softwarequality}
 
-Traditionally the set of quality control techniques are referred to as
+Traditionally, the set of quality control techniques are referred to as
 validation and verification. These terms are defined in the
 ISO~9000:2000~standard \cite{iso9000-2000} as:
 
 \begin{description}
 
 \item[Verification] \hfill \\
-confirmation by tangible proof that the specified requirements have
-been met at each stage of the realization process
+confirmation, through the provision of objective evidence, that specified
+requirements have been fulfilled
 
 \item[Validation] \hfill \\
-confirmation by tangible proof that the requirements for a specific use or
-an anticipated application have been met
+confirmation, through the provision of objective evidence, that the requirements
+for a specific intended use or application have been fulfilled
 
 \end{description}
 
@@ -712,7 +712,7 @@ rules hold:
 These rules are also known as \textit{reflexivity} (\ref{eq:refl}),
 \textit{antisymmetry} (\ref{eq:antisym}) and \textit{transitivity} (\ref{eq:trans}).
 
-Partially ordered set is denoted as $\langle A, \leq \rangle$
+Partially ordered set is denoted as $\langle A, \leq \rangle$.
 \end{definition}
 
 \begin{example}
@@ -937,7 +937,7 @@ malicious input when deliberately trying to cause similar effect.
 Therefore, it is useful to know how string is formatted and manipulated
 during the execution of a program.
 
-The following definitions are describe strings and their properties
+The following definitions describe strings and their properties
 formally \cite{Kozen97-1}:
 
 \begin{itemize}
@@ -960,7 +960,7 @@ $|\varepsilon| = 0$.
 
 \item \textit{Concatenation} is an operation which takes two strings $x$
 and $y$ and chains them together to form a new string $xy$. It is
-associative operation but it not commutative. Empty string $\varepsilon$ is
+associative operation but it is not commutative. Empty string $\varepsilon$ is
 identity for concatenation. The length of resulting string is a sum of
 lengths of concatenated strings.
 
@@ -985,16 +985,16 @@ $z \neq x$.
 
 \end{itemize}
 
-In \texttt{C} programming language strings are separated from the rest of
+In the \texttt{C} programming language strings are separated from the rest of
 the code by pair of \texttt{"} (double quote) characters. Internally,
 they represent a chunk of memory structurally similar to array. In fact,
 string is a specific type of array. Generally, an array can contain any
 type of data given all the array items have the same type \footnote{In some
 languages members of array do not have to be uniformly typed.} and for
 string that data type happens to be \texttt{char}. The end of the string is
-determined by a special character \texttt{'\textbackslash0'} called NUL.
-Strings terminated by such character are usually called null-terminated
-strings.
+determined by a special character \texttt{'\textbackslash0'} also called
+NUL~\ref{nullstring13-1}. Strings terminated by such character are usually
+called null-terminated strings.
 
 Obviously, strings and arrays are related to each other quite tightly.
 Both of them serve as sets of values sequentially stored in memory.
@@ -1034,7 +1034,7 @@ and names of folders or files in between them. An example of such path could
 be \texttt{"/var/lib/dhcpcd"}.
 
 As per the definition of abstract domain from section
-\ref{sec:abstractinterpretation} the members of complete lattice need to be
+\ref{sec:abstractinterpretation} the members of a complete lattice need to be
 specified for every suggested domain:
 
 \begin{itemize}
@@ -1149,8 +1149,8 @@ where function $\textit{prefix}(x, y)$ returns the longest common prefix of
 strings $x$ and $y$.
 \end{definition}
 
-For example, $\textit{prefix}(\texttt{"capture"}, \texttt{"caption"})$ returns
-\texttt{"capt"} and for $\textit{prefix}(\texttt{"house"}, \texttt{"car"})$
+For example, $\textit{prefix}(\texttt{"capture"}, \texttt{"caption"})$ is
+\texttt{"capt"} and $\textit{prefix}(\texttt{"house"}, \texttt{"car"})$
 returns $\varepsilon$.
 
 Simply put, the least upper bound of two strings $x$ and $y$
@@ -1296,7 +1296,7 @@ based on their extensions.
 
 \section{Trie abstract domain}
 
-Trie abstract domain approximates string as \textit{trie} data structure.
+Trie abstract domain approximates string as \textit{trie} data structure~\ref{Knuth98-1}.
 The name trie comes from word ``retrieval'' as in information retrieval. It
 is a tree-like data structure where every node represents a set of all keys
 that begin a certain sequence of symbols -- prefix. Trie is especially useful
@@ -1474,7 +1474,7 @@ concatenation of strings and OR nodes with two children. Both of these
 abstraction provide better precision than prefix or suffix domain.
 
 Other approach explored by Kim and Choe \cite{KimChoe11-1} leverage a family
-of pushdown automata called $\sigma$ bounded pushdown automata. This automata
+of pushdown automata called $\varepsilon$ bounded pushdown automata. This automata
 is built during the interpretation as a set of configuration changes the string
 under analysis goes through. These configuration changes are stored in the
 domain as predicates. This domain promises accurate string abstraction that
@@ -1559,12 +1559,12 @@ domains
 Abstract interpreter itself is implemented in C++. It can be compiled with
 g++ compiler from the GNU Compiler Collection.
 
-\texttt{canal} comes with command line tool which allows to step through
+\texttt{canal} comes with a command line tool which allows to step through
 the execution of interpretation and inspect variables. In that aspect it
 is similar to \texttt{gdb}, a popular GNU debugger project for various
 languages \footnote{\url{http://www.gnu.org/software/gdb/}}.
 
-The project is relatively young and as of this moment is in its experimental
+The project is relatively young and as of this moment it is in its experimental
 stage. That being said, a few programs from GNU core utilities project
 \footnote{\url{http://www.gnu.org/software/coreutils/}} have been
 successfully analyzed by interpreter.
@@ -1577,12 +1577,11 @@ has been checked for memory leaks with \texttt{valgrind}
 
 \section{Domain interface in \texttt{canal}}
 
-Since \texttt{canal} abstract interpreter is implemented in C++ it enables
-the usage of classes. Every domain in it corresponds to single class and
-operations on the domain are implemented as methods of the particular class.
-Most of the operations are domain-specific, but there are a few methods
-that are universally required to be implemented in order for abstract
-values to form a lattice.
+Every abstract domain in \texttt{canal} is implemented as a single class and
+operations on the domain along with the ordering are implemented as methods
+of the particular class. Most of the operations are domain-specific, but
+there are a few methods that are universally required to be implemented in
+order for abstract values to form a lattice.
 
 Universal methods are enforced by inheriting from \texttt{Domain} class,
 which provides their type definitions. These methods are:
@@ -1620,11 +1619,13 @@ Therefore, they need to be defined and implemented per domain individually.
 The \textit{concat} operation from section \ref{sec:stringabstractdomains} is
 implemented by method \texttt{strcat()}.
 
-Every domain is covered with extensive set of unit tests. These tests simplify
+Every domain is covered with an extensive set of unit tests. These tests simplify
 the development of domain modules in isolation. The suite of tests provides
 foundations for refactoring of the code. The automation of tests
 prevents regressions from happening. Finally, these tests should ideally
-contribute to better understanding of the code.
+contribute to better understanding of the code. The presence of tests in
+combination with good naming conventions and consistent coding style eliminate
+the need for extensive commenting of the code.
 
 
 \section{String prefix}
@@ -1837,9 +1838,8 @@ such as software validation or dynamic analysis have been supplied as well.
 Compelling arguments have been given for each of these approaches and their
 limitations have been shown here.
 
-Then, a detailed description of abstract interpretation framework
-along with definitions regarding strings. Descriptions are given on both
-formal and intuitive levels. This part specifies terms and language used
+Then, a detailed description of abstract interpretation framework has been provided
+along with definitions regarding strings. This part specifies terms and language used
 throughout the design and implementation segments of the work.
 
 The core of the thesis is the design of three abstract domains
@@ -1848,13 +1848,12 @@ have been described and demonstrative examples have been shown in both
 graphical and textual form. Domains using string prefix and suffix
 closely follow their description as given by Costantini, Ferrara and
 Cortesi \cite{Constantini11-1}. The domain using tries as a representation
-of string has been created as part of this section.
+of string has been created as a part of this section.
 
-Three designed string abstract domains have been implemented in context of
-the \texttt{canal} abstract interpreter. They have all been covered with
+Three designed string abstract domains have been implemented in the context of
+\texttt{canal} abstract interpreter. They have all been covered with
 unit tests for better maintainability and understanding of the code.
-The implementation uses the style defined by the project. This
-part of the thesis serves as a technical report regarding implementation
+This part of the thesis serves as a technical report regarding implementation
 details and decision that have been made during the course of this work.
 
 The contributions of this thesis are:
@@ -1869,15 +1868,15 @@ prefix, suffix and trie
 \end{itemize}
 
 The trie abstract domain has not been used anywhere else other than
-\texttt{canal}. It is the proposition made to improve the precision of the
-other two domains. The implementation of the three designed domains is
-their first open-source implementation. This creates an opportunity for
-community to get involved and improve both design and implementation of this
-solution.
+within \texttt{canal}. It is the proposition made to improve the precision of
+the other two domains. According to my knowledge, the implementation of the
+three designed domains is their first open-source implementation. This creates
+an opportunity for community to get involved and improve both design and
+implementation of the solution.
 
 Future work may include improving the precision of string analysis by
 implementing other string domains. A few examples have been mentioned
-in \ref{sec:otherstringdomains}. Also, new domains for strings can be
+in section \ref{sec:otherstringdomains}. Also, new domains for strings can be
 proposed where properties other than file paths will be considered. However,
 one needs to keep in mind that every abstract domain is a tradeoff between
 implementation difficulty, precision and performance.
@@ -1914,7 +1913,7 @@ G{.} E{.} Moore.
 \newblock In \emph{Electronics}, volume 38, number 8, pages 114--117. 1965.
 
 \bibitem{EmanuelssonNilsson08-1}
-P{.} Emanuelsson, U{.} Nilsson.
+P{.} Emanuelsson and U{.} Nilsson.
 \newblock A comparative study of industrial static analysis tools (extended
   version).
 \newblock In \emph{Electronic Notes in Theoretical Computer Science},
@@ -1922,18 +1921,18 @@ P{.} Emanuelsson, U{.} Nilsson.
 
 \bibitem{iso9000-2000}
 \newblock ISO 9000:2000 standard.
-\newblock Available at \url{https://www.iso.org/obp/ui/#iso:std:iso:9000:ed-3:v1:en}
-  (May 2013).
+\newblock Available at \url{https://www.iso.org/obp/ui/#iso:std:iso:9000:ed-3:v1:en},
+  section 3.8 (May 2013).
 
 \bibitem{Ernst03-1}
 M{.} D{.} Ernst.
 \newblock Static and dynamic analysis: Synergy and duality.
-\newblock In \emph{Workshop on Dynamic Analysis}, pages 24--27. 2003.
+\newblock In \emph{Workshop on Dynamic Analysis}, pages 24--27. ACM, 2003.
 
 \bibitem{Woodcock09-1}
 J{.} Woodcock, P{.} G{.} Larsen, J{.} Bicarregui and J{.} S{.} Fitzgerald.
-\newblock Formal methods: Practise and experience.
-\newblock In \emph{ACM Computing Surveys}. 2009.
+\newblock Formal methods: Practice and experience.
+\newblock In \emph{ACM Computing Surveys}. ACM, 2009.
 
 \bibitem{Turing36-1}
 A{.} Turing.
@@ -1953,13 +1952,13 @@ D{.} Kozen.
 \newblock Springer, 1997.
 
 \bibitem{Chess04-1}
-B{.} Chess, G{.} McGraw.
+B{.} Chess and G{.} McGraw.
 \newblock Static Analysis for Security.
 \newblock In \emph{Security and Privacy, IEEE}, volume 2, number 6,
   pages 76--79, 2004.
 
 \bibitem{Clarke99-1}
-E{.} M{.} Clarke, O{.} Grumberg, D{.} A{.} Peled.
+E{.} M{.} Clarke, O{.} Grumberg and D{.} A{.} Peled.
 \newblock Model checking.
 \newblock MIT Press, 1999.
 
@@ -1976,7 +1975,7 @@ G{.} A{.} Kildall.
   symposium on Principles of programming}, pages 194--206, 1973.
 
 \bibitem{Constantini11-1}
-G{.} Constantini, P{.} Ferrara, A{.} Cortesi.
+G{.} Constantini, P{.} Ferrara and A{.} Cortesi.
 \newblock Static analysis of string values.
 \newblock In \emph{Proceedings of the 13th Internation Conference on Formal
   Engineering Methods}, 2011.
@@ -1998,7 +1997,7 @@ P{.} Cousot and R{.} Cousot.
 \newblock Available at \url{http://llvm.org/docs/LangRef.html} (May 2013).
 
 \bibitem{Burris81-1}
-S{.} Burris, H{.} P{.} Sankappanavar.
+S{.} Burris and H{.} P{.} Sankappanavar.
 \newblock A course in universal algebra.
 \newblock Springer-Verlag, 1981.
 
@@ -2041,6 +2040,16 @@ S.-W. Kim and K.-M. Choe.
 \newblock In \emph{Proceedings of the 12th international conference on
   Verification, model checking, and abstract interpretation}, pages 294--308,
   Springer-Verlag, 2011.
+
+\bibitem{Knuth98-1}
+D. E. Knuth.
+\newblock The Art of Computer Programming, Sorting and Searching.
+\newblock Volume 3, second edition. Addison Wesley, 1998.
+
+\bibitem{nullstring13-1}
+\newblock ASCII format for Network Interchange.
+\newblock Available at \url{https://tools.ietf.org/html/rfc20#section-5.2}
+  (May 2013).
 
 \end{thebibliography}
 
