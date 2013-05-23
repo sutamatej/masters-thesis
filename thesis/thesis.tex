@@ -869,7 +869,7 @@ The relationship between concretization and abstraction is described by
 \textit{Galois connection} \cite{CousotCousot92-4}:
 
 \begin{definition}
-If $L$ and $L'$ are lattices the $\langle \alpha, \gamma \rangle$ is
+If $L$ and $L'$ are lattices the pair $\langle \alpha, \gamma \rangle$ is
 a Galois connection, written $L \galois{\alpha}{\gamma} L'$ if and only if
 $\alpha \in L \to L'$ and $\gamma \in L' \to L$ are functions such that:
 
@@ -881,11 +881,11 @@ $\alpha \in L \to L'$ and $\gamma \in L' \to L$ are functions such that:
 \begin{example}
 Consider the set of real numbers $\mathbb{R}$, abstraction function
 $\alpha$ from example \ref{ex:abstractionfunc} and concretization function
-$\gamma$ from example \ref{ex:concretizationfunc}.
+$\gamma$ from example \ref{ex:concretizationfunc}. Then the pair
 $\langle \alpha, \gamma \rangle$ forms Galois connection.
 \end{example}
 
-Suppose a function $f: L \to L$ then $l$ is a \textit{fixed point}
+Suppose a function $f: L \to L$ then $l \in L$ is a \textit{fixed point}
 if $f(l) = l$. A fixed point can be achieved by using an iterative process
 such as $f_n(l) = f(f( \dots f(\bot) \dots ))$. Unfortunately, this process
 does not necessarily have to converge to the fixed point or terminate.
@@ -1042,11 +1042,11 @@ specified for every suggested domain:
 \item set $A$ contains abstract values of particular set (prefixes,
 suffixes, tries)
 
-\item partial ordering $\leq$ of abstract values in abstract domain
+\item partial ordering $\sqsubseteq$ of abstract values in abstract domain
 
-\item least upper bound $\sqcap$ for every pair of abstract values
+\item least upper bound $\sqcup$ for every pair of abstract values
 
-\item greater lower bound $\sqcup$ for every pair of abstract values
+\item greatest lower bound $\sqcap$ for every pair of abstract values
 
 \item top element $\top$
 
@@ -1084,10 +1084,10 @@ represents symbols of prefix and $*$ stands for any string, $\varepsilon$
 included. The asterisk is present in prefix all the time so it can be
 omitted from this notation.
 
-Partial ordering $\leq$ on this domain is defined as:
+Partial ordering $\sqsubseteq$ on this domain is defined as:
 
 \begin{align*}
-x \leq y \Leftrightarrow
+x \sqsubseteq y \Leftrightarrow
   x = \bot \lor (\forall i \in [0, |y| - 1] :
   |y| \leq |x| \land y[i] = x[i])
 \end{align*}
@@ -1100,6 +1100,9 @@ prefix of $x$ or $x$ is the bottom of the domain $\bot$.
 The length of string abstract values decreases as prefixes are closer to
 the top element $\top$. The situation is demonstrated in figure
 \ref{fig:prefixlattice}.
+
+The top element $\top$ of this domain is empty string $\varepsilon$. The bottom
+element $\bot$ has no alternative representation in strings.
 
 \begin{figure}[ht]
 \centering
@@ -1134,10 +1137,10 @@ the top element $\top$. The situation is demonstrated in figure
 
 \begin{definition}
 \label{def:prefixjoin}
-The least upper bound operator $\sqcap$ is:
+The least upper bound operator $\sqcup$ is:
 
 \begin{align*}
-\sqcap (x, y) =
+\sqcup (x, y) =
 \begin{cases}
 z & \text{where } z
   = \textit{prefix}(x, y) \\
@@ -1159,10 +1162,10 @@ none, the upper bound is the top element of the lattice $\top$.
 
 \begin{definition}
 \label{def:prefixmeet}
-The greater lower bound operator $\sqcup$ is:
+The greatest lower bound operator $\sqcap$ is:
 
 \begin{align*}
-\sqcup (x, y) =
+\sqcap (x, y) =
 \begin{cases}
 x    & \text{if } x \leq y \\
 y    & \text{if } y \leq x \\
@@ -1201,16 +1204,21 @@ The notation chosen for suffixes is $*abc$ where $abc$ are symbols of
 suffix and $*$ any string. The asterisk is left out since it is always
 there.
 
-Partial order $\leq$ for suffixes $x$ and $y$ is:
+\begin{definition}
+Partial order $\sqsubseteq$ for suffixes $x$ and $y$ is:
 
 \begin{align*}
-x \leq y \Leftrightarrow
+x \sqsubseteq y \Leftrightarrow
   x = \bot \lor (\forall i \in [0, |y| - 1] : |y| \leq |x| \land
     y[i] = x[i + |x| - |y|])
 \end{align*}
+\end{definition}
 
 For better illustration, the figure \ref{fig:suffixlattice} shows an
 example of suffix abstract domain with such order.
+
+The top element $\top$ is represented by empty string $\varepsilon$. The bottom
+element $\bot$ can not be substituted for any suffix string.
 
 \begin{figure}[h]
 \centering
@@ -1245,10 +1253,10 @@ example of suffix abstract domain with such order.
 
 \begin{definition}
 \label{def:suffixjoin}
-The least upper bound $\sqcap$ is:
+The least upper bound $\sqcup$ is:
 
 \begin{align*}
-\sqcap (x, y) =
+\sqcup (x, y) =
 \begin{cases}
 z    & \text{where } z = \textit{suffix}(x,  y) \\
 \top & \text{otherwise}
@@ -1265,10 +1273,10 @@ element $\top$.
 
 \begin{definition}
 \label{def:suffixmeet}
-The greatest lower bound $\sqcup$ is defined as:
+The greatest lower bound $\sqcap$ is defined as:
 
 \begin{align*}
-\sqcup (x, y) =
+\sqcap (x, y) =
 \begin{cases}
 x    & \text{if } x \leq y \\
 y    & \text{if } y \leq x \\
@@ -1316,11 +1324,11 @@ lexicographically ordered.
 \begin{tikzpicture}[font=\small]
 
 \node [circle, draw] (g) {\texttt{g}}
-  child {node [circle, draw] (ood) {\texttt{ood}}}
   child {node [circle, draw] (r) {\texttt{r}}
     child {node [circle, draw] (eat) {\texttt{eat}}}
     child {node [circle, draw] (owth) {\texttt{owth}}}
-  };
+  }
+  child {node [circle, draw] (ood) {\texttt{ood}}};
 
 \path (g) -- (r);
 \path (g) -- (ood);
@@ -1345,12 +1353,14 @@ In this case $|\mathsf{x}| = 3$ and $\mathsf{x}[0] = \texttt{"good"},
 Note that the way a string is divided between nodes of the trie does not
 matter. 
 
-The partial ordering for tries $\mathsf{x}$ and $\mathsf{y}$ is defined as:
+\begin{definition}
+The partial ordering $\sqsubseteq$ for tries $\mathsf{x}$ and $\mathsf{y}$ is:
 
 \begin{align*}
-\mathsf{x} \leq \mathsf{y} \Leftrightarrow
+\mathsf{x} \sqsubseteq \mathsf{y} \Leftrightarrow
   \mathsf{x} = \bot \lor (\forall i \in [0, |\mathsf{x}| - 1] : \mathsf{x}[i] \in \mathsf{y})
 \end{align*}
+\end{definition}
 
 The trie $\mathsf{x}$ is smaller than trie $\mathsf{y}$ if all strings
 represented by $\mathsf{x}$ are also present in $\mathsf{y}$ or if trie
@@ -1358,6 +1368,9 @@ $\mathsf{x}$ is the bottom element $\bot$ of a lattice. The number of nodes
 increases over the course of interpretation as elements of lattice get
 closer to the top $\top$. An example of a lattice with such order is shown
 in figure \ref{fig:trielattice}.
+
+The top element of such lattice is a trie with single node containing empty
+string $\varepsilon$. There is no trie alternative for bottom element $\bot$.
 
 \begin{figure}[ht]
 \centering
@@ -1423,39 +1436,45 @@ in figure \ref{fig:trielattice}.
 \label{fig:trielattice}
 \end{figure}
 
-The least upper bound $\sqcap$ is defined as:
-
-\begin{align*}
-\sqcap (\mathsf{x}, \mathsf{y}) =
-\begin{cases}
-\mathsf{z} & \text{where } \mathsf{z} = \mathsf{x} \cap \mathsf{y} \\
-\top       & \text{if } \mathsf{x} = \top \lor \mathsf{y} = \top
-\end{cases}
-\end{align*}
-
-Since tries $\mathsf{x}$ and $\mathsf{y}$ represent sets of strings, the union
-$\cap$ works as expected. The top element $\top$ can be obtained only if one
-of the joined tries already is top.
-
-The greatest lower bound $\sqcup$ is defined as:
+\begin{definition}
+The least upper bound $\sqcup$ is:
 
 \begin{align*}
 \sqcup (\mathsf{x}, \mathsf{y}) =
 \begin{cases}
 \mathsf{z} & \text{where } \mathsf{z} = \mathsf{x} \cup \mathsf{y} \\
+\top       & \text{if } \mathsf{x} = \top \lor \mathsf{y} = \top
+\end{cases}
+\end{align*}
+\end{definition}
+
+Since tries $\mathsf{x}$ and $\mathsf{y}$ represent sets of strings, the union
+$\cup$ works as expected. The top element $\top$ can be obtained only if one
+of the joined tries already is top.
+
+\begin{definition}
+The greatest lower bound $\sqcap$ is:
+
+\begin{align*}
+\sqcap (\mathsf{x}, \mathsf{y}) =
+\begin{cases}
+\mathsf{z} & \text{where } \mathsf{z} = \mathsf{x} \cap \mathsf{y} \\
 \bot       & \text{if } \mathsf{x} \cup \mathsf{y} = \emptyset
 \end{cases}
 \end{align*}
+\end{definition}
 
 The greatest lower bound of two tries $\mathsf{x}$ and $\mathsf{y}$ is their
-intersection $\cup$. If the intersection returns an empty set $\emptyset$ then
+intersection $\cap$. If the intersection returns an empty set $\emptyset$ then
 the greatest lower bound is the bottom element $\bot$.
 
+\begin{definition}
 The concatenation operation of two tries is:
 
 \begin{align*}
 \textit{concat}(\mathsf{x}, \mathsf{y}) = \mathsf{x}
 \end{align*}
+\end{definition}
 
 This definition conforms with the concatenation definition of string prefix
 domain because the string trie is prefix based.
@@ -1625,16 +1644,17 @@ foundations for refactoring of the code. The automation of tests
 prevents regressions from happening. Finally, these tests should ideally
 contribute to better understanding of the code. The presence of tests in
 combination with good naming conventions and consistent coding style eliminate
-the need for extensive commenting of the code.
+the need for brad commenting of the code.
 
 
 \section{String prefix}
 
-The prefix of a string is internally represented by standard \texttt{string}
-container called \texttt{mPrefix}. The domain itself is composed of this string
-and a boolean called \texttt{mIsBottom}. Combination of these two data members
-gives all possible values of this domain as shown in table
-\ref{tab:stringprefix}.
+The implementation of the string prefix domain can be found in a class called
+\texttt{StringPrefix}. The prefix of a string is internally represented by
+standard \texttt{string} container called \texttt{mPrefix}. The domain itself
+is composed of this string and a boolean called \texttt{mIsBottom}.
+The combination of these two data members gives all possible values of this
+domain as shown in table~\ref{tab:stringprefix}.
 
 \begin{table}[ht]
 \centering
@@ -1694,8 +1714,9 @@ $\bot$     & $\bot$     & true       & false      & $\bot$       & $\bot$
 
 \section{String suffix}
 
-The implementation of domain approximating strings by their suffix is similar
-to the string prefix domain. It is represented by a pair of values -- string
+The implementation of domain approximating strings by their suffix is located in
+class called \texttt{StringSuffix}. It is similar to the string prefix domain.
+This domain is represented by a pair of values -- string
 \texttt{mSuffix} and boolean \texttt{mIsBottom}. All the combinations of these
 values are in table \ref{tab:stringsuffix}.
 
@@ -1750,7 +1771,8 @@ $\bot$     & $\bot$     & true       & false      & $\bot$       & $\bot$
 \section{String trie}
 
 The string trie abstract domain is implemented as two classes -- the domain
-itself and the class called \texttt{TrieNode} representing a node of a trie.
+itself called \texttt{StringTrie} and a class called \texttt{TrieNode}
+representing a node of a trie.
 The domain itself consists of two data members: pointer to a trie node called
 \texttt{mRoot} and boolean indicating bottom value called \texttt{mIsBottom}.
 Every node of the trie stores a string in \texttt{mValue} member and children
