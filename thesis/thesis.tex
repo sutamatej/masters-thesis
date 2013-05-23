@@ -103,7 +103,13 @@ thesis. I would not have made it without them.
 
 %% Abstract (required)
 \begin{ThesisAbstract}
-This thesis is about ...
+The goal of this thesis is to design and implement abstract domains for
+representing strings in the context of abstract interpretation. Abstract
+interpretation is a theoretical framework for static analysis of computer
+programs using approximation without actually executing the program. This
+thesis describes three string abstract domains approximating strings by their
+prefix, suffix and as a trie data structure. All of these domains are
+implemented for \texttt{canal} abstract interpreter.
 \end{ThesisAbstract}
 
 %% Keywords (required)
@@ -1345,7 +1351,7 @@ This domain provides better precision than prefix or suffix, but it is more
 resource-demanding in terms of both the space it occupies and the time it
 takes to perform operations on it.
 
-Suppose $\mathsf{x}$ denote a trie. Notation $|\mathsf{x}|$ means a number of
+Suppose $\mathsf{x}$ denotes a trie. Notation $|\mathsf{x}|$ means a number of
 strings represented by trie and $\mathsf{x}[i]$ is $i$-th string of the trie
 starting from 0. Let $\mathsf{x}$ be the trie from figure \ref{fig:trie}.
 In this case $|\mathsf{x}| = 3$ and $\mathsf{x}[0] = \texttt{"good"},
