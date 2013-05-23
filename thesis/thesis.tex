@@ -15,14 +15,8 @@
 
 %% Additional packages for colors, advanced
 %% formatting options, etc.
-%\usepackage{color}
-%\usepackage{microtype}
 \usepackage{url}
-%\usepackage{cslatexquotes}
-%\usepackage{fancyvrb}
-%\usepackage[small,bf]{caption}
 \usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}
-%\usepackage[all]{hypcap}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -46,14 +40,6 @@
 \newcommand\emptypage{\newpage\null\thispagestyle{empty}\newpage}
 
 \setcounter{tocdepth}{3}
-
-%% Fix long URLs in DVIs
-%\usepackage{ifpdf}
-
-%\ifpdf
-%\else
-%  \usepackage{breakurl}
-%\fi
 
 %% Packages used to generate various lists
 %\usepackage{makeidx}
@@ -251,16 +237,13 @@ simple type checking or syntax errors that are checked by compilers, though
 even these could be captured by static analysis. Hence, only
 errors which lead to unexpected or undefined behavior are checked.
 Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
-
 \begin{lstlisting}[
     language=C,
     caption={Out of bounds array access},
     label=lst:outofbounds
 ]
-
     int array[3] = { 1, 2, 3 };
     int value = array[3];
-
 \end{lstlisting}
 
 In the example the \texttt{array} variable contains three integers but
@@ -326,7 +309,6 @@ There is a close relationship between the static analysis and Halting
 problem. This problem was first formulated by Alan Turing in 1936
 \cite{Turing36-1}. Formally, the Halting problem is defined as
 \cite{Sipser06-1}:
-
 \begin{equation*}
 A_{\mathsf{TM}} = \{ \langle M, w \rangle |
   \: M \text{ is a Turing machine and } M \text{ accepts } w \}
@@ -591,7 +573,6 @@ The shift from concrete value to abstraction is done with
 \textit{abstraction function}. This function maps a set of concrete values
 to abstract value which has properties of interest. It is traditionally
 denoted as $\alpha$ \cite{CousotCousot76-1}.
-
 \begin{align*}
 \alpha : \mathcal{C} \to A
 \end{align*}
@@ -620,7 +601,6 @@ Complementary to the abstraction function is \textit{concretization
 function}. It is usually denoted as $\gamma$. It performs a mapping from
 abstract value to a set of concrete values. Formally
 \cite{CousotCousot76-1}:
-
 \begin{align*}
 \gamma : A \to \mathcal{C}
 \end{align*}
@@ -708,7 +688,6 @@ associated terms need to be defined \cite{Burris81-1}:
 \begin{definition}
 A partial order $\leq$ is binary relation defined on set $A$, when following
 rules hold:
-
 \begin{align}
 \forall a \in A &: a \leq a \label{eq:refl} \\
 \forall a, b \in A &: a \leq b \land b \leq a \Rightarrow a = b \label{eq:antisym} \\
@@ -731,16 +710,24 @@ Let $\langle A, \leq \rangle$ be a partially ordered set.
 \begin{itemize}
 
 \item element $u \in A$ is an \textit{upper bound} of $S \subseteq A$ if
-$\forall s \in S : s \leq u$
+\begin{align*}
+\forall s \in S : s \leq u
+\end{align*}
 
 \item element $l \in A$ is a \textit{lower bound} of $S \subseteq A$ if
-$\forall s \in S : l \leq s$
+\begin{align*}
+\forall s \in S : l \leq s
+\end{align*}
 
-\item element $u \in A$ is a \textit{least upper bound} of $S \subseteq A$
-if $\forall u' \in A : (\forall s \in S : s \leq u') \Rightarrow u \leq u'$
+\item element $u \in A$ is a \textit{least upper bound} of $S \subseteq A$ if
+\begin{align*}
+\forall u' \in A : (\forall s \in S : s \leq u') \Rightarrow u \leq u'
+\end{align*}
 
-\item element $l \in A$ is a \textit{greatest lower bound} of $S \subseteq A$
-if $\forall l' \in A : (\forall s \in S : l' \leq s) \Rightarrow l' \leq l$
+\item element $l \in A$ is a \textit{greatest lower bound} of $S \subseteq A$ if
+\begin{align*}
+\forall l' \in A : (\forall s \in S : l' \leq s) \Rightarrow l' \leq l
+\end{align*}
 
 \end{itemize}
 
@@ -797,7 +784,6 @@ is a complete lattice.
 Concrete values of program interpretation are organized in \textit{concrete
 domain}. Formally, the concrete domain is a complete lattice $L$ on set
 $A$ \cite{Constantini11-1}:
-
 \begin{align*}
 L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
 \end{align*}
@@ -840,7 +826,6 @@ Abstract properties are encoded in modules with data structures called
 \textit{abstract domain}. This module is a set of all abstract values
 for given abstraction. Formally, abstract domain forms a complete
 lattice $L'$ \cite{Constantini11-1}:
-
 \begin{align*}
 L' = \langle \bar{A}, \sqsubseteq, \bot, \top, \sqcup, \sqcap  \rangle
 \end{align*}
@@ -878,7 +863,6 @@ The relationship between concretization and abstraction is described by
 If $L$ and $L'$ are lattices the pair $\langle \alpha, \gamma \rangle$ is
 a Galois connection, written $L \galois{\alpha}{\gamma} L'$ if and only if
 $\alpha \in L \to L'$ and $\gamma \in L' \to L$ are functions such that:
-
 \begin{align*}
 \forall x \in L, y' \in L': (\alpha(x) \leq y') \iff (x \leq \gamma(y'))
 \end{align*}
@@ -969,7 +953,6 @@ and $y$ and chains them together to form a new string $xy$. It is
 associative operation but it is not commutative. Empty string $\varepsilon$ is
 identity for concatenation. The length of resulting string is a sum of
 lengths of concatenated strings.
-
 \begin{align*}
 (xy)z &= x(yz) \\
 xy &\neq yx \\
@@ -1091,7 +1074,6 @@ included. The asterisk is present in prefix all the time so it can be
 omitted from this notation.
 
 Partial ordering $\sqsubseteq$ on this domain is defined as:
-
 \begin{align*}
 x \sqsubseteq y \Leftrightarrow
   x = \bot \lor (\forall i \in [0, |y| - 1] :
@@ -1144,7 +1126,6 @@ element $\bot$ has no alternative representation in strings.
 \begin{definition}
 \label{def:prefixjoin}
 The least upper bound operator $\sqcup$ is:
-
 \begin{align*}
 \sqcup (x, y) =
 \begin{cases}
@@ -1169,7 +1150,6 @@ none, the upper bound is the top element of the lattice $\top$.
 \begin{definition}
 \label{def:prefixmeet}
 The greatest lower bound operator $\sqcap$ is:
-
 \begin{align*}
 \sqcap (x, y) =
 \begin{cases}
@@ -1186,7 +1166,6 @@ of them is smaller then it is the bottom element $\bot$.
 \begin{definition}
 \label{def:prefixstrcat}
 The semantics for \textit{concat} operation is defined as:
-
 \begin{align*}
 \textit{concat}(x, y) = x
 \end{align*}
@@ -1212,7 +1191,6 @@ there.
 
 \begin{definition}
 Partial order $\sqsubseteq$ for suffixes $x$ and $y$ is:
-
 \begin{align*}
 x \sqsubseteq y \Leftrightarrow
   x = \bot \lor (\forall i \in [0, |y| - 1] : |y| \leq |x| \land
@@ -1260,7 +1238,6 @@ element $\bot$ can not be substituted for any suffix string.
 \begin{definition}
 \label{def:suffixjoin}
 The least upper bound $\sqcup$ is:
-
 \begin{align*}
 \sqcup (x, y) =
 \begin{cases}
@@ -1280,7 +1257,6 @@ element $\top$.
 \begin{definition}
 \label{def:suffixmeet}
 The greatest lower bound $\sqcap$ is defined as:
-
 \begin{align*}
 \sqcap (x, y) =
 \begin{cases}
@@ -1298,7 +1274,6 @@ two. It is the bottom element $\bot$ for all other cases.
 \label{def:suffixstrcat}
 The \textit{concat} operation for suffix domain is the second of the
 concatenated strings:
-
 \begin{align*}
 \textit{concat}(x, y) = y
 \end{align*}
@@ -1330,11 +1305,11 @@ lexicographically ordered.
 \begin{tikzpicture}[font=\small]
 
 \node [circle, draw] (g) {\texttt{g}}
+  child {node [circle, draw] (ood) {\texttt{ood}}}
   child {node [circle, draw] (r) {\texttt{r}}
     child {node [circle, draw] (eat) {\texttt{eat}}}
     child {node [circle, draw] (owth) {\texttt{owth}}}
-  }
-  child {node [circle, draw] (ood) {\texttt{ood}}};
+  };
 
 \path (g) -- (r);
 \path (g) -- (ood);
@@ -1361,7 +1336,6 @@ matter.
 
 \begin{definition}
 The partial ordering $\sqsubseteq$ for tries $\mathsf{x}$ and $\mathsf{y}$ is:
-
 \begin{align*}
 \mathsf{x} \sqsubseteq \mathsf{y} \Leftrightarrow
   \mathsf{x} = \bot \lor (\forall i \in [0, |\mathsf{x}| - 1] : \mathsf{x}[i] \in \mathsf{y})
@@ -1444,7 +1418,6 @@ string $\varepsilon$. There is no trie alternative for bottom element $\bot$.
 
 \begin{definition}
 The least upper bound $\sqcup$ is:
-
 \begin{align*}
 \sqcup (\mathsf{x}, \mathsf{y}) =
 \begin{cases}
@@ -1460,7 +1433,6 @@ of the joined tries already is top.
 
 \begin{definition}
 The greatest lower bound $\sqcap$ is:
-
 \begin{align*}
 \sqcap (\mathsf{x}, \mathsf{y}) =
 \begin{cases}
@@ -1476,7 +1448,6 @@ the greatest lower bound is the bottom element $\bot$.
 
 \begin{definition}
 The concatenation operation of two tries is:
-
 \begin{align*}
 \textit{concat}(\mathsf{x}, \mathsf{y}) = \mathsf{x}
 \end{align*}
