@@ -785,7 +785,7 @@ Concrete values of program interpretation are organized in \textit{concrete
 domain}. Formally, the concrete domain is a complete lattice $L$ on set
 $A$ \cite{Constantini11-1}:
 \begin{align*}
-L = \langle \mathcal{P} (A), \subseteq, \emptyset, A, \cap, \cup \rangle
+L = \langle \mathcal{P} (A), \subseteq, \cap, \cup, \emptyset, A \rangle
 \end{align*}
 
 where $\mathcal{P} (A)$ is power set of $A$. An example of such lattice
@@ -827,7 +827,7 @@ Abstract properties are encoded in modules with data structures called
 for given abstraction. Formally, abstract domain forms a complete
 lattice $L'$ \cite{Constantini11-1}:
 \begin{align*}
-L' = \langle \bar{A}, \sqsubseteq, \bot, \top, \sqcup, \sqcap  \rangle
+L' = \langle A', \sqsubseteq, \sqcap, \sqcup, \bot, \top \rangle
 \end{align*}
 
 Intuitively, the abstract domain encapsulates multiple concrete states of
@@ -1073,7 +1073,8 @@ represents symbols of prefix and $*$ stands for any string, $\varepsilon$
 included. The asterisk is present in prefix all the time so it can be
 omitted from this notation.
 
-Partial ordering $\sqsubseteq$ on this domain is defined as:
+\begin{definition}
+Partial ordering $\sqsubseteq$ on this domain is:
 \begin{align*}
 x \sqsubseteq y \Leftrightarrow
   x = \bot \lor (\forall i \in [0, |y| - 1] :
@@ -1081,6 +1082,7 @@ x \sqsubseteq y \Leftrightarrow
 \end{align*}
 
 where $x$ and $y$ are abstract values representing string prefixes.
+\end{definition}
 
 Intuitively, prefixes are ordered in a lattice by their length. Prefix
 $x$ is smaller than string $y$ if $y$ is a
