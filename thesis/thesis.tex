@@ -24,8 +24,8 @@
 \usepackage{galois}
 
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{example}{Example}[chapter]
 
 \usepackage{listings}
 
@@ -161,7 +161,7 @@ safety critical systems, but to a certain degree quality matters
 everywhere. It is crucial for software maintainability, which becomes
 difficult when size of a codebase and number of developers
 increase. This chapter describes various techniques used to
-improve these properties and abstract interpretation in particular.
+improve these properties.
 
 
 \section{Software quality evaluation techniques}
@@ -200,12 +200,12 @@ is statement whether the built solution is the right one.
 
 The verification may be done either by executing the program or by
 analyzing the source code of the program. These approaches are called
-\textit{dynamic} and \textit{static} verification respectively. The activities
+\textit{dynamic} and \textit{static} verification respectively. Verification activities
 are typically performed by a programmer during the development phase.
 There are many disciplines that enforce the verification by program
 execution -- unit testing or integration testing among others. These
 disciplines are relatively easy to understand and implement. The main
-disadvantages include testing in isolation. In addition, this type of
+disadvantages include testing in isolation or the fact that this type of
 testing can only check for presence of known errors. The static
 verification usually includes source code inspection either manually or
 by a tool. Implementation of such tool usually requires a deep
@@ -223,8 +223,7 @@ have been met.
 
 \section{Static analysis}
 
-Static code analysis is a well known term in software industry yet there
-is a lot of confusion surrounding it. Emanuelsson and Nilsson
+Static code analysis is a well known term in software industry. Emanuelsson and Nilsson
 \cite{EmanuelssonNilsson08-1} refer to it as the analysis of a computer
 program without actually executing it. This process is fully automatic
 but a programmer needs to interpret the results of analysis and make
@@ -456,7 +455,7 @@ return x;
 
 \end{tikzpicture}
 \end{minipage}
-\caption{Data flow graph and corresponding code}
+\caption{Sample code and corresponding data flow graph}
 \label{fig:dfg}
 \end{figure}
 
@@ -536,8 +535,8 @@ execution give some informations on the actual computations.
 
 The key concept here is abstraction. An \textit{abstraction} is a property
 of an object that is being analyzed. In figure \ref{fig:abstraction}
-there are several abstractions of number 8. This number is positive,
-integer, real and rational number. Every one of these abstractions comes
+there are several abstractions of number 8. This number is natural,
+rational and real number. Every one of these abstractions comes
 at a cost of precision. The greater the abstraction is the greater is the
 loss of precision. Still, an abstraction is often easier to reason about,
 mainly in terms of memory -- rather than keeping an enumeration of all
@@ -584,11 +583,11 @@ example \ref{ex:abstractionfunc}.
 \begin{example}
 \label{ex:abstractionfunc}
 \begin{align*}
-\alpha(A) &=
+\alpha(C) &=
 \begin{cases}
-(0) & \text{if } A = \{ 0 \} \\
-(+) & \text{if } \forall a \in A : a > 0 \\
-(-) & \text{if } \forall a \in A : a < 0 \\
+(0) & \text{if } C = \{ 0 \} \\
+(+) & \text{if } \forall c \in C : c > 0 \\
+(-) & \text{if } \forall c \in C : c < 0 \\
 (\pm) & \text{otherwise}
 \end{cases} \\
 \alpha(\{ -3.4, -1, -17 \}) &= (-) \\
@@ -614,11 +613,11 @@ or negative numbers. This property is called \textit{over-approximation}.
 \begin{example}
 \label{ex:concretizationfunc}
 \begin{align*}
-\gamma(C) &=
+\gamma(A) &=
 \begin{cases}
-\{ 0 \} & \text{if } C = 0 \\
-(0, \infty \rangle & \text{if } C = (+) \\
-\langle -\infty, 0) & \text{if } C = (-) \\
+\{ 0 \} & \text{if } A = 0 \\
+(0, \infty \rangle & \text{if } A = (+) \\
+\langle -\infty, 0) & \text{if } A = (-) \\
 \langle -\infty, \infty \rangle & \text{otherwise}
 \end{cases} \\
 \gamma((+)) &= (0, \infty \rangle \\
@@ -640,7 +639,7 @@ transformed this way is called \textit{abstract operation}.
 Consider the abstraction of positive and negative numbers on the set of real
 numbers $\mathbb{R}$. The operation of adding $+$ is straightforward for
 concrete numbers. However, its matching abstract operation $\oplus$ can
-return interesting results. The list of all possible results is in
+return interesting values. The list of all possible results is in
 table \ref{tab:abstractplus}. Note that $(+) \oplus (-) = (\pm)$, because
 $2 + (-1) = 1$ and $2 + (-3) = -1$. The $\pm$ sign represents both
 positive and negative number since it can not be decided with certainty
@@ -908,7 +907,7 @@ this through appropriate abstraction choice. In fact, the choice of suitable
 abstraction is crucial in this promise. Moreover, abstract interpretation
 provides a theoretical framework that unifies other static analysis
 approaches such as data-flow analysis \cite{CousotCousot77-1} or model
-checking \cite{CousotCousot99-1}.
+checking~\cite{CousotCousot99-1}.
 
 
 \section{Strings}
@@ -982,7 +981,7 @@ type of data given all the array items have the same type \footnote{In some
 languages members of array do not have to be uniformly typed.} and for
 string that data type happens to be \texttt{char}. The end of the string is
 determined by a special character \texttt{'\textbackslash0'} also called
-NUL~\ref{nullstring13-1}. Strings terminated by such character are usually
+NUL \cite{ascii13-1}. Strings terminated by such character are usually
 called null-terminated strings.
 
 Obviously, strings and arrays are related to each other quite tightly.
@@ -1560,7 +1559,7 @@ g++ compiler from the GNU Compiler Collection.
 \texttt{canal} comes with a command line tool which allows to step through
 the execution of interpretation and inspect variables. In that aspect it
 is similar to \texttt{gdb}, a popular GNU debugger project for various
-languages \footnote{\url{http://www.gnu.org/software/gdb/}}.
+languages~\footnote{\url{http://www.gnu.org/software/gdb/}}.
 
 The project is relatively young and as of this moment it is in its experimental
 stage. That being said, a few programs from GNU core utilities project
@@ -2047,7 +2046,7 @@ D. E. Knuth.
 \newblock The Art of Computer Programming, Sorting and Searching.
 \newblock Volume 3, second edition. Addison Wesley, 1998.
 
-\bibitem{nullstring13-1}
+\bibitem{ascii13-1}
 \newblock ASCII format for Network Interchange.
 \newblock Available at \url{https://tools.ietf.org/html/rfc20#section-5.2}
   (May 2013).
@@ -2069,7 +2068,8 @@ system~\footnote{Available for download at
 \begin{enumerate}
 \item Install the dependencies with the command:
 \begin{lstlisting}
-$ sudo apt-get install g++ cmake clang libreadline-dev libelf-dev llvm-dev libclang-dev
+$ sudo apt-get install g++ cmake clang libreadline-dev
+$ sudo apt-get install libelf-dev llvm-dev libclang-dev
 \end{lstlisting}
 
 \item Navigate to the directory containing \texttt{canal} and build it:
@@ -2112,8 +2112,8 @@ analysis. A line of currently interpreted code is displayed after each step.
 (canal) print %1
 \end{lstlisting}
 
-If the \texttt{%1} is an array, the output of \texttt{print} command will
-contain items \texttt{strinPrefix}, \texttt{stringSuffix} and
+If the \texttt{\%1} is an array, the output of \texttt{print} command will
+contain items \texttt{stringPrefix}, \texttt{stringSuffix} and
 \texttt{stringTrie} for representing strings.
 
 \item Quit an interpreter:
