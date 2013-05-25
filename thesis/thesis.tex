@@ -2061,7 +2061,61 @@ D. E. Knuth.
 \chapter{Instructions for running \texttt{canal}}
 \label{chap:instructions}
 
+This guide describes instructions for installing and running \texttt{canal}
+abstract interpreter under Ubuntu 12.10 operating
+system~\footnote{Available for download at
+\url{http://releases.ubuntu.com/quantal/}}.
 
+\begin{enumerate}
+\item Install the dependencies with the command:
+\begin{lstlisting}
+$ sudo apt-get install g++ cmake clang libreadline-dev libelf-dev llvm-dev libclang-dev
+\end{lstlisting}
+
+\item Navigate to the directory containing \texttt{canal} and build it:
+\begin{lstlisting}
+$ cd canal/
+$ cmake .
+$ make
+\end{lstlisting}
+
+\item (optional) Run the test suite:
+\begin{lstlisting}
+$ make test
+\end{lstlisting}
+
+\item Run \texttt{canal} interpreter:
+\begin{lstlisting}
+$ ./tool/canal
+\end{lstlisting}
+
+\item Display a list of available commands with their description:
+\begin{lstlisting}
+(canal) help
+\end{lstlisting}
+
+\item Load a program and step through an analysis:
+\begin{lstlisting}
+(canal) file tests/2-string.c
+(canal) start
+(canal) step
+\end{lstlisting}
+
+The interpreter will compile the program with \texttt{clang} compiler which
+will emit its LLVM IR representation. This representation is then used for
+analysis. A line of currently interpreted code is displayed after each step.
+
+\item Print and observe the variable content:
+\begin{lstlisting}
+(canal) step
+  %1 = alloca i32, align 4
+(canal) print %1
+\end{lstlisting}
+
+If the \texttt{%1} is an array, the output of \texttt{print} command will
+contain items \texttt{strinPrefix}, \texttt{stringSuffix} and
+\texttt{stringTrie} for representing strings.
+\end{enumerate}
 
 
 \chapter{List of files}
