@@ -127,13 +127,13 @@ to represent practically anything. In fact, most of the programs written
 today have to deal with strings in some form. Thus, it is important to know
 how programs treat strings.
 
-This thesis describes string abstract domains in the context of abstract
+This thesis illustrates string abstract domains in the context of abstract
 interpretation which is a framework described by Cousot~\cite{CousotCousot77-1}
 \cite{Cousot00-1} \cite{CousotCousot92-4} \cite{CousotCousot99-1} and other
 authors. The goal of the thesis is to design, implement and integrate several
 abstract domains for strings into \texttt{canal} abstract interpreter.
 \texttt{canal} is a tool designed to analyze behavior of application programs
-written in the \texttt{C} programming language.
+written in the C programming language.
 
 The text has the following outline: chapter \ref{chap:staticanalysis} shows
 techniques currently used for improving the quality of software and static
@@ -142,9 +142,10 @@ presents preliminaries required to understand the abstract interpretation.
 In chapter~\ref{chap:design} several string abstract domains are designed.
 The implementation of designed domains is described in great detail in
 chapter~\ref{chap:implementation}. Finally, thesis findings are summarized
-in chapter~\ref{chap:conclusion}. Appendix~\ref{chap:instructions} contains
+in chapter~\ref{chap:conclusion}. Appendices hold
 instructions for compiling and running the \texttt{canal} abstract
-interpreter.
+interpreter and a list of files containing the implementation of string
+abstract domains.
 
 
 \chapter{Static analysis}
@@ -235,7 +236,7 @@ errors do not occur and deal with them once they do. The errors do not include
 simple type checking or syntax errors that are checked by compilers, though
 even these could be captured by static analysis. Hence, only
 errors which lead to unexpected or undefined behavior are checked.
-Consider the \texttt{C} code in listing~\ref{lst:outofbounds}:
+Consider the C code in listing~\ref{lst:outofbounds}:
 \begin{lstlisting}[
     language=C,
     caption={Out of bounds array access},
@@ -250,7 +251,7 @@ In the example the \texttt{array} variable contains three integers but
 accessing the fourth element of the \texttt{array}. Moreover, this code will
 compile and run, but the number might be different every
 time the program is run since accessing the items out of array bounds results in
-undefined behavior in \texttt{C} programming language. Other typical
+undefined behavior in C programming language. Other typical
 examples of errors potentially detected by static analysis could be
 division by zero or infinite loops.
 
@@ -282,7 +283,7 @@ freed
 
 \end{itemize}
 
-The list is incomplete since the range of possible errors in \texttt{C} is
+The list is incomplete since the range of possible errors in C is
 vast. However, it provides an overview of the defect types that can be
 inspected by static analysis. Depending on the characteristics of an
 implementation language some of the items might be omitted from or added
@@ -851,7 +852,7 @@ abstraction is displayed in figure \ref{fig:abstractdomain}.
 \draw (zero) -- (bottom);
 
 \end{tikzpicture}
-\caption{Abstract domain for positive and negative numbers on $\mathbb{R}$}
+\caption{Abstract domain for positive and negative numbers on $\mathbb{R}$~\cite{CousotCousot77-1}}
 \label{fig:abstractdomain}
 \end{figure}
 
@@ -973,7 +974,7 @@ $z \neq x$.
 
 \end{itemize}
 
-In the \texttt{C} programming language strings are separated from the rest of
+In the C programming language strings are separated from the rest of
 the code by pair of \texttt{"} (double quote) characters. Internally,
 they represent a chunk of memory structurally similar to array. In fact,
 string is a specific type of array. Generally, an array can contain any
@@ -1061,7 +1062,7 @@ $\textit{concat}(\texttt{"geo"}, \texttt{"logy"})$ yields \texttt{"geology"}.
 \section{Prefix abstract domain}
 
 The first of the designed abstract domains is the one that approximates
-a string by its prefix. It is based of works of Giulia Constantini,
+a string by its prefix. It is based on works of Giulia Constantini,
 Pietro Ferrara and Agostino Cortesi \cite{Constantini11-1}. This domain
 is has simple semantics, thus it provides a good introduction into the
 designed abstract domains.
@@ -1299,7 +1300,7 @@ generally reduces the number of trie nodes. This is the type of
 trie which will be used throughout this thesis. An example of a trie
 representing strings \texttt{"great"}, \texttt{"growth"} and \texttt{"good"}
 can be found in figure \ref{fig:trie}. Children of each node are
-lexicographically ordered.
+alphabetically ordered.
 
 \begin{figure}[ht]
 \centering
@@ -1362,8 +1363,8 @@ string $\varepsilon$. There is no trie alternative for bottom element $\bot$.
   \begin{tikzpicture}[xscale=0.5, yscale=0.5, font=\tiny]
     \node{s}
       child {node {t}
-        child {node {op}}
-        child {node {ep}}
+         child {node {ep}}
+         child {node {op}}
       }
       child {node {uper}}
     ;
@@ -1372,8 +1373,8 @@ string $\varepsilon$. There is no trie alternative for bottom element $\bot$.
 \node [block,draw] (stopep) at (-1, 2) {
   \begin{tikzpicture}[xscale=0.5, yscale=0.5, font=\tiny]
     \node{st}
-      child {node {op}}
-      child {node {ep}}
+       child {node {ep}}
+       child {node {op}}
     ;
   \end{tikzpicture}
 };
@@ -1471,7 +1472,7 @@ concatenation of strings and OR nodes with two children. Both of these
 abstraction provide better precision than prefix or suffix domain.
 
 Other approach explored by Kim and Choe \cite{KimChoe11-1} leverage a family
-of pushdown automata called $\varepsilon$ bounded pushdown automata. This automata
+of pushdown automata called $\epsilon$ bounded pushdown automata. This automata
 is built during the interpretation as a set of configuration changes the string
 under analysis goes through. These configuration changes are stored in the
 domain as predicates. This domain promises accurate string abstraction that
@@ -1558,7 +1559,7 @@ g++ compiler from the GNU Compiler Collection.
 
 \texttt{canal} comes with a command line tool which allows to step through
 the execution of interpretation and inspect variables. In that aspect it
-is similar to \texttt{gdb}, a popular GNU debugger project for various
+is similar to gdb, a popular GNU debugger project for various
 languages~\footnote{\url{http://www.gnu.org/software/gdb/}}.
 
 The project is relatively young and as of this moment it is in its experimental
@@ -1568,7 +1569,7 @@ successfully analyzed by interpreter.
 
 The designed domains have been developed under ArchLinux distribution
 with linux kernel 3.8.10, clang 3.2 and gcc 4.8.0 packages. The implementation
-has been checked for memory leaks with \texttt{valgrind}
+has been checked for memory leaks with valgrind
 \footnote{\url{http://valgrind.org/}} framework.
 
 
@@ -1639,9 +1640,9 @@ domain as shown in table~\ref{tab:stringprefix}.
 \begin{tabular}{r|c|c|c}
   & \texttt{mPrefix}      & \texttt{mIsBottom} & domain value \\
 \hline
-1 & \texttt{""}           & \texttt{true}      & $\bot$ \\
-2 & \texttt{"somestring"} & \texttt{false}     & a prefix \\
-3 & \texttt{""}           & \texttt{false}     & $\top$
+1 & \texttt{""}           & true      & $\bot$ \\
+2 & \texttt{"somestring"} & false     & a prefix \\
+3 & \texttt{""}           & false     & $\top$
 \end{tabular}
 \caption{String prefix domain value implementation}
 \label{tab:stringprefix}
@@ -1679,7 +1680,7 @@ $\top$     & $\top$     & true       & false      & $\top$       & $\top$ \\
 $\top$     & \textit{y} & false      & false      & $\top$       & \textit{y} \\
 $\top$     & $\bot$     & false      & false      & $\top$       & $\bot$ \\
 \textit{x} & $\top$     & false      & true       & $\top$       & \textit{x} \\
-\textit{x} & \textit{y} & true/false & true/false & \textit{prefix(x/y)} & \textit{x/y} \\
+\textit{x} & \textit{y} & true/false & true/false & $\textit{prefix}(x, y)$ & $x/y$ \\
 \textit{x} & $\bot$     & false      & false      & \textit{x}   & $\bot$ \\
 $\bot$     & $\top$     & false      & true       & $\top$       & $\bot$ \\
 $\bot$     & \textit{y} & false      & true       & \textit{y}   & $\bot$ \\
@@ -1736,7 +1737,7 @@ $\top$     & $\top$     & true       & false      & $\top$       & $\top$ \\
 $\top$     & \textit{y} & false      & false      & $\top$       & \textit{y} \\
 $\top$     & $\bot$     & false      & false      & $\top$       & $\bot$ \\
 \textit{x} & $\top$     & false      & true       & $\top$       & \textit{x} \\
-\textit{x} & \textit{y} & true/false & true/false & \textit{suffix(x/y)} & \textit{x/y} \\
+\textit{x} & \textit{y} & true/false & true/false & $\textit{suffix}(x, y)$ & $x/y$ \\
 \textit{x} & $\bot$     & false      & false      & \textit{x}   & $\bot$ \\
 $\bot$     & $\top$     & false      & true       & $\top$       & $\bot$ \\
 $\bot$     & \textit{y} & false      & true       & \textit{y}   & $\bot$ \\
@@ -1771,9 +1772,9 @@ are shown in table \ref{tab:stringtrie}.
 \begin{tabular}{r|c|c|c}
   & \texttt{mRoot} & \texttt{mIsBottom} & domain value \\
 \hline
-1 & \texttt{NULL}  & \texttt{true}      & $\bot$ \\
-2 & a trie         & \texttt{false}     & a trie \\
-3 & \texttt{NULL}  & \texttt{false}     & $\top$
+1 & \texttt{NULL}  & true      & $\bot$ \\
+2 & a trie         & false     & a trie \\
+3 & \texttt{NULL}  & false     & $\top$
 \end{tabular}
 \caption{String trie domain value implementation}
 \label{tab:stringtrie}
@@ -1993,7 +1994,7 @@ P{.} Cousot and R{.} Cousot.
   Programming}, pages 106--130. Dunod, Paris, France, 1976.
 
 \bibitem{llvm13-1}
-\newblock LLVM language reference manual
+\newblock LLVM language reference manual.
 \newblock Available at \url{http://llvm.org/docs/LangRef.html} (May 2013).
 
 \bibitem{Burris81-1}
@@ -2007,17 +2008,15 @@ P.~Cousot and R.~Cousot.
 \newblock \emph{Automated Software Engineering Journal}, 6(1):69--95, 1999.
 
 \bibitem{aiaa10}
-Julien Bertrane, Patrick Cousot, Radhia Cousot, Laurent~Mauborgne
-  J{\'e}r{\^o}me~Feret, Antoine Min{\'e}, and X.~Rival.
+J. Bertrane, P. Cousot, R. Cousot, L.~M.
+  J{\'e}r{\^o}me~Feret, A. Min{\'e} and X.~Rival.
 \newblock Static analysis and verification of aerospace software by abstract
   interpretation.
 \newblock In {\em AIAA Infotech@Aerospace 2010}, number AIAA-2010-3385, pages
   1--38. American Institue of Aeronautics and Astronautics, April 2010.
 
 \bibitem{Cadar11-1}
-Cadar, Cristian and Godefroid, Patrice and Khurshid, Sarfraz and
-  P\u{a}s\u{a}reanu, Corina S. and Sen, Koushik and Tillmann, Nikolai and
-  Visser, Willem.
+C. Cadar, P. Godefroid, S. Khurshid, C. S. P\u{a}s\u{a}reanu, K. Sen, N. Tillmann and W. Visser.
 \newblock Symbolic execution for software testing in practice: preliminary
   assessment.
 \newblock In \emph{Proceedings of the 33rd International Conference on
